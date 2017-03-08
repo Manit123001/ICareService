@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+   <android.support.design.widget.AppBarLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+      <android.support.v7.widget.Toolbar
+          android:id="@+id/toolbar"
+          android:layout_width="match_parent"
+          android:layout_height="?attr/actionBarSize"
+          android:background="?attr/colorPrimary"
+          app:layout_scrollFlags="scroll|enterAlways"
+          app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+   </android.support.design.widget.AppBarLayout>
+
+
+   <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent"
+       android:fitsSystemWindows="true">
+      <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="15dp"
+             android:layout_marginRight="15dp"
+             android:layout_marginTop="10dp"
+             android:gravity="center">
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+               <Button
+                   android:id="@+id/btnFacebook"
+                   style="@style/ButtonText"
+                   android:layout_width="match_parent"
+                   android:layout_height="50dp"
+                   android:layout_weight="1"
+                   android:background="@drawable/btnstyle_blue"
+                   android:text="Facebook"
+                   android:textSize="20sp" />
+               <com.facebook.login.widget.LoginButton
+                   android:visibility="gone"
+                   android:id="@+id/login_button_facebook"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center_horizontal"
+                   android:layout_marginTop="30dp"
+                   android:layout_marginBottom="30dp" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1">
+
+               <Button
+                   style="@style/ButtonText"
+                   android:id="@+id/btnGoogle"
+                   android:layout_width="match_parent"
+                   android:layout_height="50dp"
+                   android:layout_weight="1"
+                   android:background="@drawable/btnstyle_red"
+                   android:text="G+"
+                   android:textSize="20sp" />
+
+               <com.google.android.gms.common.SignInButton
+                   android:id="@+id/sign_in_button_G"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_centerInParent="true"
+
+
+                   />
+            </FrameLayout>
+
+         </LinearLayout>
+
+   <android.support.design.widget.TextInputLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginLeft="15dp"
+       android:layout_marginRight="15dp">
+
+      <EditText
+          android:id="@+id/edtEmailLogin"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="Email"
+          android:inputType="textEmailAddress" />
+   </android.support.design.widget.TextInputLayout>
+
+   <android.support.design.widget.TextInputLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginLeft="15dp"
+       android:layout_marginRight="15dp">
+
+      <EditText
+          android:id="@+id/edtPasswordLogin"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="Password"
+          android:inputType="textPassword" />
+   </android.support.design.widget.TextInputLayout>
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_below="@+id/edtIDLayout"
+       android:layout_marginLeft="15dp"
+       android:layout_marginRight="15dp"
+       android:layout_marginTop="100dp"
+       android:gravity="center"
+       android:orientation="vertical">
+      <Button
+          android:id="@+id/btnSigninLogin"
+          style="@style/ButtonText"
+          android:layout_width="match_parent"
+          android:layout_height="50dp"
+          android:background="@drawable/btnstyle_back"
+          android:text="SIGN IN"
+          android:textSize="20sp" />
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:text="Forgot Password"
+          android:textSize="15sp" />
+
+   </LinearLayout>
+
+      </LinearLayout>
+</ScrollView>
+
+</LinearLayout>

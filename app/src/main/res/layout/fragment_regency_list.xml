@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:cardCornerRadius="5dp"
+        app:cardUseCompatPadding="true" >
+        <LinearLayout
+            android:paddingLeft="8dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivDepartmentType1"
+                android:layout_gravity="center"
+                android:src="@mipmap/ic_launcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp" >
+
+                <TextView
+                    android:id="@+id/tvNameList"
+                    android:text="@string/list_name"
+                    style="@style/text_name_list_regency" />
+
+                <TextView
+                    android:id="@+id/tvDetailList"
+                    android:layout_below="@id/tvNameList"
+                    android:text="@string/list_detail"
+                    style="@style/text_detail_list_regency" />
+
+                <TextView
+                    android:id="@+id/tvTelList"
+                    android:layout_below="@id/tvDetailList"
+                    android:text="@string/list_tel"
+                    style="@style/text_tel_list_regency" />
+
+
+            </RelativeLayout>
+            <ImageButton
+                android:id="@+id/ibCall"
+                android:src="@drawable/ic_call_list"
+                style="@style/imageview_list_regency" />
+            <CheckBox
+                android:id="@+id/chkSelected"
+                android:checked="true"
+                style="@style/checkbox_list_regency" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+        app:cardCornerRadius="5dp"
+        app:cardUseCompatPadding="true" >
+        <LinearLayout
+            android:paddingLeft="8dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivDepartmentType2"
+                android:layout_gravity="center"
+                android:src="@mipmap/ic_launcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <RelativeLayout
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp" >
+
+                <TextView
+                    android:id="@+id/tvName2List"
+                    android:text="@string/list_name"
+                    style="@style/text_name_list_regency" />
+
+                <TextView
+                    android:id="@+id/tvDetail2List"
+                    android:layout_below="@id/tvName2List"
+                    android:text="@string/list_detail"
+                    style="@style/text_detail_list_regency" />
+                <TextView
+                    android:id="@+id/tvTel2List"
+                    android:layout_below="@id/tvDetail2List"
+                    android:text="@string/list_tel"
+                    style="@style/text_tel_list_regency" />
+            </RelativeLayout>
+
+            <ImageButton
+                android:id="@+id/ibCall2"
+                android:src="@drawable/ic_call_list"
+                style="@style/imageview_list_regency" />
+
+            <CheckBox
+                android:id="@+id/chkSelected2"
+                style="@style/checkbox_list_regency" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:cardCornerRadius="5dp"
+        app:cardUseCompatPadding="true" >
+        <LinearLayout
+            android:paddingLeft="8dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivDepartmentType3"
+                android:layout_gravity="center"
+                android:src="@mipmap/ic_launcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp" >
+
+                <TextView
+                    android:id="@+id/tvName3List"
+                    android:text="@string/list_name"
+                    style="@style/text_name_list_regency" />
+
+                <TextView
+                    android:id="@+id/tvDetail3List"
+                    android:layout_below="@id/tvName3List"
+                    android:text="@string/list_detail"
+                    style="@style/text_detail_list_regency" />
+
+                <TextView
+                    android:id="@+id/tvTel3List"
+                    android:layout_below="@id/tvDetail3List"
+                    android:text="@string/list_tel"
+                    style="@style/text_tel_list_regency" />
+
+
+            </RelativeLayout>
+            <ImageButton
+                android:id="@+id/ibCall3"
+                android:src="@drawable/ic_call_list"
+                style="@style/imageview_list_regency" />
+            <CheckBox
+                android:id="@+id/chkSelected3"
+                style="@style/checkbox_list_regency" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:cardCornerRadius="5dp"
+        app:cardUseCompatPadding="true" >
+        <LinearLayout
+            android:paddingLeft="8dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivDepartmentType4"
+                android:layout_gravity="center"
+                android:src="@mipmap/ic_launcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp" >
+
+                <TextView
+                    android:id="@+id/tvName4List"
+                    android:text="@string/list_name"
+                    style="@style/text_name_list_regency" />
+
+                <TextView
+                    android:id="@+id/tvDetail4List"
+                    android:layout_below="@id/tvName4List"
+                    android:text="@string/list_detail"
+                    style="@style/text_detail_list_regency" />
+                <TextView
+                    android:id="@+id/tvTel4List"
+                    android:layout_below="@id/tvDetail4List"
+                    android:text="@string/list_tel"
+                    style="@style/text_tel_list_regency" />
+
+
+            </RelativeLayout>
+            <ImageButton
+                android:id="@+id/ibCall4"
+                android:src="@drawable/ic_call_list"
+                style="@style/imageview_list_regency" />
+            <CheckBox
+                android:id="@+id/chkSelected4"
+                style="@style/checkbox_list_regency" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
+
+</LinearLayout>

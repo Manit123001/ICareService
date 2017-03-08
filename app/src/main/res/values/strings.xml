@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">ICareU</string>
+
+    <string name="hint">Search</string>
+    <string name="speech_prompt">Say Something</string>
+    <string name="speech_not_supported">speech to text doesn\'t seems supported</string>
+    <string name="menu.clear">clear</string>
+    <string name="menu.tts">text to speech</string>
+    <string name="menu.toggle.icon">Icon Visible</string>
+    <string name="menu.icon.type">Icon Type</string>
+
+    <string name="open_drawer">Open Menu</string>
+    <string name="close_drawer">Close_Menu</string>
+
+
+     <string name="text_lorem_ipsum">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+
+
+    </string>
+    <string name="offset">Offset: %f</string>
+
+
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="choose">Choose</string>
+    <string name="cancel">Cancel</string>
+    <string name="loading">Loading...</string>
+    <string name="no_providers">No providers available to show.</string>
+
+
+    <string name="facebook_app_id">1078745985567973</string>
+
+
+
+    <!--regencylist-->
+    <string name="list_tel"> Tel</string>
+    <string name="list_name"> Name</string>
+    <string name="list_detail"> Detail</string>
+
+
+</resources>
