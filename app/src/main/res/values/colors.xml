@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="colorPrimarySend">#F44336</color>
-    <color name="colorPrimaryDarkSend">#D32F2F</color>
+    <color name="colorPrimarySend">#E53935</color>
+    <color name="colorPrimaryDarkSend">#B71C1C</color>
     <color name="colorAccentSend">#ffffff</color>
 
 

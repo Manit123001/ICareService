@@ -59,20 +59,23 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <service android:name=".jamelogin.manager.FirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
-        <activity android:name=".jamelogin.activity.MainLoginActivity" >
+        <activity android:name=".jamelogin.activity.MainLoginActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".jamelogin.activity.ShowCodeActivity"></activity>
+
+        <activity android:name=".jamelogin.activity.ShowCodeActivity"/>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="23356c51fb1dc0a18e34ac4f11daf0abb2c46e34" />

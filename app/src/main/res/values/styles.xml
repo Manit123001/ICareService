@@ -3,21 +3,23 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-
-    </style>
-
-    <style name="AppTheme.NoActionBar" >
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
+        <item name="colorPrimary">@color/colorPrimarySend</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkSend</item>
+        <item name="colorAccent">@color/colorPrimarySend</item>
+
+    </style>
+
+    <!--MainFragment-->
+    <style name="AppTheme.NoActionBar" >
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkSend</item>
+        <item name="colorAccent">@color/colorPrimarySend</item>
+        <!--<item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>-->
     </style>
 
 
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme.Base" >
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/colorPrimarySend</item>
@@ -25,10 +27,12 @@
         <item name="colorAccent">@color/colorAccentSend</item>
     </style>
 
-    <style name="AppTheme.Base.tab" >
-
-        <item name="colorPrimary">@color/colorPrimaryTab</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDarkTab</item>
+    <!--AlertFragment & SendFragment-->
+    <style name="AppTheme.Base.tab" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/colorPrimarySend</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkSend</item>
         <item name="colorAccent">@color/colorAccentTab</item>
     </style>
 
@@ -51,9 +55,7 @@
     </style>
 
     <style name="CustomFloatingSearchViewTheme.send" parent="AppTheme">
-
         <item name="colorAccent">#E53935</item>
-
     </style>
 
     <style name="searchViewEditTextStyle" parent="Widget.AppCompat.EditText">

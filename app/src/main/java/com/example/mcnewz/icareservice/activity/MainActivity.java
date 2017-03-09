@@ -64,8 +64,6 @@ public class MainActivity extends AppCompatActivity  {
     private String lastname ="";
     private String email = "";
 
-
-
     private ProgressDialog loading;
     String user_id = "";
 
@@ -86,9 +84,9 @@ public class MainActivity extends AppCompatActivity  {
 
     }
     private void initInstances() {
-        View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
-        tvName = (TextView)headerLayout.findViewById(R.id.tvName);
-        tvMail = (TextView)headerLayout.findViewById(R.id.tvMail);
+//        View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
+//        tvName = (TextView)headerLayout.findViewById(R.id.tvName);
+//        tvMail = (TextView)headerLayout.findViewById(R.id.tvMail);
     }
 
     @Override
@@ -169,107 +167,106 @@ public class MainActivity extends AppCompatActivity  {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setHomeButtonEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+//            getSupportActionBar().setHomeButtonEnabled(true);
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        navigationView();
         // drawer layout Here
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(
-                MainActivity.this,
-                drawerLayout,
-                R.string.open_drawer,
-                R.string.close_drawer
-        );
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+//        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+//        actionBarDrawerToggle = new ActionBarDrawerToggle(
+//                MainActivity.this,
+//                drawerLayout,
+//                R.string.open_drawer,
+//                R.string.close_drawer
+//        );
+//        drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
-
+//        navigationView();
     }
 
-    private void navigationView() {
-        //Initializing NavigationView
-        navigationView = (NavigationView) findViewById(R.id.navigation);
-
-        //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-
-            // This method will trigger on item Click of navigation menu
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-
-                //Checking if the item is in checked state or not, if not make it in checked state
-//                if(menuItem.isChecked()) menuItem.setChecked(false);
-//                else menuItem.setChecked(true);
-
-//                //Closing drawer on item click
-//                drawerLayout.closeDrawers();
-
-                //Check to see which item was being clicked and perform appropriate action
-                switch (menuItem.getItemId()){
-
-                    case R.id.navItem2:
-                        Toast.makeText(getApplicationContext(),"Send Selected",Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.navItem3:
-                        Toast.makeText(getApplicationContext(),"Drafts Selected",Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.navItem4:
-                        Toast.makeText(getApplicationContext(),"All Mail Selected",Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.navItem5:
-                        Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
-                        logout();
-                        return true;
-
-                    default:
-                        Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
-                        return true;
-                }
-            }
-        });
-    }
-    private void logout() {
-
-        if(config.status == 1){
-            //Getting out sharedpreferences
-            SharedPreferences preferences = getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-            //Getting editor
-            SharedPreferences.Editor editor = preferences.edit();
-            //Puting the value false for loggedin
-            editor.putBoolean(config.LOGGEDIN_SHARED_PREF, false);
-            //Putting blank value to email
-            editor.putString(config.USERNAME_SHARED_PREF, "");
-            //Saving the sharedpreferences
-            editor.apply();
-            //Starting login activity
-
-        }else {
-            FirebaseAuth.getInstance().signOut();
-            LoginManager.getInstance().logOut();
-
-        }
-        config.status = 1;
-        Intent intent = new Intent(MainActivity.this, MainLoginActivity.class);
-        this.finish();
-        startActivity(intent);
-
-    }
+//    private void navigationView() {
+//        //Initializing NavigationView
+//        navigationView = (NavigationView) findViewById(R.id.navigation);
+//
+//        //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
+//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//
+//            // This method will trigger on item Click of navigation menu
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+//
+//
+//                //Checking if the item is in checked state or not, if not make it in checked state
+////                if(menuItem.isChecked()) menuItem.setChecked(false);
+////                else menuItem.setChecked(true);
+//
+////                //Closing drawer on item click
+////                drawerLayout.closeDrawers();
+//
+//                //Check to see which item was being clicked and perform appropriate action
+//                switch (menuItem.getItemId()){
+//
+//                    case R.id.navItem2:
+//                        Toast.makeText(getApplicationContext(),"Send Selected",Toast.LENGTH_SHORT).show();
+//                        return true;
+//                    case R.id.navItem3:
+//                        Toast.makeText(getApplicationContext(),"Drafts Selected",Toast.LENGTH_SHORT).show();
+//                        return true;
+//                    case R.id.navItem4:
+//                        Toast.makeText(getApplicationContext(),"All Mail Selected",Toast.LENGTH_SHORT).show();
+//                        return true;
+//                    case R.id.navItem5:
+//                        Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
+//                        logout();
+//                        return true;
+//
+//                    default:
+//                        Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
+//                        return true;
+//                }
+//            }
+//        });
+//    }
+//    private void logout() {
+//
+//        if(config.status == 1){
+//            //Getting out sharedpreferences
+//            SharedPreferences preferences = getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+//            //Getting editor
+//            SharedPreferences.Editor editor = preferences.edit();
+//            //Puting the value false for loggedin
+//            editor.putBoolean(config.LOGGEDIN_SHARED_PREF, false);
+//            //Putting blank value to email
+//            editor.putString(config.USERNAME_SHARED_PREF, "");
+//            //Saving the sharedpreferences
+//            editor.apply();
+//            //Starting login activity
+//
+//        }else {
+//            FirebaseAuth.getInstance().signOut();
+//            LoginManager.getInstance().logOut();
+//
+//        }
+//        config.status = 1;
+//        Intent intent = new Intent(MainActivity.this, MainLoginActivity.class);
+//        this.finish();
+//        startActivity(intent);
+//
+//    }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        actionBarDrawerToggle.syncState();
+        //actionBarDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        actionBarDrawerToggle.onConfigurationChanged(newConfig);
+        //actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override

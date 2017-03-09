@@ -2,7 +2,9 @@ package com.example.mcnewz.icareservice.fragment;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -13,9 +15,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -35,8 +40,11 @@ import com.example.mcnewz.icareservice.activity.AlertActivity;
 import com.example.mcnewz.icareservice.adapter.NewsAcidentsAdapter;
 import com.example.mcnewz.icareservice.dao.ItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.ItemDao;
+import com.example.mcnewz.icareservice.jamelogin.activity.MainLoginActivity;
+import com.example.mcnewz.icareservice.jamelogin.manager.config;
 import com.example.mcnewz.icareservice.manager.NewsAcidentsListManager;
 import com.example.mcnewz.icareservice.manager.HttpManager;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -51,6 +59,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
 import java.io.IOException;
@@ -137,6 +146,10 @@ public class MainFragment extends Fragment implements
     int type3 = 1;
     int type4 = 1;
 
+    // Drawable
+    DrawerLayout drawerLayout;
+    ActionBarDrawerToggle actionBarDrawerToggle;
+    private NavigationView navigationView;
 
     /************
      * Functions
@@ -160,8 +173,6 @@ public class MainFragment extends Fragment implements
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
-
-
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -187,6 +198,9 @@ public class MainFragment extends Fragment implements
     // Button All Find Here
     private void initInstances(final View rootView) {
         // init instance with rootView.findViewById here
+        navigationView = (NavigationView) rootView.findViewById(R.id.navigation);
+        navigationView.inflateHeaderView(R.layout.nav_header);
+
         mSearchView = (FloatingSearchView)rootView.findViewById(R.id.floating_search_view);
 
         fabLocation = (FloatingActionButton)  rootView.findViewById(R.id.fabLocation);
@@ -206,13 +220,26 @@ public class MainFragment extends Fragment implements
         behavior = BottomSheetBehavior.from(bottomSheetNewsAcidents);
 
 
+        // drawer layout Here
+        drawerLayout = (DrawerLayout) rootView.findViewById(R.id.drawerLayoutFragmentMain);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(
+                getActivity(),
+                drawerLayout,
+                R.string.open_drawer,
+                R.string.close_drawer
+        );
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+
         setListenerAllView();
         callBackItem(); // call back data
     }
 
+
+
     private void setListenerAllView() {
         mSearchView.setOnSearchListener(floatSearchListener);
         mSearchView.setOnMenuItemClickListener(onMenuItemClickListener);
+        mSearchView.attachNavigationDrawerToMenuButton(drawerLayout);
 
         fabLocation.setOnClickListener(fabLocationListener);
         fabBtnSendLocation.setOnClickListener(fabBtnSendLocationListener);
@@ -223,8 +250,70 @@ public class MainFragment extends Fragment implements
         btnShowMark4.setOnClickListener(showMarker4Listener);
 
         behavior.setBottomSheetCallback(bottomSheetBehaviorNewsAcidents);
+        navigationView();
+    }
+
+    private void navigationView() {
+        //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
+            // This method will trigger on item Click of navigation menu
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                //Check to see which item was being clicked and perform appropriate action
+                switch (menuItem.getItemId()){
+
+                    case R.id.navItem2:
+                        Toast.makeText(getContext(),"Send Selected",Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.navItem3:
+                        Toast.makeText(getContext(),"Drafts Selected",Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.navItem4:
+                        Toast.makeText(getContext(),"All Mail Selected",Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.navItem5:
+                        Toast.makeText(getContext(),"Logout",Toast.LENGTH_SHORT).show();
+                       logout();
+                        return true;
+
+                    default:
+                        Toast.makeText(getContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
+                        return true;
+                }
+            }
+        });
+    }
+    private void logout() {
+//
+        if(config.status == 1){
+            //Getting out sharedpreferences
+            SharedPreferences preferences = getActivity().getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
+            //Getting editor
+            SharedPreferences.Editor editor = preferences.edit();
+            //Puting the value false for loggedin
+            editor.putBoolean(config.LOGGEDIN_SHARED_PREF, false);
+            //Putting blank value to email
+            editor.putString(config.USERNAME_SHARED_PREF, "");
+            //Saving the sharedpreferences
+            editor.apply();
+            //Starting login activity
+
+        }else {
+            FirebaseAuth.getInstance().signOut();
+            LoginManager.getInstance().logOut();
+
+        }
+        config.status = 1;
+        Intent intent = new Intent(getContext(), MainLoginActivity.class);
+        getActivity().finish();
+        startActivity(intent);
 
     }
+
+
 
     private void callBackItem() {
         Call<ItemCollectionDao> call = HttpManager.getInstance().getService().loadItemList();
@@ -338,7 +427,6 @@ public class MainFragment extends Fragment implements
                         e.printStackTrace();
                     }
                 }
-
             }
 
             @Override
@@ -692,24 +780,23 @@ public class MainFragment extends Fragment implements
             // React to state change
             //Toast.makeText(getContext(), "Start", Toast.LENGTH_SHORT).show();
             if (newState == 4 ){
-                tvSlide.setText("Slide Up News" + newState);
+                tvSlide.setText("Slide Up News" );
             } else{
-                tvSlide.setText("Slide Down Close"+newState);
+                tvSlide.setText("Slide Down Close");
 
             }
 
             if(MODELOADSLIDENEWS == 1){
                 setNewsAcidentsShow();
-                MODELOADSLIDENEWS=0;
+                MODELOADSLIDENEWS = 0;
             }
         }
 
         @Override
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {
             // React to dragging events
-            tvSlide.setText("......."+slideOffset);
+            //tvSlide.setText("......."+slideOffset);
             bottomSheet.showContextMenu();
-
             if(slideOffset == 0){
                 MODELOADSLIDENEWS= 1;
             }
@@ -737,25 +824,24 @@ public class MainFragment extends Fragment implements
                     String location = currentQuery;
                     List<Address> addressList = null;
 
-                    if (location != null || !location.equals("")) {
-                        Geocoder geocoder = new Geocoder(getContext());
-                        try {
-                            addressList = geocoder.getFromLocationName(location, 1);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        address = addressList.get(0);
-                        latLng = new LatLng(address.getLatitude(), address.getLongitude());
-
-                        markerSearchLocation = mMap.addMarker(new MarkerOptions()
-                                .position(latLng).title(location)
-                                .snippet(address.getCountryName() + "\n" + address.getFeatureName()));
-                        markerSearchLocation.setTag(0);
-
-                        // move animateion
-                        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                    Geocoder geocoder = new Geocoder(getContext());
+                    try {
+                        addressList = geocoder.getFromLocationName(location, 1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+                    if(addressList != null){
+                        address = addressList.get(0);
+                    }
+                    latLng = new LatLng(address.getLatitude(), address.getLongitude());
+
+                    markerSearchLocation = mMap.addMarker(new MarkerOptions()
+                            .position(latLng).title(location)
+                            .snippet(address.getCountryName() + "\n" + address.getFeatureName()));
+                    markerSearchLocation.setTag(0);
+
+                    // move animateion
+                    mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
                 } else {
 
@@ -767,8 +853,6 @@ public class MainFragment extends Fragment implements
                 Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
 
             }
-
-
         }
     };
 
