@@ -52,7 +52,7 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity  {
-    // Testsss
+
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
@@ -104,16 +104,10 @@ public class MainActivity extends AppCompatActivity  {
         }else {
             if (user != null) {
                 user_id = user.getUid();
-
             }
         }
         getData();
-
-
     }
-
-
-
 
     private void getData() {
 
@@ -144,7 +138,6 @@ public class MainActivity extends AppCompatActivity  {
 
     @SuppressLint("SetTextI18n")
     private void showJSON(String response){
-
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray result = jsonObject.getJSONArray(config.JSON_ARRAY);
@@ -212,9 +205,7 @@ public class MainActivity extends AppCompatActivity  {
                 //Checking if the item is in checked state or not, if not make it in checked state
 //                if(menuItem.isChecked()) menuItem.setChecked(false);
 //                else menuItem.setChecked(true);
-//
-//
-//
+
 //                //Closing drawer on item click
 //                drawerLayout.closeDrawers();
 
@@ -239,11 +230,7 @@ public class MainActivity extends AppCompatActivity  {
                         Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
                         return true;
                 }
-
-
             }
-
-
         });
     }
     private void logout() {
@@ -272,6 +259,7 @@ public class MainActivity extends AppCompatActivity  {
         startActivity(intent);
 
     }
+
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
