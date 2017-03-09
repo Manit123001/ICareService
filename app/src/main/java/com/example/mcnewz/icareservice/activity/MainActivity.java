@@ -1,6 +1,7 @@
 package com.example.mcnewz.icareservice.activity;
 
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import android.support.design.widget.NavigationView;
@@ -50,7 +52,7 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity  {
-
+    // Test
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
 
         // Fragment here !
-        if (savedInstanceState== null) {
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.contentContainer, MainFragment.newInstance())
                     .commit();
@@ -100,7 +102,10 @@ public class MainActivity extends AppCompatActivity  {
         if(config.status == 1){
             user_id = sp.getString(config.USERNAME_SHARED_PREF,"");
         }else {
-            user_id = user.getUid();
+            if (user != null) {
+                user_id = user.getUid();
+
+            }
         }
         getData();
 
@@ -122,7 +127,7 @@ public class MainActivity extends AppCompatActivity  {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainActivity.this,error.getMessage().toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
             }
         }){
 
@@ -137,6 +142,7 @@ public class MainActivity extends AppCompatActivity  {
         requestQueue.add(stringRequest);
     }
 
+    @SuppressLint("SetTextI18n")
     private void showJSON(String response){
 
         try {
@@ -170,7 +176,12 @@ public class MainActivity extends AppCompatActivity  {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        }
 
         navigationView();
         // drawer layout Here
@@ -183,8 +194,6 @@ public class MainActivity extends AppCompatActivity  {
         );
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -197,31 +206,21 @@ public class MainActivity extends AppCompatActivity  {
 
             // This method will trigger on item Click of navigation menu
             @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
 
                 //Checking if the item is in checked state or not, if not make it in checked state
-                if(menuItem.isChecked()) menuItem.setChecked(false);
-                else menuItem.setChecked(true);
-
-                //Closing drawer on item click
-                drawerLayout.closeDrawers();
+//                if(menuItem.isChecked()) menuItem.setChecked(false);
+//                else menuItem.setChecked(true);
+//
+//
+//
+//                //Closing drawer on item click
+//                drawerLayout.closeDrawers();
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()){
-//                    case R.id.navItem1:
-//                        Toast.makeText(getApplicationContext(),"Inbox Selected",Toast.LENGTH_SHORT).show();
-//                        OneFragment fragment = new OneFragment();
-//                        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//                        fragmentTransaction.replace(R.id.contentContainer,fragment);
-//                        fragmentTransaction.commit();
-//                        return true;
 
-                   // case R.id.navItem1:
-//                        Intent intent = new Intent(getApplicationContext(), HelpTabActivity.class);
-//                        startActivity(intent);
-//                        Toast.makeText(getApplicationContext(),"Stared Selected",Toast.LENGTH_SHORT).show();
-//                        return true;
                     case R.id.navItem2:
                         Toast.makeText(getApplicationContext(),"Send Selected",Toast.LENGTH_SHORT).show();
                         return true;
@@ -239,9 +238,12 @@ public class MainActivity extends AppCompatActivity  {
                     default:
                         Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
                         return true;
-
                 }
+
+
             }
+
+
         });
     }
     private void logout() {
@@ -256,7 +258,7 @@ public class MainActivity extends AppCompatActivity  {
             //Putting blank value to email
             editor.putString(config.USERNAME_SHARED_PREF, "");
             //Saving the sharedpreferences
-            editor.commit();
+            editor.apply();
             //Starting login activity
 
         }else {
@@ -284,10 +286,7 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return actionBarDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
 
     }
 
