@@ -7,43 +7,94 @@
     android:layout_height="match_parent">
 
 
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="80dp">
+            android:layout_height="90dp">
 
-            <ImageButton
-                android:id="@+id/btnShowMark1"
+            <LinearLayout
                 android:background="@color/bottom_item_type_1"
-                android:src="@drawable/b1"
                 android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent" />
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:layout_width="0dp">
 
-            <ImageButton
-                android:id="@+id/btnShowMark2"
-                android:background="@color/dark_gray"
-                android:src="@drawable/b2"
+                <ImageButton
+                    android:padding="12dp"
+
+                    android:id="@+id/btnShowMark1"
+                    android:background="@color/bottom_item_type_1"
+                    android:src="@drawable/b1"
+                    android:layout_weight="3"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"/>
+
+                <TextView
+                    style="@style/TextTypeAcident"
+                    android:text="รถชน " >
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent" />
+                android:background="@color/bottom_item_type_2"
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:layout_width="0dp">
+                <ImageButton
+                    android:id="@+id/btnShowMark2"
+                    android:background="@color/dark_gray"
+                    android:src="@drawable/b2"
+                    android:layout_weight="3"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" />
 
-            <ImageButton
-                android:id="@+id/btnShowMark3"
-                android:background="@color/dark_gray"
-                android:src="@drawable/b3"
+                <TextView
+                    style="@style/TextTypeAcident"
+                    android:text="ไฟไหม้ " >
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
-            <ImageButton
-                android:id="@+id/btnShowMark4"
-                android:background="@color/dark_gray"
-                android:src="@drawable/b4"
+                android:background="@color/bottom_item_type_3"
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:layout_width="0dp">
+
+                <ImageButton
+                    android:padding="12dp"
+                    android:id="@+id/btnShowMark3"
+                    android:background="@color/dark_gray"
+                    android:src="@drawable/b3"
+                    android:layout_weight="3"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"/>
+
+                <TextView
+                    style="@style/TextTypeAcident"
+                    android:text="จี้ปล้น " >
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
+                android:background="@color/bottom_item_type_4"
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:layout_width="0dp">
 
-
+                <ImageButton
+                    android:padding="12dp"
+                    android:id="@+id/btnShowMark4"
+                    android:background="@color/dark_gray"
+                    android:src="@drawable/b4"
+                    android:layout_weight="3"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"/>
+                <TextView
+                    android:text="ถูกทำร้าย"
+                    style="@style/TextTypeAcident">
+                </TextView>
+            </LinearLayout>
         </LinearLayout>
 
 

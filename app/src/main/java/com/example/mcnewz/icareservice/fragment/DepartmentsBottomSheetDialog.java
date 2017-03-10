@@ -1,6 +1,8 @@
 package com.example.mcnewz.icareservice.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -38,6 +40,7 @@ public class DepartmentsBottomSheetDialog extends BottomSheetDialogFragment {
     private TextView dateShow;
     private TextView timeAcident;
     private ImageView ic_image;
+    private TextView tvTel;
 
     public static DepartmentsBottomSheetDialog newInstance(int click, int indexArray) {
         clickCount = click;
@@ -59,6 +62,7 @@ public class DepartmentsBottomSheetDialog extends BottomSheetDialogFragment {
     private void initInstance(View rootView) {
         tvTitle = (TextView) rootView.findViewById(R.id.tvTitle);
         tvDetail = (TextView) rootView.findViewById(R.id.tvDetail);
+        tvTel = (TextView) rootView.findViewById(R.id.tvTelDetail);
         ivImg = (ImageView) rootView.findViewById(R.id.ivImg);
         dateShow = (TextView) rootView.findViewById(R.id.dateShow);
         timeAcident = (TextView) rootView.findViewById(R.id.timeAcident);
@@ -142,7 +146,7 @@ public class DepartmentsBottomSheetDialog extends BottomSheetDialogFragment {
                     String latDao = dao.getLatitude();
                     String lngDao = dao.getLongtitude();
                     String detailDao = dao.getDescription();
-                    String tel = dao.getTel();
+                    final String tel = dao.getTel();
                     int type = dao.getTypeId();
 
                     float typeAc = 0;
@@ -169,9 +173,16 @@ public class DepartmentsBottomSheetDialog extends BottomSheetDialogFragment {
                         }
 
                         tvTitle.setText(name);
-                        tvDetail.setText(tel+"\n"+ detail);
+                        tvTel.setText(tel);
+                        tvTel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                actionCall(tel);
+                            }
+                        });
+                        tvDetail.setText(detail);
                         ic_image.setImageResource(typeDe);
-                        Toast.makeText(Contextor.getInstance().getContext(), "clickCount" + clickCount+" = "+ id, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Contextor.getInstance().getContext(), "clickCount" + clickCount+" = "+ id, Toast.LENGTH_SHORT).show();
 
                     }
                 }
@@ -185,6 +196,11 @@ public class DepartmentsBottomSheetDialog extends BottomSheetDialogFragment {
             }
         });
 
+    }
+
+    private void actionCall(String callUrl) {
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + callUrl.trim()));
+        startActivity(intent);
     }
 
 

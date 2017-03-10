@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity  {
                     .commit();
         }
         initToolbar();
-
+//        initInstances();
 
     }
 //    private void initInstances() {
@@ -108,50 +108,6 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
-//    private void getData() {
-//        loading = ProgressDialog.show(this,"Please wait...","Fetching...",false,false);
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST,config.URL_DATA, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                loading.dismiss();
-//                showJSON(response);
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
-//            }
-//        }){
-//
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String,String> params = new HashMap<>();
-//                params.put(config.USERNAME_SHARED, user_id);
-//                return params;
-//            }
-//        };
-//        RequestQueue requestQueue = Volley.newRequestQueue(this);
-//        requestQueue.add(stringRequest);
-//    }
-
-    // @SuppressLint("SetTextI18n")
-//    private void showJSON(String response){
-//        try {
-//            JSONObject jsonObject = new JSONObject(response);
-//            JSONArray result = jsonObject.getJSONArray(config.JSON_ARRAY);
-//            JSONObject collegeData = result.getJSONObject(0);
-//            firstname = collegeData.getString(config.READ_FIRSTNAME);
-//            lastname = collegeData.getString(config.READ_LASTNAME);
-//            email   = collegeData.getString(config.READ_EMAIL);
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-////        tvName.setText(firstname +" "+ lastname);
-////        tvMail.setText(email);
-//
-//    }
 
 
     @Override
@@ -164,8 +120,8 @@ public class MainActivity extends AppCompatActivity  {
     private void initToolbar() {
         // setActionbar Toolbar
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -183,69 +139,8 @@ public class MainActivity extends AppCompatActivity  {
 //        );
 //        drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
-//        navigationView();
     }
 
-//    private void navigationView() {
-//        //Initializing NavigationView
-//        navigationView = (NavigationView) findViewById(R.id.navigation);
-//
-//        //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
-//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//
-//            // This method will trigger on item Click of navigation menu
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-//
-//                switch (menuItem.getItemId()){
-//
-//                    case R.id.navItem2:
-//                        Toast.makeText(getApplicationContext(),"Send Selected",Toast.LENGTH_SHORT).show();
-//                        return true;
-//                    case R.id.navItem3:
-//                        Toast.makeText(getApplicationContext(),"Drafts Selected",Toast.LENGTH_SHORT).show();
-//                        return true;
-//                    case R.id.navItem4:
-//                        Toast.makeText(getApplicationContext(),"All Mail Selected",Toast.LENGTH_SHORT).show();
-//                        return true;
-//                    case R.id.navItem5:
-//                        Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
-//                        logout();
-//                        return true;
-//                    default:
-//                        Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
-//                        return true;
-//                }
-//            }
-//        });
-//    }
-//
-//    private void logout() {
-//
-//        if(config.status == 1){
-//            //Getting out sharedpreferences
-//            SharedPreferences preferences = getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-//            //Getting editor
-//            SharedPreferences.Editor editor = preferences.edit();
-//            //Puting the value false for loggedin
-//            editor.putBoolean(config.LOGGEDIN_SHARED_PREF, false);
-//            //Putting blank value to email
-//            editor.putString(config.USERNAME_SHARED_PREF, "");
-//            //Saving the sharedpreferences
-//            editor.apply();
-//            //Starting login activity
-//
-//        }else {
-//            FirebaseAuth.getInstance().signOut();
-//            LoginManager.getInstance().logOut();
-//
-//        }
-//        config.status = 1;
-//        Intent intent = new Intent(MainActivity.this, MainLoginActivity.class);
-//        this.finish();
-//        startActivity(intent);
-//
-//    }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {

@@ -139,6 +139,7 @@ public class AlertFragment extends Fragment implements
 
     // Index Location
     ArrayList<Integer> departmentType = new ArrayList<Integer>(); ;
+    ArrayList<String> departmentTel = new ArrayList<String>(); ;
     ArrayList<Integer> localClickDepartment = new ArrayList<Integer>();
 
     // Button Sheet
@@ -338,9 +339,12 @@ public class AlertFragment extends Fragment implements
                     String latDao = dao.getLatitude();
                     String lngDao = dao.getLongtitude();
                     String detailDao = dao.getDescription();
+                    String telDepart = dao.getTel();
                     String name = dao.getName();
                     int type = dao.getTypeId();
+
                     departmentType.add(type); //this adds an element to the list.
+                    departmentTel.add(telDepart);
 
                     LatLng latLng = new LatLng(Double.parseDouble(latDao), Double.parseDouble(lngDao));
                     //Toast.makeText(Contextor.getInstance().getContext(), "123456789"+latLng + type, Toast.LENGTH_SHORT).show();
@@ -400,17 +404,27 @@ public class AlertFragment extends Fragment implements
 
             showDepartmentBottomSheetDialog(clickCount , indexArray); // Show ButtonSheet Department
 
-            Toast.makeText(Contextor.getInstance().getContext(), "Departments", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(Contextor.getInstance().getContext(), "Departments", Toast.LENGTH_SHORT).show();
 
             if(snippet.equals("1")){
-                showTypeLogo = R.drawable.ic_alert_2;
+                showTypeLogo = R.drawable.ic_depart_police;
 
             }
+            if(snippet.equals("2")){
+                showTypeLogo = R.drawable.ic_depart_hospital;
 
+            }
+            if(snippet.equals("3")){
+                showTypeLogo = R.drawable.ic_depart_fire;
+
+            }
+            if(snippet.equals("4")){
+                showTypeLogo = R.drawable.ic_depart_wor;
+            }
 
         } else {
-            showTypeLogo = R.drawable.ic_launcher;
-            Toast.makeText(Contextor.getInstance().getContext(), "Not found Tag", Toast.LENGTH_SHORT).show();
+            showTypeLogo = R.mipmap.ic_launcher;
+            //Toast.makeText(Contextor.getInstance().getContext(), "Not found Tag", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -433,6 +447,7 @@ public class AlertFragment extends Fragment implements
                 for (int i = 0; i < sizeDao; i++){
 
                     dao = collectionDao.getData().get(i);
+
                     int id = dao.getId();
                     String typeName = dao.getName();
 
@@ -440,10 +455,10 @@ public class AlertFragment extends Fragment implements
                         nameAcident1 = typeName;
                     }
                     if (id == 2){
-                        nameAcident2 = typeName;
+                        nameAcident3 = typeName;
                     }
                     if (id == 3){
-                        nameAcident3 = typeName;
+                        nameAcident2 = typeName;
                     }
                     if (id == 4) {
                         nameAcident4 = typeName;
@@ -506,7 +521,7 @@ public class AlertFragment extends Fragment implements
             //Place current location marker
             latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
             options = new MarkerOptions()
-                    .title("Current Position")
+                    .title("ตำแหน่งที่เกิดเหตุ")
                     .draggable(true)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
                     .position(latLng)
@@ -608,10 +623,10 @@ public class AlertFragment extends Fragment implements
     }
     public interface FragmentListener{
         void onSendClickAlertFrament(String tab,
-                         String lat,
-                         String lng,
-                         String typeAc,
-                         String typeName);
+                                     String lat,
+                                     String lng,
+                                     String typeAc,
+                                     String typeName);
     }
 
     @Override
@@ -675,7 +690,7 @@ public class AlertFragment extends Fragment implements
         @Override
         public void onClick(View v) {
             if (type1 == 1) {
-                Toast.makeText(getContext(), "อุบัติเหตุ", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "อุบัติเหตุ", Toast.LENGTH_SHORT).show();
                 typeNameSubject = nameAcident1;
                 typeAc = "1";
                 checkColor();
@@ -691,7 +706,7 @@ public class AlertFragment extends Fragment implements
         public void onClick(View v) {
 
             if (type2 == 1) {
-                Toast.makeText(getContext(), "ไฟไหม้", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "ไฟไหม้", Toast.LENGTH_SHORT).show();
                 typeNameSubject = nameAcident2;
                 typeAc = "2";
                 checkColor();
@@ -706,7 +721,7 @@ public class AlertFragment extends Fragment implements
         public void onClick(View v) {
 
             if (type3 == 1) {
-                Toast.makeText(getContext(), "จีปล้น", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "จีปล้น", Toast.LENGTH_SHORT).show();
                 typeNameSubject = nameAcident3;
                 typeAc = "3";
                 checkColor();
@@ -722,7 +737,7 @@ public class AlertFragment extends Fragment implements
         public void onClick(View v) {
 
             if (type4 == 1) {
-                Toast.makeText(getContext(), "ทำร้ายร่างกาย", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "ทำร้ายร่างกาย", Toast.LENGTH_SHORT).show();
                 typeNameSubject = nameAcident4;
                 typeAc = "4";
                 checkColor();

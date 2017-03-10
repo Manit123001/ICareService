@@ -48,6 +48,8 @@ import com.example.mcnewz.icareservice.activity.MainActivity;
 import com.example.mcnewz.icareservice.adapter.NewsAcidentsAdapter;
 import com.example.mcnewz.icareservice.dao.ItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.ItemDao;
+import com.example.mcnewz.icareservice.dao.WarningItemCollectionDao;
+import com.example.mcnewz.icareservice.dao.WarningItemDao;
 import com.example.mcnewz.icareservice.jamelogin.activity.MainLoginActivity;
 import com.example.mcnewz.icareservice.jamelogin.manager.config;
 import com.example.mcnewz.icareservice.manager.NewsAcidentsListManager;
@@ -273,7 +275,9 @@ public class MainFragment extends Fragment implements
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
         setListenerAllView();
+
         callBackItem(); // call back data
+        callWarningBackItem();
     }
 
 
@@ -304,8 +308,14 @@ public class MainFragment extends Fragment implements
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()){
-
+                    case R.id.navItem1:
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(getContext(),"Send Selected",Toast.LENGTH_SHORT).show();
+                        return true;
                     case R.id.navItem2:
+                        Intent intent2 = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent2);
                         Toast.makeText(getContext(),"Send Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.navItem3:
@@ -435,7 +445,84 @@ public class MainFragment extends Fragment implements
         });
     }
     // TODO Warnning Feed
+    private void callWarningBackItem() {
+        Call<WarningItemCollectionDao> call = HttpManager.getInstance().getService().loadWarningItemList();
+        call.enqueue(new Callback<WarningItemCollectionDao>() {
+            @Override
+            public void onResponse(Call<WarningItemCollectionDao> call, Response<WarningItemCollectionDao> response) {
+                if(response.isSuccessful()){
+                    String detailDao,subject;
+                    WarningItemDao dao;
+                    WarningItemCollectionDao collectionDao = response.body();
 
+                    int sizeDao = collectionDao.getData().size();
+                    //Toast.makeText(Contextor.getInstance().getContext(), sizeDao+dao.getData().get(0).getLat(), Toast.LENGTH_SHORT).show();
+                    for (int i = 0; i < sizeDao; i++){
+                        dao = collectionDao.getData().get(i);
+
+                        int id = dao.getId();
+                        String latDao = dao.getLat();
+                        String lngDao = dao.getLng();
+                        detailDao = dao.getDetail();
+                        subject = dao.getSubject();
+                        int type = dao.getType();
+
+                        int typeAc = 0;
+                        latLng = new LatLng(Double.parseDouble(latDao), Double.parseDouble(lngDao));
+
+                        // type Marker
+                        if(type == 1){
+                            typeAc = R.drawable.a1;
+                            marker1 = getMarker(detailDao, subject, typeAc, latLng);
+                            marker1.setTag(id);
+                            mMarkerArray.add(marker1);
+
+                        } else if (type == 2){
+                            typeAc = R.drawable.a2;
+                            marker1 = getMarker(detailDao, subject, typeAc, latLng);
+                            marker1.setTag(id);
+                            mMarkerArray2.add(marker1);
+
+                        }else if (type == 3){
+                            typeAc = R.drawable.a3;
+                            marker1 = getMarker(detailDao, subject, typeAc, latLng);
+                            marker1.setTag(id);
+                            mMarkerArray3.add(marker1);
+
+                        }else {
+                            typeAc = R.drawable.a4;
+                            marker1 = getMarker(detailDao, subject, typeAc, latLng);
+                            marker1.setTag(id);
+                            mMarkerArray4.add(marker1);
+                        }
+
+                        localClick.add(id);
+                        // show marker
+                    }
+
+//                    marker1 = mMap.addMarker(new MarkerOptions()
+//                            .position(BRISBANE)
+//                            .title("Brisbane")
+//                            .snippet("Marker Description")
+//                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher)));
+//                    marker1.setTag(100);
+                } else {
+                    try {
+                        Toast.makeText(Contextor.getInstance().getContext(),
+                                response.errorBody().string(), Toast.LENGTH_LONG).show();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WarningItemCollectionDao> call, Throwable t) {
+                Toast.makeText(Contextor.getInstance().getContext(), t.toString()+"error 555", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
     private void setNewsAcidentsShow(){
         listAdapter = new NewsAcidentsAdapter();
         listView.setAdapter(listAdapter);
@@ -840,8 +927,6 @@ public class MainFragment extends Fragment implements
 
     }
 
-
-
     /*******************
      * Listenner Zone
      *******************/
@@ -870,7 +955,7 @@ public class MainFragment extends Fragment implements
             if (newState == 4 ){
                 tvSlide.setText("Slide Up News" );
             } else{
-                tvSlide.setText("Slide Down Close");
+                tvSlide.setText("เหตุร้ายรอบตัว");
 
             }
 

@@ -34,7 +34,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     long time = 3000L;
     long delay_time;
     String user_id;
-    String userid;
+
     private boolean loggedIn = false;
     private com.google.firebase.auth.FirebaseAuth.AuthStateListener mAuthListener;
     private com.google.firebase.auth.FirebaseAuth mAuth;
@@ -50,6 +50,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         config.token = token;
 
+
         mAuth  = com.google.firebase.auth.FirebaseAuth.getInstance();
         mAuthListener = new com.google.firebase.auth.FirebaseAuth.AuthStateListener() {
             @Override
@@ -57,7 +58,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     config.status = 2;
-                    userid = user.getUid();
+                    user_id = user.getUid();
                     updatetoken();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
@@ -81,6 +82,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }else {
+
                     Intent intent = new Intent(getApplicationContext(),MainLoginActivity.class);
                     startActivity(intent);
                     finish();
@@ -119,7 +121,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "SplashSreenERROR", Toast.LENGTH_LONG).show();
                     }
                 }){
             @Override

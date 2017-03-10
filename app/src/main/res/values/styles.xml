@@ -54,7 +54,7 @@
     </style>
 
     <style name="CustomFloatingSearchViewTheme.send" parent="AppTheme">
-        <item name="colorAccent">@color/colorPrimaryDarkSend</item>
+        <item name="colorAccent">@color/colorPrimarySend</item>
     </style>
 
     <style name="searchViewEditTextStyle" parent="Widget.AppCompat.EditText">
@@ -131,6 +131,18 @@
         <item name="android:background">@color/transparent</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="TextTypeAcident">
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center_horizontal|center_vertical</item>
+        <item name="android:clickable">false</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
 </resources>
