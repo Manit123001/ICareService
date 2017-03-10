@@ -47,6 +47,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
         final String token = FirebaseInstanceId.getInstance().getToken();
         //Log.d("token555", token);
+
         config.token = token;
 
         mAuth  = com.google.firebase.auth.FirebaseAuth.getInstance();
