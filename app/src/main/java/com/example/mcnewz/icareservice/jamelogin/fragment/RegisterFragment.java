@@ -41,7 +41,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
@@ -50,7 +49,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 
 /**
@@ -65,8 +63,8 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
     String uID;
     private static final String TAG = "FacebookLoginActivity";
     private CallbackManager mCallbackManager;
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+    private com.google.firebase.auth.FirebaseAuth mAuth;
+    private com.google.firebase.auth.FirebaseAuth.AuthStateListener mAuthListener;
     private LoginButton loginButton;
     private Button btnFacebook;
 
@@ -153,11 +151,11 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
 
 
 
-        mAuth  = FirebaseAuth.getInstance();
+        mAuth  = com.google.firebase.auth.FirebaseAuth.getInstance();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        mAuthListener = new com.google.firebase.auth.FirebaseAuth.AuthStateListener() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            public void onAuthStateChanged(@NonNull com.google.firebase.auth.FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     uID = user.getUid();
@@ -272,7 +270,7 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
                         //If we are getting success from server
                         if(response.trim().toString().equalsIgnoreCase(config.LOGIN_SUCCESS)){
                             //ถ้าเคยSignแล้ว
-
+                            updatetoken();
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             startActivity(intent);
                         }else{
@@ -281,9 +279,8 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
                                     .setCustomAnimations(
                                             R.anim.from_right,R.anim.to_left,
                                             R.anim.from_left,R.anim.to_right
-
                                     )
-                                    .replace(R.id.contentContainer,CreateAccountFragment.newInstance())
+                                    .replace(R.id.contentContainer, CreateAccountFragment.newInstance())
                                     .addToBackStack(null)
                                     .commit();
                         }
@@ -361,7 +358,7 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
             @Override
             public void onResponse(String response) {
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.contentContainer,VerifyFragment.newInstance(fname,lname,password,email,phone,IdFace))
+                        .replace(R.id.contentContainer, VerifyFragment.newInstance(fname,lname,password,email,phone,IdFace))
                         .commit();
             }
         }, new Response.ErrorListener() {
@@ -374,7 +371,7 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Success",code);
-                params.put("token_target",config.token);
+                params.put("token_target", config.token);
                 return params;
             }
         };
@@ -429,4 +426,31 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
         Toast.makeText(getContext(), "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
     //--------------------Check Email End--------------------------------------
+
+    private void  updatetoken(){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, config.TOKEN_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("member_id", uID);
+                params.put("member_token", config.token);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(stringRequest);
+    }
 }

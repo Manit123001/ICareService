@@ -39,7 +39,6 @@ import com.example.mcnewz.icareservice.R;
 import com.example.mcnewz.icareservice.fragment.MainFragment;
 import com.example.mcnewz.icareservice.jamelogin.activity.MainLoginActivity;
 import com.example.mcnewz.icareservice.jamelogin.manager.config;
-import com.example.mcnewz.icareservice.util.LoginProfile;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -73,85 +72,86 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initInstances();
 
         // Fragment here !
         if (savedInstanceState == null) {
+            //initInstances();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.contentContainer, MainFragment.newInstance())
                     .commit();
         }
         initToolbar();
 
+
     }
-    private void initInstances() {
-//        View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
-//        tvName = (TextView)headerLayout.findViewById(R.id.tvName);
-//        tvMail = (TextView)headerLayout.findViewById(R.id.tvMail);
-    }
+//    private void initInstances() {
+////        View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
+//  //      tvName = (TextView)headerLayout.findViewById(R.id.tvName);
+////        tvMail = (TextView)headerLayout.findViewById(R.id.tvMail);
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//        SharedPreferences sp = getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+//        user_id = sp.getString(config.USERNAME_SHARED_PREF,"");
+//        //Initializing textview
+//        if(config.status == 1){
+//            user_id = sp.getString(config.USERNAME_SHARED_PREF,"");
+//        }else {
+//            if (user != null) {
+//                user_id = user.getUid();
+//            }
+//        }
+//        getData();
+//    }
 
     @Override
     public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onPostCreate(savedInstanceState, persistentState);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        SharedPreferences sp = getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        user_id = sp.getString(config.USERNAME_SHARED_PREF,"");
-        //Initializing textview
-        if(config.status == 1){
-            user_id = sp.getString(config.USERNAME_SHARED_PREF,"");
-        }else {
-            if (user != null) {
-                user_id = user.getUid();
-            }
-        }
-        getData();
     }
 
-    private void getData() {
-        loading = ProgressDialog.show(this,"Please wait...","Fetching...",false,false);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,config.URL_DATA, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                loading.dismiss();
-                showJSON(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }){
+//    private void getData() {
+//        loading = ProgressDialog.show(this,"Please wait...","Fetching...",false,false);
+//        StringRequest stringRequest = new StringRequest(Request.Method.POST,config.URL_DATA, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                loading.dismiss();
+//                showJSON(response);
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+//            }
+//        }){
+//
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                Map<String,String> params = new HashMap<>();
+//                params.put(config.USERNAME_SHARED, user_id);
+//                return params;
+//            }
+//        };
+//        RequestQueue requestQueue = Volley.newRequestQueue(this);
+//        requestQueue.add(stringRequest);
+//    }
 
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put(config.USERNAME_SHARED, user_id);
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void showJSON(String response){
-        try {
-            JSONObject jsonObject = new JSONObject(response);
-            JSONArray result = jsonObject.getJSONArray(config.JSON_ARRAY);
-            JSONObject collegeData = result.getJSONObject(0);
-            firstname = collegeData.getString(config.READ_FIRSTNAME);
-            lastname = collegeData.getString(config.READ_LASTNAME);
-            email   = collegeData.getString(config.READ_EMAIL);
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-//        tvName.setText(firstname + lastname + "test");
-//        tvMail.setText(email);
-
-    }
+    // @SuppressLint("SetTextI18n")
+//    private void showJSON(String response){
+//        try {
+//            JSONObject jsonObject = new JSONObject(response);
+//            JSONArray result = jsonObject.getJSONArray(config.JSON_ARRAY);
+//            JSONObject collegeData = result.getJSONObject(0);
+//            firstname = collegeData.getString(config.READ_FIRSTNAME);
+//            lastname = collegeData.getString(config.READ_LASTNAME);
+//            email   = collegeData.getString(config.READ_EMAIL);
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+////        tvName.setText(firstname +" "+ lastname);
+////        tvMail.setText(email);
+//
+//    }
 
 
     @Override

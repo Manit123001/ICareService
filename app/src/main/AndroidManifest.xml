@@ -70,6 +70,15 @@
 
         <activity android:name=".jamelogin.activity.MainLoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
+        <activity android:name=".jamelogin.activity.ShowCodeActivity"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="23356c51fb1dc0a18e34ac4f11daf0abb2c46e34" />
+
+        <activity android:name=".jamelogin.activity.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -77,10 +86,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".jamelogin.activity.ShowCodeActivity"/>
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="23356c51fb1dc0a18e34ac4f11daf0abb2c46e34" />
     </application>
 
 </manifest>

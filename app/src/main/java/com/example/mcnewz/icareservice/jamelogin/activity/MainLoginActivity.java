@@ -1,28 +1,35 @@
 package com.example.mcnewz.icareservice.jamelogin.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.mcnewz.icareservice.R;
 import com.example.mcnewz.icareservice.activity.MainActivity;
 import com.example.mcnewz.icareservice.jamelogin.fragment.MainFragment;
 import com.example.mcnewz.icareservice.jamelogin.manager.config;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-public class MainLoginActivity extends AppCompatActivity {
-    private boolean loggedIn = false;
+import java.util.HashMap;
+import java.util.Map;
 
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseAuth mAuth;
+public class MainLoginActivity extends AppCompatActivity {
+    private com.google.firebase.auth.FirebaseAuth.AuthStateListener mAuthListener;
+    private com.google.firebase.auth.FirebaseAuth mAuth;
+    String userid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,35 +37,22 @@ public class MainLoginActivity extends AppCompatActivity {
         FirebaseMessaging.getInstance().subscribeToTopic("news");
         final String token = FirebaseInstanceId.getInstance().getToken();
         //Log.d("token555", token);
-
         config.token = token;
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        //Fetching the boolean value form sharedpreferences
-        loggedIn = sharedPreferences.getBoolean(config.LOGGEDIN_SHARED_PREF, false);
-
-        //If we will get true
-        if(loggedIn){
-            //We will start the Profile Activity
-            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-
-        mAuth  = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    config.status = 2;
-
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    finish();
-                    startActivity(intent);
-                }
-
-            }
-        };
+//        mAuth  = com.google.firebase.auth.FirebaseAuth.getInstance();
+//        mAuthListener = new com.google.firebase.auth.FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull com.google.firebase.auth.FirebaseAuth firebaseAuth) {
+//                FirebaseUser user = firebaseAuth.getCurrentUser();
+//                if (user != null) {
+//                    config.status = 2;
+//                    userid = user.getUid();
+//                    updatetoken();
+//                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                    startActivity(intent);
+//                    finish();
+//                }
+//            }
+//        };
 
         if(savedInstanceState == null){
 
@@ -70,18 +64,19 @@ public class MainLoginActivity extends AppCompatActivity {
 
         }
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mAuth.removeAuthStateListener(mAuthListener);
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        mAuth.addAuthStateListener(mAuthListener);
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        if (mAuthListener != null) {
+//            mAuth.removeAuthStateListener(mAuthListener);
+//        }
+//    }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
@@ -92,5 +87,32 @@ public class MainLoginActivity extends AppCompatActivity {
 //            fragment.setHelloText("Woowo owowo");
 
         }
+    }
+
+    private void  updatetoken(){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, config.TOKEN_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("member_id", userid);
+                params.put("member_token", config.token);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
     }
 }

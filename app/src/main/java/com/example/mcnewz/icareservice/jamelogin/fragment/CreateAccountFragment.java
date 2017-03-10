@@ -19,7 +19,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.mcnewz.icareservice.R;
 import com.example.mcnewz.icareservice.jamelogin.manager.config;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.text.SimpleDateFormat;
@@ -63,7 +62,7 @@ public class CreateAccountFragment extends Fragment {
     private void initInstances(View rootView) {
         // init instance with rootView.findViewById here
         //setRetainInstance(true);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
         IdFace = user.getUid();
         Iemai = user.getEmail();
         edtLastNameCreate = (EditText)rootView.findViewById(R.id.edtLastNameCreate);
@@ -126,7 +125,7 @@ public class CreateAccountFragment extends Fragment {
 
                 config.status_verify = 2;
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.contentContainer,VerifyFragment.newInstance(fname,lname,password,email,phone,IdFace))
+                        .replace(R.id.contentContainer, VerifyFragment.newInstance(fname,lname,email,password,phone,IdFace))
                         .addToBackStack(null)
                         .commit();
 
@@ -142,7 +141,7 @@ public class CreateAccountFragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Success",code);
-                params.put("token_target",config.token);
+                params.put("token_target", config.token);
                 return params;
             }
         };

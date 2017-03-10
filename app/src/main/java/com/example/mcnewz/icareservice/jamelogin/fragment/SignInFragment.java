@@ -22,7 +22,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import com.example.mcnewz.icareservice.R;
 import com.example.mcnewz.icareservice.activity.MainActivity;
 import com.example.mcnewz.icareservice.jamelogin.manager.config;
@@ -44,7 +43,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
@@ -67,8 +65,8 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
 
     private static final String TAG = "FacebookLoginActivity";
     private CallbackManager mCallbackManager;
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+    private com.google.firebase.auth.FirebaseAuth mAuth;
+    private com.google.firebase.auth.FirebaseAuth.AuthStateListener mAuthListener;
     private LoginButton loginButton;
     private Button btnFacebook;
 
@@ -97,7 +95,7 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
             mProgressDialog.dismiss();
         }
     }
-//--------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------
     public SignInFragment() {
         super();
     }
@@ -151,10 +149,10 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
                 loginButton.invalidate();
             }
         });
-        mAuth  = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        mAuth  = com.google.firebase.auth.FirebaseAuth.getInstance();
+        mAuthListener = new com.google.firebase.auth.FirebaseAuth.AuthStateListener() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            public void onAuthStateChanged(@NonNull com.google.firebase.auth.FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     uID = user.getUid();
@@ -273,6 +271,8 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
                     public void onResponse(String response) {
                         //If we are getting success from server
                         if(response.trim().toString().equalsIgnoreCase(config.LOGIN_SUCCESS)){
+                            updatetoken();
+
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             getActivity().finish();
                             startActivity(intent);
@@ -283,7 +283,7 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
                                             R.anim.from_left,R.anim.to_right
 
                                     )
-                                    .replace(R.id.contentContainer,CreateAccountFragment.newInstance())
+                                    .replace(R.id.contentContainer, CreateAccountFragment.newInstance())
                                     .commit();
                         }
                     }
@@ -406,7 +406,10 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
                             editor.commit();
                             edtEmailLogin.setText("");
                             edtPasswordLogin.setText("");
+                            uID = username;
+                            updatetoken();
                             //Starting profile activity
+
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             startActivity(intent);
                         }else{
@@ -453,4 +456,31 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
         Toast.makeText(getContext(), "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
     //--------------------Check Email--end------------------------------------
+
+    private void  updatetoken(){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, config.TOKEN_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("member_id", uID);
+                params.put("member_token", config.token);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(stringRequest);
+    }
 }

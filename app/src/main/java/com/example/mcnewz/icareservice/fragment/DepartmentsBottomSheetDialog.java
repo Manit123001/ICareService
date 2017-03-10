@@ -27,9 +27,9 @@ import retrofit2.Response;
 /**
  * Created by mayowa.adegeye on 28/06/2016.
  */
+
 @SuppressLint("ValidFragment")
 public class DepartmentsBottomSheetDialog extends BottomSheetDialogFragment {
-
 
     private static  int clickCount;
     private static  int positionArrays;

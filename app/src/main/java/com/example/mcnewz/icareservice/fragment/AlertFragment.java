@@ -403,20 +403,10 @@ public class AlertFragment extends Fragment implements
             Toast.makeText(Contextor.getInstance().getContext(), "Departments", Toast.LENGTH_SHORT).show();
 
             if(snippet.equals("1")){
-                showTypeLogo = R.drawable.ic_depart_police;
+                showTypeLogo = R.drawable.ic_alert_2;
 
             }
-            if(snippet.equals("2")){
-                showTypeLogo = R.drawable.ic_depart_hospital;
 
-            }
-            if(snippet.equals("3")){
-                showTypeLogo = R.drawable.ic_depart_fire;
-
-            }
-            if(snippet.equals("4")){
-                showTypeLogo = R.drawable.ic_depart_wor;
-            }
 
         } else {
             showTypeLogo = R.drawable.ic_launcher;

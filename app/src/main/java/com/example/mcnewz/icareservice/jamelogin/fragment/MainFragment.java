@@ -1,12 +1,8 @@
 package com.example.mcnewz.icareservice.jamelogin.fragment;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,11 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.mcnewz.icareservice.R;
-import com.example.mcnewz.icareservice.activity.MainActivity;
 import com.example.mcnewz.icareservice.jamelogin.manager.ImageAdapter;
-import com.example.mcnewz.icareservice.jamelogin.manager.config;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 
 /**
@@ -40,14 +32,16 @@ public class MainFragment extends Fragment {
     private boolean loggedIn = false;
     private Button btnLogin,btnRegister;
 
+    private com.google.firebase.auth.FirebaseAuth.AuthStateListener mAuthListener;
+    private com.google.firebase.auth.FirebaseAuth mAuth;
 
 
 //    int someVar;
-//
-//    public static MainFragment newInstance(int someVar){
+
+//    public static MainFragment newInstance(String firstname,String lastname,String email){
 //        MainFragment fragment = new MainFragment();
 //        Bundle args = new Bundle(); // Arguments
-//        args.putInt("someVar", someVar);
+//        //args.putInt("someVar", someVar);
 //        fragment.setArguments(args);
 //        return fragment;
 //    }
@@ -77,7 +71,6 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //In onresume fetching value from sharedpreference
 
     }
 
@@ -96,7 +89,7 @@ public class MainFragment extends Fragment {
                                 R.anim.from_left,R.anim.to_right
 
                         )
-                        .replace(R.id.contentContainer,SignInFragment.newInstance())
+                        .replace(R.id.contentContainer, SignInFragment.newInstance())
                         .addToBackStack(null)
                         .commit();
             }
@@ -109,7 +102,7 @@ public class MainFragment extends Fragment {
                                 R.anim.from_right,R.anim.to_left,
                                 R.anim.from_left,R.anim.to_right
                         )
-                        .replace(R.id.contentContainer,RegisterFragment.newInstance())
+                        .replace(R.id.contentContainer, RegisterFragment.newInstance())
                         .addToBackStack(null)
                         .commit();
             }
@@ -118,7 +111,6 @@ public class MainFragment extends Fragment {
 
 
     }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

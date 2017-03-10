@@ -8,6 +8,7 @@ import com.example.mcnewz.icareservice.dao.NearRegencyListItemDao;
 import com.example.mcnewz.icareservice.dao.RegencyInfoItemDao;
 import com.example.mcnewz.icareservice.dao.SendDataList;
 import com.example.mcnewz.icareservice.dao.TypeAcidentsAlertListItemCollectionDao;
+import com.example.mcnewz.icareservice.dao.WarningItemCollectionDao;
 
 import java.util.Objects;
 
@@ -23,8 +24,11 @@ import retrofit2.http.POST;
 
 public interface ApiService {
 
-    @POST("ReadData.php")
+    @POST("icareservice/jsonAcidentShowMain.php")
     Call<ItemCollectionDao> loadItemList();
+
+    @POST("icareservice/jsonWarningShowMain.php")
+    Call<WarningItemCollectionDao> loadWarningItemList();
 
     // Marker Department
     @POST("department/DepartmentsData.php")

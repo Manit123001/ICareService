@@ -2,6 +2,7 @@ package com.example.mcnewz.icareservice.fragment;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,10 +34,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.example.mcnewz.icareservice.R;
 import com.example.mcnewz.icareservice.activity.AlertActivity;
+import com.example.mcnewz.icareservice.activity.MainActivity;
 import com.example.mcnewz.icareservice.adapter.NewsAcidentsAdapter;
 import com.example.mcnewz.icareservice.dao.ItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.ItemDao;
@@ -44,7 +52,6 @@ import com.example.mcnewz.icareservice.jamelogin.activity.MainLoginActivity;
 import com.example.mcnewz.icareservice.jamelogin.manager.config;
 import com.example.mcnewz.icareservice.manager.NewsAcidentsListManager;
 import com.example.mcnewz.icareservice.manager.HttpManager;
-import com.example.mcnewz.icareservice.util.LoginProfile;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -61,12 +68,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -84,7 +98,6 @@ public class MainFragment extends Fragment implements
         LocationListener,
         GoogleMap.OnMarkerClickListener
 {
-
     /************
      * Variables
      *************/
@@ -152,7 +165,13 @@ public class MainFragment extends Fragment implements
     ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
     private View headerLayout;
-    private LoginProfile profile;
+    private TextView tvName;
+
+
+    private TextView tvMail;
+    String firstname,lastname,email,user_id;
+    private ProgressDialog loading;
+
 
     /************
      * Functions
@@ -165,6 +184,7 @@ public class MainFragment extends Fragment implements
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -173,9 +193,9 @@ public class MainFragment extends Fragment implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
-            Toast.makeText(getContext(), "permission connect", Toast.LENGTH_SHORT).show();
         }
     }
     @Override
@@ -201,16 +221,27 @@ public class MainFragment extends Fragment implements
 
     // Button All Find Here
     private void initInstances(final View rootView) {
+        // Login Page
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        SharedPreferences sp = getActivity().getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        user_id = sp.getString(config.USERNAME_SHARED_PREF,"");
+        //Initializing textview
+        if(config.status == 1){
+            user_id = sp.getString(config.USERNAME_SHARED_PREF,"");
+        }else {
+            if (user != null) {
+                user_id = user.getUid();
+            }
+        }
+        getData();
+
         // init instance with rootView.findViewById here
         navigationView = (NavigationView) rootView.findViewById(R.id.navigation);
         headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
-        TextView tvName = (TextView) headerLayout.findViewById(R.id.tvName);
-        TextView tvMail = (TextView) headerLayout.findViewById(R.id.tvMail);
-        // TODO Login UserName Email
-        profile = new LoginProfile();
-        tvName.setText( profile.getNameUser());
-        tvMail.setText( profile.getEmailUser());
+        tvName = (TextView) headerLayout.findViewById(R.id.tvName);
+        tvMail = (TextView) headerLayout.findViewById(R.id.tvMail);
 
+        // TODO Login UserName Email
 
         mSearchView = (FloatingSearchView)rootView.findViewById(R.id.floating_search_view);
 
@@ -244,7 +275,6 @@ public class MainFragment extends Fragment implements
         setListenerAllView();
         callBackItem(); // call back data
     }
-
 
 
     private void setListenerAllView() {
@@ -286,7 +316,7 @@ public class MainFragment extends Fragment implements
                         return true;
                     case R.id.navItem5:
                         Toast.makeText(getContext(),"Logout",Toast.LENGTH_SHORT).show();
-                       logout();
+                        logout();
                         return true;
 
                     default:
@@ -325,7 +355,7 @@ public class MainFragment extends Fragment implements
     }
 
 
-    // Acidents
+
     private void callBackItem() {
         Call<ItemCollectionDao> call = HttpManager.getInstance().getService().loadItemList();
         call.enqueue(new Callback<ItemCollectionDao>() {
@@ -404,87 +434,7 @@ public class MainFragment extends Fragment implements
             }
         });
     }
-
-    // Warning
-    private void callWarningBackItem() {
-        Call<ItemCollectionDao> call = HttpManager.getInstance().getService().loadItemList();
-        call.enqueue(new Callback<ItemCollectionDao>() {
-            @Override
-            public void onResponse(Call<ItemCollectionDao> call, Response<ItemCollectionDao> response) {
-                if(response.isSuccessful()){
-                    String detailDao,subject;
-                    ItemDao dao;
-                    ItemCollectionDao collectionDao = response.body();
-
-                    int sizeDao = collectionDao.getData().size();
-                    //Toast.makeText(Contextor.getInstance().getContext(), sizeDao+dao.getData().get(0).getLat(), Toast.LENGTH_SHORT).show();
-                    for (int i = 0; i < sizeDao; i++){
-                        dao = collectionDao.getData().get(i);
-
-                        int id = dao.getId();
-                        String latDao = dao.getLat();
-                        String lngDao = dao.getLng();
-                        detailDao = dao.getDetail();
-                        subject = dao.getSubject();
-                        int type = dao.getType();
-
-                        int typeAc = 0;
-                        latLng = new LatLng(Double.parseDouble(latDao), Double.parseDouble(lngDao));
-
-                        // type Marker
-                        if(type == 1){
-                            typeAc = R.drawable.a1;
-                            marker1 = getMarker(detailDao, subject, typeAc, latLng);
-                            marker1.setTag(id);
-                            mMarkerArray.add(marker1);
-
-                        } else if (type == 2){
-                            typeAc = R.drawable.a2;
-                            marker1 = getMarker(detailDao, subject, typeAc, latLng);
-                            marker1.setTag(id);
-                            mMarkerArray2.add(marker1);
-
-                        }else if (type == 3){
-                            typeAc = R.drawable.a3;
-                            marker1 = getMarker(detailDao, subject, typeAc, latLng);
-                            marker1.setTag(id);
-                            mMarkerArray3.add(marker1);
-
-                        }else {
-                            typeAc = R.drawable.a4;
-                            marker1 = getMarker(detailDao, subject, typeAc, latLng);
-                            marker1.setTag(id);
-                            mMarkerArray4.add(marker1);
-                        }
-
-                        localClick.add(id);
-                        // show marker
-                    }
-
-//                    marker1 = mMap.addMarker(new MarkerOptions()
-//                            .position(BRISBANE)
-//                            .title("Brisbane")
-//                            .snippet("Marker Description")
-//                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher)));
-//                    marker1.setTag(100);
-                } else {
-                    try {
-                        Toast.makeText(Contextor.getInstance().getContext(),
-                                response.errorBody().string(), Toast.LENGTH_LONG).show();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ItemCollectionDao> call, Throwable t) {
-                Toast.makeText(Contextor.getInstance().getContext(), t.toString()+"error 555", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
+    // TODO Warnning Feed
 
     private void setNewsAcidentsShow(){
         listAdapter = new NewsAcidentsAdapter();
@@ -804,9 +754,9 @@ public class MainFragment extends Fragment implements
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
             }
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 
@@ -828,7 +778,6 @@ public class MainFragment extends Fragment implements
                         if (mGoogleApiClient == null) {
                             buildGoogleApiClient();
                         }
-                        updateLocation();
                         mMap.setMyLocationEnabled(true);
                     }
 
@@ -843,6 +792,52 @@ public class MainFragment extends Fragment implements
             // other 'case' lines to check for other permissions this app might request.
             // You can add here other case statements according to your requirement.
         }
+    }
+
+    private void getData() {
+        loading = ProgressDialog.show(getActivity(),"Please wait...","Fetching...",false,false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,config.URL_DATA, new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                loading.dismiss();
+                showJSON(response);
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }){
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put(config.USERNAME_SHARED, user_id);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue.add(stringRequest);
+    }
+    private void showJSON(String response){
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray result = jsonObject.getJSONArray(config.JSON_ARRAY);
+            JSONObject collegeData = result.getJSONObject(0);
+            firstname = collegeData.getString(config.READ_FIRSTNAME);
+            lastname = collegeData.getString(config.READ_LASTNAME);
+            email   = collegeData.getString(config.READ_EMAIL);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        //     tvName.setText(firstname +" "+ lastname);
+//        tvMail.setText(email);
+
+        tvName.setText(firstname+" "+lastname);
+        tvMail.setText(email);
+
     }
 
 
@@ -861,9 +856,7 @@ public class MainFragment extends Fragment implements
 
     View.OnClickListener fabLocationListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if (mGoogleApiClient != null) {
-                updateLocation();
-            }
+            updateLocation();
             Toast.makeText(Contextor.getInstance().getContext(), "" + latLng, Toast.LENGTH_SHORT).show();
 
         }
@@ -905,7 +898,7 @@ public class MainFragment extends Fragment implements
 
         @Override
         public void onSuggestionClicked(SearchSuggestion searchSuggestion) {
-                Toast.makeText(Contextor.getInstance().getContext(), "Click1", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Contextor.getInstance().getContext(), "Click1", Toast.LENGTH_SHORT).show();
         }
 
         @Override

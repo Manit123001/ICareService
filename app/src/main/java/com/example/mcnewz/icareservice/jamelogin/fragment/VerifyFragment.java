@@ -49,7 +49,7 @@ public class VerifyFragment extends Fragment {
         super();
     }
 
-    public static VerifyFragment newInstance(String fname,String lname,String email,String password,String phone,String IdFace) {
+    public static VerifyFragment newInstance(String fname, String lname, String email, String password, String phone, String IdFace) {
         VerifyFragment fragment = new VerifyFragment();
         Bundle args = new Bundle();
         args.putString("fname",fname);
@@ -92,7 +92,7 @@ public class VerifyFragment extends Fragment {
         txtNumberPhune.setText(phone);
         edtVerify = (EditText)rootView.findViewById(R.id.edtVerify);
         btnVerify = (Button)rootView.findViewById(R.id.btnVerify);
-
+        Log.d("Test",fname+":"+lname+":"+email+":"+password+":"+phone+":"+IdFace+":"+formattedData+":"+ config.token);
 
         btnVerify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +106,7 @@ public class VerifyFragment extends Fragment {
 
                 }else {
 
-                    Toast.makeText(getContext(),config.idcode,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), config.idcode,Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -138,7 +138,7 @@ public class VerifyFragment extends Fragment {
                 Log.d("onResponse", response);
                 Toast.makeText(getContext(), "เพิ่มข้อมูลRegis", Toast.LENGTH_SHORT).show();
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.contentContainer,SignInFragment.newInstance())
+                        .replace(R.id.contentContainer, SignInFragment.newInstance())
                         .commit();
             }
         }, new Response.ErrorListener() {
@@ -166,35 +166,36 @@ public class VerifyFragment extends Fragment {
     }
     private void onRegisterFace(){
         final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-            StringRequest request = new StringRequest(Request.Method.POST, config.REGIS_FACEBOOK, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.d("onResponse", response);
-                    Intent intent = new Intent(getContext(),MainActivity.class);
-                    startActivity(intent);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("onError", error.toString());
-                    Toast.makeText(getContext(), "เกิดข้อผิดพลาดโปรดลองอีกครั้ง", Toast.LENGTH_SHORT).show();
-                }
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put(config.INSERT_FIRSTNAME, fname);
-                    params.put(config.INSERT_LASTNAME, lname);
-                    params.put(config.INSERT_IDFACE,IdFace);
-                    params.put(config.INSERT_EMAIL,email);
-                    params.put(config.INSERT_PASSWORD, password);
-                    params.put(config.INSERT_TEL, phone);
-                    params.put(config.INSERT_DATA, formattedData);
-                    params.put(config.INSERT_TOKEN, config.token);
-                    return params;
-                }
-            };
-            requestQueue.add(request);
+        StringRequest request = new StringRequest(Request.Method.POST, config.REGIS_FACEBOOK, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("onResponse", response);
+                Intent intent = new Intent(getContext(),MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("onError", error.toString());
+                Toast.makeText(getContext(), "เกิดข้อผิดพลาดโปรดลองอีกครั้ง", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put(config.INSERT_FIRSTNAME, fname);
+                params.put(config.INSERT_LASTNAME, lname);
+                params.put(config.INSERT_IDFACE,IdFace);
+                params.put(config.INSERT_EMAIL,email);
+                params.put(config.INSERT_PASSWORD, password);
+                params.put(config.INSERT_TEL, phone);
+                params.put(config.INSERT_DATA, formattedData);
+                params.put(config.INSERT_TOKEN, config.token);
+                return params;
+            }
+        };
+        requestQueue.add(request);
     }
 
 

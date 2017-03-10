@@ -3,10 +3,16 @@ package com.example.mcnewz.icareservice.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.mcnewz.icareservice.R;
+
+import java.util.Calendar;
 
 
 /**
@@ -65,6 +71,34 @@ public class WarningInfomationFragment extends Fragment {
         if (savedInstanceState != null) {
             // Restore Instance State here
         }
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_send2, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+    }
+
+    public interface FragmentListener{
+        void onSendClickRegencyInfo(String finishSendData, String s);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId())
+        {
+            case R.id.action_send:
+//                millis = String.valueOf(Calendar.getInstance().getTimeInMillis());
+//                setRegencyInfo();
+//
+//
+//                if(selectedPhoto == null || selectedPhoto.equals("")){
+//                    RegencyInfomationFragment.FragmentListener listener = (RegencyInfomationFragment.FragmentListener) getActivity();
+//                    listener.onSendClickRegencyInfo(finishSendData, "test");
+//                }
+                Toast.makeText(getContext(), "Warning Send ", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return true;
     }
 
 }
