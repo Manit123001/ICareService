@@ -42,13 +42,7 @@
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"/>
-            <ImageButton
-                android:id="@+id/btnShowMark5"
-                android:background="@color/dark_gray"
-                android:src="@drawable/ic_mk2"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
+
 
         </LinearLayout>
 

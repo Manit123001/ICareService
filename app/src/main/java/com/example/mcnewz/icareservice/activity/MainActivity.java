@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     private void getData() {
-
         loading = ProgressDialog.show(this,"Please wait...","Fetching...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,config.URL_DATA, new Response.Listener<String>() {
             @Override
@@ -148,8 +147,7 @@ public class MainActivity extends AppCompatActivity  {
             e.printStackTrace();
         }
 
-
-        tvName.setText(firstname + lastname);
+        tvName.setText(firstname + lastname + "test");
         tvMail.setText(email);
 
     }
@@ -198,15 +196,6 @@ public class MainActivity extends AppCompatActivity  {
 //            @Override
 //            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 //
-//
-//                //Checking if the item is in checked state or not, if not make it in checked state
-////                if(menuItem.isChecked()) menuItem.setChecked(false);
-////                else menuItem.setChecked(true);
-//
-////                //Closing drawer on item click
-////                drawerLayout.closeDrawers();
-//
-//                //Check to see which item was being clicked and perform appropriate action
 //                switch (menuItem.getItemId()){
 //
 //                    case R.id.navItem2:
@@ -222,7 +211,6 @@ public class MainActivity extends AppCompatActivity  {
 //                        Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
 //                        logout();
 //                        return true;
-//
 //                    default:
 //                        Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
 //                        return true;
@@ -230,6 +218,7 @@ public class MainActivity extends AppCompatActivity  {
 //            }
 //        });
 //    }
+//
 //    private void logout() {
 //
 //        if(config.status == 1){

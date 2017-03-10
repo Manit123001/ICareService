@@ -40,8 +40,6 @@ public class MainFragment extends Fragment {
     private boolean loggedIn = false;
     private Button btnLogin,btnRegister;
 
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseAuth mAuth;
 
 
 //    int someVar;
@@ -80,17 +78,7 @@ public class MainFragment extends Fragment {
     public void onResume() {
         super.onResume();
         //In onresume fetching value from sharedpreference
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        //Fetching the boolean value form sharedpreferences
-        loggedIn = sharedPreferences.getBoolean(config.LOGGEDIN_SHARED_PREF, false);
 
-        //If we will get true
-        if(loggedIn){
-            //We will start the Profile Activity
-            Intent intent = new Intent(getContext(),MainActivity.class);
-            startActivity(intent);
-            getActivity().finish();
-        }
     }
 
     private void initInstansces(View rootView) {
@@ -127,34 +115,10 @@ public class MainFragment extends Fragment {
             }
         });
 
-        mAuth  = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    config.status = 2;
 
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    getActivity().finish();
-                    startActivity(intent);
-                }
-
-            }
-        };
 
     }
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        mAuth.removeAuthStateListener(mAuthListener);
-    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

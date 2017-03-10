@@ -150,6 +150,7 @@ public class MainFragment extends Fragment implements
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
+    private View headerLayout;
 
     /************
      * Functions
@@ -199,7 +200,10 @@ public class MainFragment extends Fragment implements
     private void initInstances(final View rootView) {
         // init instance with rootView.findViewById here
         navigationView = (NavigationView) rootView.findViewById(R.id.navigation);
-        navigationView.inflateHeaderView(R.layout.nav_header);
+        headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
+        TextView tvName = (TextView) headerLayout.findViewById(R.id.tvName);
+        TextView tvMail = (TextView) headerLayout.findViewById(R.id.tvMail);
+        // TODO Login UserName Email
 
         mSearchView = (FloatingSearchView)rootView.findViewById(R.id.floating_search_view);
 
