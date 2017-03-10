@@ -29,7 +29,7 @@ public class MainLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_login);
         FirebaseMessaging.getInstance().subscribeToTopic("news");
         final String token = FirebaseInstanceId.getInstance().getToken();
-        Log.d("token555", token);
+        //Log.d("token555", token);
 
         config.token = token;
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);

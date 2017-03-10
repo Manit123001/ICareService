@@ -39,6 +39,7 @@ import com.example.mcnewz.icareservice.R;
 import com.example.mcnewz.icareservice.fragment.MainFragment;
 import com.example.mcnewz.icareservice.jamelogin.activity.MainLoginActivity;
 import com.example.mcnewz.icareservice.jamelogin.manager.config;
+import com.example.mcnewz.icareservice.util.LoginProfile;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initInstances();
 
         // Fragment here !
         if (savedInstanceState == null) {
@@ -80,7 +82,6 @@ public class MainActivity extends AppCompatActivity  {
                     .commit();
         }
         initToolbar();
-        initInstances();
 
     }
     private void initInstances() {
@@ -143,12 +144,12 @@ public class MainActivity extends AppCompatActivity  {
             lastname = collegeData.getString(config.READ_LASTNAME);
             email   = collegeData.getString(config.READ_EMAIL);
 
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        tvName.setText(firstname + lastname + "test");
-        tvMail.setText(email);
+//        tvName.setText(firstname + lastname + "test");
+//        tvMail.setText(email);
 
     }
 

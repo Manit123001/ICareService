@@ -44,6 +44,7 @@ import com.example.mcnewz.icareservice.jamelogin.activity.MainLoginActivity;
 import com.example.mcnewz.icareservice.jamelogin.manager.config;
 import com.example.mcnewz.icareservice.manager.NewsAcidentsListManager;
 import com.example.mcnewz.icareservice.manager.HttpManager;
+import com.example.mcnewz.icareservice.util.LoginProfile;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -151,6 +152,7 @@ public class MainFragment extends Fragment implements
     ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
     private View headerLayout;
+    private LoginProfile profile;
 
     /************
      * Functions
@@ -173,6 +175,7 @@ public class MainFragment extends Fragment implements
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
+            Toast.makeText(getContext(), "permission connect", Toast.LENGTH_SHORT).show();
         }
     }
     @Override
@@ -204,6 +207,10 @@ public class MainFragment extends Fragment implements
         TextView tvName = (TextView) headerLayout.findViewById(R.id.tvName);
         TextView tvMail = (TextView) headerLayout.findViewById(R.id.tvMail);
         // TODO Login UserName Email
+        profile = new LoginProfile();
+        tvName.setText( profile.getNameUser());
+        tvMail.setText( profile.getEmailUser());
+
 
         mSearchView = (FloatingSearchView)rootView.findViewById(R.id.floating_search_view);
 
@@ -318,7 +325,7 @@ public class MainFragment extends Fragment implements
     }
 
 
-
+    // Acidents
     private void callBackItem() {
         Call<ItemCollectionDao> call = HttpManager.getInstance().getService().loadItemList();
         call.enqueue(new Callback<ItemCollectionDao>() {
@@ -397,6 +404,87 @@ public class MainFragment extends Fragment implements
             }
         });
     }
+
+    // Warning
+    private void callWarningBackItem() {
+        Call<ItemCollectionDao> call = HttpManager.getInstance().getService().loadItemList();
+        call.enqueue(new Callback<ItemCollectionDao>() {
+            @Override
+            public void onResponse(Call<ItemCollectionDao> call, Response<ItemCollectionDao> response) {
+                if(response.isSuccessful()){
+                    String detailDao,subject;
+                    ItemDao dao;
+                    ItemCollectionDao collectionDao = response.body();
+
+                    int sizeDao = collectionDao.getData().size();
+                    //Toast.makeText(Contextor.getInstance().getContext(), sizeDao+dao.getData().get(0).getLat(), Toast.LENGTH_SHORT).show();
+                    for (int i = 0; i < sizeDao; i++){
+                        dao = collectionDao.getData().get(i);
+
+                        int id = dao.getId();
+                        String latDao = dao.getLat();
+                        String lngDao = dao.getLng();
+                        detailDao = dao.getDetail();
+                        subject = dao.getSubject();
+                        int type = dao.getType();
+
+                        int typeAc = 0;
+                        latLng = new LatLng(Double.parseDouble(latDao), Double.parseDouble(lngDao));
+
+                        // type Marker
+                        if(type == 1){
+                            typeAc = R.drawable.a1;
+                            marker1 = getMarker(detailDao, subject, typeAc, latLng);
+                            marker1.setTag(id);
+                            mMarkerArray.add(marker1);
+
+                        } else if (type == 2){
+                            typeAc = R.drawable.a2;
+                            marker1 = getMarker(detailDao, subject, typeAc, latLng);
+                            marker1.setTag(id);
+                            mMarkerArray2.add(marker1);
+
+                        }else if (type == 3){
+                            typeAc = R.drawable.a3;
+                            marker1 = getMarker(detailDao, subject, typeAc, latLng);
+                            marker1.setTag(id);
+                            mMarkerArray3.add(marker1);
+
+                        }else {
+                            typeAc = R.drawable.a4;
+                            marker1 = getMarker(detailDao, subject, typeAc, latLng);
+                            marker1.setTag(id);
+                            mMarkerArray4.add(marker1);
+                        }
+
+                        localClick.add(id);
+                        // show marker
+                    }
+
+//                    marker1 = mMap.addMarker(new MarkerOptions()
+//                            .position(BRISBANE)
+//                            .title("Brisbane")
+//                            .snippet("Marker Description")
+//                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher)));
+//                    marker1.setTag(100);
+                } else {
+                    try {
+                        Toast.makeText(Contextor.getInstance().getContext(),
+                                response.errorBody().string(), Toast.LENGTH_LONG).show();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ItemCollectionDao> call, Throwable t) {
+                Toast.makeText(Contextor.getInstance().getContext(), t.toString()+"error 555", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
 
     private void setNewsAcidentsShow(){
         listAdapter = new NewsAcidentsAdapter();
@@ -716,9 +804,9 @@ public class MainFragment extends Fragment implements
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
             }
-            return false;
-        } else {
             return true;
+        } else {
+            return false;
         }
     }
 
@@ -740,6 +828,7 @@ public class MainFragment extends Fragment implements
                         if (mGoogleApiClient == null) {
                             buildGoogleApiClient();
                         }
+                        updateLocation();
                         mMap.setMyLocationEnabled(true);
                     }
 
@@ -772,7 +861,9 @@ public class MainFragment extends Fragment implements
 
     View.OnClickListener fabLocationListener = new View.OnClickListener() {
         public void onClick(View v) {
-            updateLocation();
+            if (mGoogleApiClient != null) {
+                updateLocation();
+            }
             Toast.makeText(Contextor.getInstance().getContext(), "" + latLng, Toast.LENGTH_SHORT).show();
 
         }

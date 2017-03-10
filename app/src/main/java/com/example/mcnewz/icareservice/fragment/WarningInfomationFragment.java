@@ -66,4 +66,5 @@ public class WarningInfomationFragment extends Fragment {
             // Restore Instance State here
         }
     }
+
 }

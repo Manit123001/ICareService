@@ -1,15 +1,19 @@
 package com.example.mcnewz.icareservice.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -151,9 +155,13 @@ public class RegencyInfomationFragment extends Fragment {
         initInstances(rootView);
 
         //Toast.makeText(getContext(), lat+"_"+ lng+"_"+ typeAc + "_" + checkValue, Toast.LENGTH_SHORT).show();
-
+        checkPermissionForCamera();
+        requestPermissionForExternalStorage();
         return rootView;
     }
+
+
+
 
     private void initInstances(View rootView) {
         // init instance with rootView.findViewById here
@@ -194,7 +202,6 @@ public class RegencyInfomationFragment extends Fragment {
     private void setRegencyInfo() {
         showpDialog();
         itemInfo = new RegencyInfoItemDao();
-
         setItemInfo();
 
         Call<RegencyInfoItemDao> call = HttpManager.getInstance().getService().setRegencyInfoList(
@@ -225,6 +232,7 @@ public class RegencyInfomationFragment extends Fragment {
         uploadImage();
 
     }
+
     private void setItemInfo() {
 
         // TODO: HERE SetInfo
@@ -246,7 +254,6 @@ public class RegencyInfomationFragment extends Fragment {
             if(requestCode == CAMERA_REQUEST){
                 String photoPath = cameraPhoto.getPhotoPath();
                 selectedPhoto = photoPath;
-
                 selectImage = 1;
 
                 try {
@@ -476,4 +483,22 @@ public class RegencyInfomationFragment extends Fragment {
             dialog.show();
         }
     };
+
+    public boolean checkPermissionForCamera(){
+        int result = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
+        if (result == PackageManager.PERMISSION_GRANTED){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public static final int EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE = 2;
+
+    public void requestPermissionForExternalStorage(){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            Toast.makeText(getContext(), "External Storage permission needed. Please allow in App Settings for additional functionality.", Toast.LENGTH_LONG).show();
+        } else {
+            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE);
+        }
+    }
 }
