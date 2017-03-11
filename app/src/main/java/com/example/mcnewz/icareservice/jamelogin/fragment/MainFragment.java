@@ -62,8 +62,6 @@ public class MainFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main_login,
                 container,false);
         initInstansces(rootView);
-        imageSlide();
-
 
         return rootView;
 
@@ -76,8 +74,6 @@ public class MainFragment extends Fragment {
 
     private void initInstansces(View rootView) {
 
-        gallery = (Gallery)rootView.findViewById(R.id.gallery);
-        mDotsLayout = (LinearLayout)rootView.findViewById(R.id.image_count);
         btnLogin = (Button)rootView.findViewById(R.id.btnLogIn);
         btnRegister = (Button)rootView.findViewById(R.id.btnRegister);
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -118,42 +114,6 @@ public class MainFragment extends Fragment {
 
     }
     //-------------------------------------------------------------------------------------------------------------------------------------------
-    private void imageSlide() {
-        //Image Slied Start
 
-        gallery.setAdapter(new ImageAdapter(getActivity()));
-
-
-        mDotsCount = gallery.getAdapter().getCount();
-
-
-        mDotsText = new TextView[mDotsCount];
-
-        for (int i = 0;i < mDotsCount; i++){
-            mDotsText[i] = new TextView(getActivity());
-            mDotsText[i].setText(".");
-            mDotsText[i].setTextSize(60);
-            mDotsText[i].setTypeface(null, Typeface.BOLD);
-            mDotsText[i].setTextColor(Color.GRAY);
-            mDotsLayout.addView(mDotsText[i]);
-        }
-
-        gallery.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                for (int i = 0;i<mDotsCount;i++){
-                    MainFragment.mDotsText[i].setTextColor(Color.GRAY);
-                }
-                MainFragment.mDotsText[pos]
-                        .setTextColor(Color.WHITE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-    }
 //-----------------------------------------------------------------------------------------------------------------------
 }

@@ -143,7 +143,7 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:gravity="top|left"
-                    android:hint="Detail"
+                    android:hint="รายละเอียด"
                     android:padding="10dp"
                     android:background="@android:color/transparent"
                     android:layout_width="match_parent"

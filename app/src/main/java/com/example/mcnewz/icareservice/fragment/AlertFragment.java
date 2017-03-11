@@ -36,6 +36,7 @@ import com.example.mcnewz.icareservice.dao.NearRegencyListItemDao;
 import com.example.mcnewz.icareservice.dao.RegencyInfoItemDao;
 import com.example.mcnewz.icareservice.dao.TypeAcidentsAlertListItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.TypeAcidentsAlertListItemDao;
+import com.example.mcnewz.icareservice.jamelogin.manager.CheckNetwork;
 import com.example.mcnewz.icareservice.manager.HttpManager;
 import com.example.mcnewz.icareservice.util.LogoClickShow;
 import com.google.android.gms.common.ConnectionResult;
@@ -144,7 +145,10 @@ public class AlertFragment extends Fragment implements
 
     // Button Sheet
     DepartmentsBottomSheetDialog departmentsBottomSheetDialog;
-
+    private TextView tvText1;
+    private TextView tvText2;
+    private TextView tvText3;
+    private TextView tvText4;
 
 
     /************
@@ -198,7 +202,6 @@ public class AlertFragment extends Fragment implements
         mMapView.getMapAsync(this);
 
         //setRegencyInfo();
-        callBackItemDepartments();
         initInstances(rootView);
         return rootView;
     }
@@ -224,8 +227,22 @@ public class AlertFragment extends Fragment implements
         btnShowMark3 = (ImageButton) rootView.findViewById(R.id.btnShowMark3);
         btnShowMark4 = (ImageButton) rootView.findViewById(R.id.btnShowMark4);
 
+        tvText1 = (TextView) rootView.findViewById(R.id.tvText1);
+        tvText2 = (TextView) rootView.findViewById(R.id.tvText2);
+        tvText3 = (TextView) rootView.findViewById(R.id.tvText3);
+        tvText4 = (TextView) rootView.findViewById(R.id.tvText4);
+
         setListenerAllView();
-        callTypeAcidentsAlert();
+
+        // CheckInternet
+        if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
+            // your get/post related code..like HttpPost = new HttpPost(url);
+            callBackItemDepartments();
+            callTypeAcidentsAlert();
+        } else {
+            // No Internet
+            Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -655,7 +672,13 @@ public class AlertFragment extends Fragment implements
         btnShowMark2.setBackgroundResource(R.color.gray_active_icon);
         btnShowMark3.setBackgroundResource(R.color.gray_active_icon);
         btnShowMark4.setBackgroundResource(R.color.gray_active_icon);
+
+        tvText1.setBackgroundColor(getResources().getColor(R.color.gray_active_icon));
+        tvText2.setBackgroundColor(getResources().getColor(R.color.gray_active_icon));
+        tvText3.setBackgroundColor(getResources().getColor(R.color.gray_active_icon));
+        tvText4.setBackgroundColor(getResources().getColor(R.color.gray_active_icon));
     }
+
 
 
     /*
@@ -695,6 +718,7 @@ public class AlertFragment extends Fragment implements
                 typeAc = "1";
                 checkColor();
                 btnShowMark1.setBackgroundResource(R.color.bottom_item_type_1);
+                tvText1.setBackgroundColor(getResources().getColor(R.color.bottom_item_type_1));
 
             }
         }
@@ -711,6 +735,8 @@ public class AlertFragment extends Fragment implements
                 typeAc = "2";
                 checkColor();
                 btnShowMark2.setBackgroundResource(R.color.bottom_item_type_2);
+                tvText2.setBackgroundColor(getResources().getColor(R.color.bottom_item_type_2));
+
             }
         }
     };
@@ -726,6 +752,8 @@ public class AlertFragment extends Fragment implements
                 typeAc = "3";
                 checkColor();
                 btnShowMark3.setBackgroundResource(R.color.bottom_item_type_3);
+                tvText3.setBackgroundColor(getResources().getColor(R.color.bottom_item_type_3));
+
             }
         }
     };
@@ -742,6 +770,8 @@ public class AlertFragment extends Fragment implements
                 typeAc = "4";
                 checkColor();
                 btnShowMark4.setBackgroundResource(R.color.bottom_item_type_4);
+                tvText4.setBackgroundColor(getResources().getColor(R.color.bottom_item_type_4));
+
             }
 
         }

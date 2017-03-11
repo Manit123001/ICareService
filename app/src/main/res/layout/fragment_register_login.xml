@@ -32,7 +32,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="1"
-                        android:background="@drawable/btnstyle_blue"
+                        android:background="@color/com_facebook_button_background_color"
                         android:text="Facebook"
                         android:textSize="20sp" />
                     <com.facebook.login.widget.LoginButton
@@ -58,7 +58,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="1"
-                        android:background="@drawable/btnstyle_red"
+                        android:background="#d34836"
                         android:text="G+"
                         android:textSize="20sp" />
 

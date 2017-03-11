@@ -3,6 +3,8 @@ package com.example.mcnewz.icareservice.jamelogin.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -20,9 +22,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mcnewz.icareservice.R;
 import com.example.mcnewz.icareservice.activity.MainActivity;
+import com.example.mcnewz.icareservice.fragment.MainFragment;
+import com.example.mcnewz.icareservice.jamelogin.manager.CheckNetwork;
 import com.example.mcnewz.icareservice.jamelogin.manager.config;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +64,16 @@ public class SplashScreenActivity extends AppCompatActivity {
                 if (user != null) {
                     config.status = 2;
                     user_id = user.getUid();
-                    updatetoken();
+                    if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
+                        // your get/post related code..like HttpPost = new HttpPost(url);
+                        updatetoken();
+
+                    } else {
+                        // No Internet
+                        Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
+                    }
+
+
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -152,4 +166,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         handler.removeCallbacks(runnable);
         time = delay_time - (System.currentTimeMillis()-time);
     }
+
+    /****************
+     * Inner Class
+     *****************/
+
+
 }

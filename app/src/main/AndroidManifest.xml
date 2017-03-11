@@ -21,6 +21,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> -->
 
+    <!--Check internet mobile-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
@@ -55,6 +59,7 @@
 
         <activity android:name=".activity.SendDataActivity"
             android:theme="@style/AppTheme.Base.tab"/>
+
 
         <service android:name=".jamelogin.manager.FirebaseMessagingService">
             <intent-filter>

@@ -15,6 +15,82 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <RadioGroup
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:text="ประเภทเหตุ"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <RadioGroup android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <RadioButton
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radio_one0Id"
+                        android:textSize="13sp"
+                        android:text="ไฟฟ้าเสีย"
+                        android:layout_weight="1"
+                        />
+                    <RadioButton
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:text="น้ำเสีย"
+                        android:id="@+id/radio_one5Id"
+                        android:layout_weight="1"
+                        />
+                    <RadioButton
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="ตั้งด่าน"
+                        android:textSize="13sp"
+                        android:layout_weight="1"
+                        android:id="@+id/radio_one10Id"
+                        />
+
+
+                </RadioGroup>
+
+                <RadioGroup android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="จุดเสียง"
+                        android:textSize="13sp"
+                        android:id="@+id/radio_one65Id"
+                        android:layout_weight="1"
+                        />
+
+                    <RadioButton
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="อื่นๆรุบุ"
+                        android:textSize="13sp"
+                        android:layout_weight="1"
+                        android:id="@+id/radio_one75Id"
+                        />
+                    <EditText
+                        android:layout_width="fill_parent"
+                        android:hint="other"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radio_one85Id"
+                        android:layout_weight="1"
+                        />
+
+                        />
+                </RadioGroup>
+            </RadioGroup>
+
             <LinearLayout
                 android:orientation="vertical"
                 android:paddingLeft="10dp"
@@ -81,7 +157,7 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:gravity="top|left"
-                    android:hint="Detail"
+                    android:hint="รายละเอียด"
                     android:padding="10dp"
                     android:background="@android:color/transparent"
                     android:layout_width="match_parent"

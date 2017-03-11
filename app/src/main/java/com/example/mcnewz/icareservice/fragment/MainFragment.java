@@ -10,6 +10,8 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -51,6 +53,7 @@ import com.example.mcnewz.icareservice.dao.ItemDao;
 import com.example.mcnewz.icareservice.dao.WarningItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.WarningItemDao;
 import com.example.mcnewz.icareservice.jamelogin.activity.MainLoginActivity;
+import com.example.mcnewz.icareservice.jamelogin.manager.CheckNetwork;
 import com.example.mcnewz.icareservice.jamelogin.manager.config;
 import com.example.mcnewz.icareservice.manager.NewsAcidentsListManager;
 import com.example.mcnewz.icareservice.manager.HttpManager;
@@ -235,7 +238,17 @@ public class MainFragment extends Fragment implements
                 user_id = user.getUid();
             }
         }
-        getData();
+
+        // CheckInternet
+        if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
+            // your get/post related code..like HttpPost = new HttpPost(url);
+            getData();
+
+        } else {
+            // No Internet
+             Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
+        }
+
 
         // init instance with rootView.findViewById here
         navigationView = (NavigationView) rootView.findViewById(R.id.navigation);
@@ -276,9 +289,18 @@ public class MainFragment extends Fragment implements
 
         setListenerAllView();
 
-        callBackItem(); // call back data
-        callWarningBackItem();
+        // CheckInternet
+        if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
+            // your get/post related code..like HttpPost = new HttpPost(url);
+            callBackItem(); // call back data
+            //callWarningBackItem();
+        } else {
+            // No Internet
+            Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
+        }
+
     }
+
 
 
     private void setListenerAllView() {
@@ -1170,7 +1192,5 @@ public class MainFragment extends Fragment implements
             }
         }
     };
-    /****************
-     * Inner Class
-     *****************/
+
 }

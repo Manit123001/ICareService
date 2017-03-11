@@ -26,4 +26,9 @@
     <color name="option_text_pressed">#000000</color>
     <color name="option_text">#080808</color>
 
+    <color name="btn_red_bg_color">#FFA726</color>
+    <color name="btn_red_bg_color_pressed">#E65100</color>
+
+    <color name="btn_green_register">#4CAF50</color>
+    <color name="btn_green_register_pressed">#1B5E20</color>
 </resources>
