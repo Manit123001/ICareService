@@ -87,7 +87,6 @@ public class AlertActivity extends AppCompatActivity implements
                 intent.putExtra("typeAc", typeAc);
                 intent.putExtra("typeName", typeName);
                 startActivity(intent);
-
             } else {
                 // No Internet
                 Toast.makeText(Contextor.getInstance().getContext(), "Please Connect Internet", Toast.LENGTH_SHORT).show();
