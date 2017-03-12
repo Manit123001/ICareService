@@ -312,7 +312,7 @@ public class RegencyInfomationFragment extends Fragment {
                         listener.onSendClickRegencyInfo(finishSendData, "test");
 
                     }else {
-                        Toast.makeText(Contextor.getInstance().getContext(), "Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Contextor.getInstance().getContext(), "Image Uploaded Fail", Toast.LENGTH_SHORT).show();
                     }
                 }
             });

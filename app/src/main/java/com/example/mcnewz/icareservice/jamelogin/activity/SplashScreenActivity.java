@@ -91,7 +91,15 @@ public class SplashScreenActivity extends AppCompatActivity {
                     SharedPreferences sp = getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
                     user_id = sp.getString(config.USERNAME_SHARED_PREF,"");
 
-                    updatetoken();
+                    // CheckInternet
+                    if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
+                        // your get/post related code..like HttpPost = new HttpPost(url);
+                        updatetoken();
+                    } else {
+                        // No Internet
+                        Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
+                    }
+
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();

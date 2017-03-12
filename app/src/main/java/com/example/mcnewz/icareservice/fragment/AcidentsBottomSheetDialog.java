@@ -91,10 +91,10 @@ public class AcidentsBottomSheetDialog extends BottomSheetDialogFragment {
 
                     if(clickCount == id){
 //                        long date = System.currentTimeMillis();
-
+    
                         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                         String dateString = sdf.format(dateCreate);
-                        Toast.makeText(Contextor.getInstance().getContext(), "clickCount " + clickCount + "  //id Marker " + id+ "//  all data "+sizeDao, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(Contextor.getInstance().getContext(), "clickCount " + clickCount + "  //id Marker " + id+ "//  all data "+sizeDao, Toast.LENGTH_LONG).show();
 
                         tvTitle.setText(subject);
                         tvDetail.setText(detail);

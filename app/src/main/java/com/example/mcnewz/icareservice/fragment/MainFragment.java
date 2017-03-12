@@ -466,6 +466,8 @@ public class MainFragment extends Fragment implements
             }
         });
     }
+
+
     // TODO Warnning Feed
     private void callWarningBackItem() {
         Call<WarningItemCollectionDao> call = HttpManager.getInstance().getService().loadWarningItemList();
@@ -658,7 +660,7 @@ public class MainFragment extends Fragment implements
 
                 int indexArray = localClick.indexOf(clickCount);
                 showBottomSheetDialog(clickCount , indexArray);
-                showToast("//Click Tag "+ clickCount + "//IndexArray = " + indexArray+ "//size" + sizeInArray+"//position" + marker.getPosition() );
+                //showToast("//Click Tag "+ clickCount + "//IndexArray = " + indexArray+ "//size" + sizeInArray+"//position" + marker.getPosition() );
             }
         } else {
             Toast.makeText(Contextor.getInstance().getContext(), "Not found Tag", Toast.LENGTH_SHORT).show();

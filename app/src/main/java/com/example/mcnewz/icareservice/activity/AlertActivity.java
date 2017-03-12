@@ -17,6 +17,8 @@ import com.example.mcnewz.icareservice.fragment.AlertTabFragment;
 import com.example.mcnewz.icareservice.fragment.OneFragment;
 import com.example.mcnewz.icareservice.fragment.TwoFragment;
 import com.example.mcnewz.icareservice.fragment.WarningFragment;
+import com.example.mcnewz.icareservice.jamelogin.manager.CheckNetwork;
+import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
 
 public class AlertActivity extends AppCompatActivity implements
@@ -73,14 +75,25 @@ public class AlertActivity extends AppCompatActivity implements
     //alert Send ***
     @Override
     public void onSendClickAlertFrament(String tab, String lat, String lng, String typeAc, String typeName) {
+
         if(tab == "a"){
-            Intent intent = new Intent(AlertActivity.this, SendDataActivity.class);
-            intent.putExtra("tab", tab);
-            intent.putExtra("lat", lat);
-            intent.putExtra("lng", lng);
-            intent.putExtra("typeAc", typeAc);
-            intent.putExtra("typeName", typeName);
-            startActivity(intent);
+            // CheckInternet
+            if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
+                // your get/post related code..like HttpPost = new HttpPost(url);
+                Intent intent = new Intent(AlertActivity.this, SendDataActivity.class);
+                intent.putExtra("tab", tab);
+                intent.putExtra("lat", lat);
+                intent.putExtra("lng", lng);
+                intent.putExtra("typeAc", typeAc);
+                intent.putExtra("typeName", typeName);
+                startActivity(intent);
+
+            } else {
+                // No Internet
+                Toast.makeText(Contextor.getInstance().getContext(), "Please Connect Internet", Toast.LENGTH_SHORT).show();
+            }
+
+
         }
     }
 
@@ -88,14 +101,21 @@ public class AlertActivity extends AppCompatActivity implements
     @Override
     public void onSendClickWarningFrament(String tab, String lat, String lng, String typeAc, String typeName) {
         if(tab == "w"){
+            // CheckInternet
+            if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
+                // your get/post related code..like HttpPost = new HttpPost(url);
 
-            Intent intent = new Intent(AlertActivity.this, SendDataActivity.class);
-            intent.putExtra("tab", tab);
-            intent.putExtra("lat", lat);
-            intent.putExtra("lng", lng);
-            intent.putExtra("typeAc", typeAc);
-            intent.putExtra("typeName", typeName);
-            startActivity(intent);
+                Intent intent = new Intent(AlertActivity.this, SendDataActivity.class);
+                intent.putExtra("tab", tab);
+                intent.putExtra("lat", lat);
+                intent.putExtra("lng", lng);
+                intent.putExtra("typeAc", typeAc);
+                intent.putExtra("typeName", typeName);
+                startActivity(intent);
+            } else {
+                // No Internet
+                Toast.makeText(Contextor.getInstance().getContext(), "Please Connect Internet", Toast.LENGTH_SHORT).show();
+            }
 
 
         }
