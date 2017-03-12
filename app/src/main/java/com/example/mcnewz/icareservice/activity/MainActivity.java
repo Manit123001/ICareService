@@ -88,18 +88,7 @@ public class MainActivity extends AppCompatActivity  {
 ////        View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
 //  //      tvName = (TextView)headerLayout.findViewById(R.id.tvName);
 ////        tvMail = (TextView)headerLayout.findViewById(R.id.tvMail);
-//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//        SharedPreferences sp = getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-//        user_id = sp.getString(config.USERNAME_SHARED_PREF,"");
-//        //Initializing textview
-//        if(config.status == 1){
-//            user_id = sp.getString(config.USERNAME_SHARED_PREF,"");
-//        }else {
-//            if (user != null) {
-//                user_id = user.getUid();
-//            }
-//        }
-//        getData();
+
 //    }
 
     @Override

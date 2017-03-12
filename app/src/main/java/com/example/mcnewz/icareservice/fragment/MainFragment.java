@@ -176,6 +176,7 @@ public class MainFragment extends Fragment implements
     private TextView tvMail;
     String firstname,lastname,email,user_id;
     private ProgressDialog loading;
+    private String idUser;
 
 
     /************
@@ -935,6 +936,7 @@ public class MainFragment extends Fragment implements
             JSONObject jsonObject = new JSONObject(response);
             JSONArray result = jsonObject.getJSONArray(config.JSON_ARRAY);
             JSONObject collegeData = result.getJSONObject(0);
+            idUser = collegeData.getString("member_id");
             firstname = collegeData.getString(config.READ_FIRSTNAME);
             lastname = collegeData.getString(config.READ_LASTNAME);
             email   = collegeData.getString(config.READ_EMAIL);
@@ -957,8 +959,9 @@ public class MainFragment extends Fragment implements
     View.OnClickListener fabBtnSendLocationListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(getContext(), "HelloFloatMap", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), "HelloFloatMap", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getContext(), AlertActivity.class);
+            intent.putExtra("idUser", idUser);
             startActivity(intent);
         }
     };

@@ -28,13 +28,17 @@ public class AlertActivity extends AppCompatActivity implements
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private String idUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alert);
+
         initInstances();
         initToolbar();
+
+        idUser = getIntent().getStringExtra("idUser");
 
         // AlertTab Fragment here !
         if (savedInstanceState== null) {
@@ -61,7 +65,7 @@ public class AlertActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Toast.makeText(this, "Button Up", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Button Up", Toast.LENGTH_SHORT).show();
                 finish();
                 break;
             default:
@@ -79,8 +83,9 @@ public class AlertActivity extends AppCompatActivity implements
         if(tab == "a"){
             // CheckInternet
             if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
-                // your get/post related code..like HttpPost = new HttpPost(url);
+
                 Intent intent = new Intent(AlertActivity.this, SendDataActivity.class);
+                intent.putExtra("idUser", idUser);
                 intent.putExtra("tab", tab);
                 intent.putExtra("lat", lat);
                 intent.putExtra("lng", lng);

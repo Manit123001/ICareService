@@ -14,6 +14,9 @@ import com.example.mcnewz.icareservice.R;
 import com.inthecheesefactory.thecheeselibrary.view.BaseCustomViewGroup;
 import com.inthecheesefactory.thecheeselibrary.view.state.BundleSavedState;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by nuuneoi on 11/16/2014.
  */
@@ -135,9 +138,14 @@ public class NewsAcidentsItem extends BaseCustomViewGroup {
         tvDescription.setText(text);
     }
 
-    public void  setDate(String text){
+    public void  setDate(Date createDate){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String dateString = sdf.format(createDate);
+        tvDate.setText(dateString);
+    }
+ public void  setTime(String text){
 
-        tvDate.setText(text);
+     tvTime.setText(text);
     }
 
 

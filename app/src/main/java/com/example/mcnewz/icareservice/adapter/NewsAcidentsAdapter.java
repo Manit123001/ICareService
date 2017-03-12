@@ -8,6 +8,8 @@ import com.example.mcnewz.icareservice.dao.ItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.ItemDao;
 import com.example.mcnewz.icareservice.view.NewsAcidentsItem;
 
+import java.sql.Date;
+
 
 /**
  * Created by MCNEWZ on 08-Feb-17.
@@ -57,7 +59,8 @@ public class NewsAcidentsAdapter extends BaseAdapter {
         item.setName(dao.getSubject());
         item.setDescription(dao.getDetail());
         item.setImageUrl(dao.getPhoto());
-
+        item.setTime(String.valueOf(dao.getTime_submit()));
+        item.setDate(dao.getCreate_date());
         return item;
     }
 }

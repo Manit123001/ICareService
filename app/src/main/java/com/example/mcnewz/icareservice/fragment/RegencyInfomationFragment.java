@@ -47,6 +47,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -92,6 +93,7 @@ public class RegencyInfomationFragment extends Fragment {
     String millis ="";
 
     // parametorALl Receive
+    String idUser;
     String lat;
     String lng;
     String typeAc;
@@ -99,7 +101,8 @@ public class RegencyInfomationFragment extends Fragment {
     String checkValue ="";
     String departSelect = "";
     String finishSendData = "";
-
+    private String timeSubmit;
+    private String currentDateand;
 
 
     public RegencyInfomationFragment() {
@@ -113,15 +116,17 @@ public class RegencyInfomationFragment extends Fragment {
         return fragment;
     }
 
-    public static RegencyInfomationFragment newInstance(String lat,
+    public static RegencyInfomationFragment newInstance(String idUser,
+                                                        String lat,
                                                         String lng,
                                                         String typeAc,
                                                         String typeName,
                                                         String checkValue,
                                                         String departSelect) {
+
         RegencyInfomationFragment fragment = new RegencyInfomationFragment();
         Bundle args = new Bundle();
-
+        args.putString("idUser",idUser);
         args.putString("lat", lat);
         args.putString("lng", lng);
         args.putString("typeAc", typeAc);
@@ -139,12 +144,15 @@ public class RegencyInfomationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        idUser = getArguments().getString("idUser");
         lat = getArguments().getString("lat");
         lng = getArguments().getString("lng");
         typeAc = getArguments().getString("typeAc");
         typeName = getArguments().getString("typeName");
         checkValue = getArguments().getString("checkValue");
         departSelect = getArguments().getString("departSelect");
+
+        setTimeSubmit();
 
     }
 
@@ -185,13 +193,20 @@ public class RegencyInfomationFragment extends Fragment {
     }
 
     private void setTextShow() {
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
-        String formattedDate = df.format(c.getTime());
-
         editTo.setText(departSelect +"//"+ checkValue);
         editSubject.setText(typeName);
-        editTime.setText(formattedDate);
+        editTime.setText(timeSubmit);
+
+    }
+
+    private void setTimeSubmit() {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
+
+        timeSubmit = df.format(c.getTime());
+
+        currentDateand = dfDate.format(new Date());
 
     }
 
@@ -202,7 +217,8 @@ public class RegencyInfomationFragment extends Fragment {
     private void setRegencyInfo() {
         showpDialog();
         itemInfo = new RegencyInfoItemDao();
-        setItemInfo();
+
+        setItemInfoInsertToDatabase();
 
         Call<RegencyInfoItemDao> call = HttpManager.getInstance().getService().setRegencyInfoList(
                 itemInfo.getDetail(),
@@ -212,7 +228,9 @@ public class RegencyInfomationFragment extends Fragment {
                 itemInfo.getType(),
                 itemInfo.getImageName(),
                 itemInfo.getSumDepartmentSelect(),
-                itemInfo.getSubject()
+                itemInfo.getSubject(),
+                itemInfo.getTime_submit(),
+                itemInfo.getCreate_date()
         );
         
         call.enqueue(new Callback<RegencyInfoItemDao>() {
@@ -233,17 +251,19 @@ public class RegencyInfomationFragment extends Fragment {
 
     }
 
-    private void setItemInfo() {
+    private void setItemInfoInsertToDatabase() {
 
         // TODO: HERE SetInfo
         itemInfo.setSubject(editSubject.getText().toString());
         itemInfo.setDetail(editDetail.getText().toString());
         itemInfo.setLat(lat);
         itemInfo.setLng(lng);
-        itemInfo.setMembers(2);
+        itemInfo.setMembers(Integer.parseInt(idUser ));
         itemInfo.setType(Integer.parseInt(typeAc));
         itemInfo.setImageName(String.valueOf(millis));
         itemInfo.setSumDepartmentSelect(checkValue);
+        itemInfo.setTime_submit(editTime.getText().toString());
+        itemInfo.setCreate_date(java.sql.Date.valueOf(currentDateand));
 
     }
 

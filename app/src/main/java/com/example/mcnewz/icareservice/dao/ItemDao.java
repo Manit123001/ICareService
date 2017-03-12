@@ -19,8 +19,8 @@ public class ItemDao {
     @SerializedName("photo") private String photo;
     @SerializedName("vedio") private String vedio;
     @SerializedName("create_date") private Date create_date;
-    @SerializedName("time_submit") private Time time_submit;
-    @SerializedName("time_incident") private Time time_incident;
+    @SerializedName("time_submit") private String time_submit;
+    @SerializedName("time_incident") private String time_incident;
     @SerializedName("members") private int members;
     @SerializedName("type") private int type;
 
@@ -88,19 +88,19 @@ public class ItemDao {
         this.create_date = create_date;
     }
 
-    public Time getTime_submit() {
+    public String getTime_submit() {
         return time_submit;
     }
 
-    public void setTime_submit(Time time_submit) {
+    public void setTime_submit(String time_submit) {
         this.time_submit = time_submit;
     }
 
-    public Time getTime_incident() {
+    public String getTime_incident() {
         return time_incident;
     }
 
-    public void setTime_incident(Time time_incident) {
+    public void setTime_incident(String time_incident) {
         this.time_incident = time_incident;
     }
 

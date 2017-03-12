@@ -29,17 +29,16 @@ public class SendDataActivity extends AppCompatActivity implements
 
     private Toolbar toolbar;
     private String tab;
+    private String idUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_data);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initToolbar();
 
-
+        idUser = getIntent().getStringExtra("idUser");
         tab = getIntent().getStringExtra("tab");
         lat = getIntent().getStringExtra("lat");
         lng = getIntent().getStringExtra("lng");
@@ -71,6 +70,12 @@ public class SendDataActivity extends AppCompatActivity implements
                     .commit();
         }
     }
+    private void initToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -106,7 +111,7 @@ public class SendDataActivity extends AppCompatActivity implements
         if(fragment instanceof RegencyInfomationFragment == false){
             getSupportFragmentManager().beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .replace(R.id.contentContainerSendData,  RegencyInfomationFragment.newInstance(lat, lng, typeAc,typeName, checkValue, departSelect))
+                    .replace(R.id.contentContainerSendData,  RegencyInfomationFragment.newInstance(idUser, lat, lng, typeAc,typeName, checkValue, departSelect))
                     .addToBackStack(null)
                     .commit();
         }

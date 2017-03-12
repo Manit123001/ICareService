@@ -10,6 +10,7 @@ import com.example.mcnewz.icareservice.dao.SendDataList;
 import com.example.mcnewz.icareservice.dao.TypeAcidentsAlertListItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.WarningItemCollectionDao;
 
+import java.util.Date;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -57,8 +58,10 @@ public interface ApiService {
             @Field("types_type_id") int typesTypeId,
             @Field("imagePhoto") String imageName,
             @Field("sumDepartmentSelect") String sumDepartmentSelect,
-            @Field("ac_Subject") String acSubject
-    );
+            @Field("ac_Subject") String acSubject,
+            @Field("ac_time_submit") String time_submit,
+            @Field("ac_create_date") Date createDate);
+
 
 
     //$distance_lat = '13.7469780';
