@@ -199,6 +199,7 @@ public class AlertFragment extends Fragment implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         mMapView.getMapAsync(this);
 
         //setRegencyInfo();
@@ -299,7 +300,7 @@ public class AlertFragment extends Fragment implements
                     //4.4 remove Here
                     removeEverything();
                 }
-                Toast.makeText(getContext(), "Move to Acidents Point", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Move to Acidents Point", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -397,7 +398,7 @@ public class AlertFragment extends Fragment implements
 
             @Override
             public void onFailure(Call<DepartmentsItemCollectionDao> call, Throwable t) {
-                Toast.makeText(Contextor.getInstance().getContext(), t.toString()+"DepartmentsItemCollectionDao Erorr", Toast.LENGTH_LONG).show();
+                Toast.makeText(Contextor.getInstance().getContext(), t.toString()+"DepartmentsItemCollectionDao Erorr How", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -441,7 +442,7 @@ public class AlertFragment extends Fragment implements
 
         } else {
             showTypeLogo = R.mipmap.ic_launcher;
-            //Toast.makeText(Contextor.getInstance().getContext(), "Not found Tag", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Contextor.getInstance().getContext(), "It's Me", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -485,7 +486,7 @@ public class AlertFragment extends Fragment implements
 
             @Override
             public void onFailure(Call<TypeAcidentsAlertListItemCollectionDao> call, Throwable t) {
-                Toast.makeText(Contextor.getInstance().getContext(), t.toString()+"DepartmentsItemCollectionDao Erorr", Toast.LENGTH_LONG).show();
+                Toast.makeText(Contextor.getInstance().getContext(), t.toString()+"TypeAcidents Erorr", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -519,7 +520,8 @@ public class AlertFragment extends Fragment implements
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult result) {
         // Refer to the javadoc for ConnectionResult to see what error codes might be returned in
-        // onConnectionFailed.
+        //
+        // .
         Log.i(LOG, "Coinnect failed"+ result.getErrorCode());
     }
 

@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.example.mcnewz.icareservice.R;
 import com.example.mcnewz.icareservice.dao.DepartmentsItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.DepartmentsItemDao;
+import com.example.mcnewz.icareservice.jamelogin.manager.CheckNetwork;
 import com.example.mcnewz.icareservice.manager.HttpManager;
 import com.example.mcnewz.icareservice.util.LogoClickShow;
 import com.google.android.gms.common.ConnectionResult;
@@ -187,7 +188,7 @@ public class WarningFragment extends Fragment implements
         }
         mMapView.getMapAsync(this);
 
-        callBackItemDepartments();
+
         initInstances(rootView);
         return rootView;
     }
@@ -206,6 +207,15 @@ public class WarningFragment extends Fragment implements
 
         fabLocation = (FloatingActionButton)  rootView.findViewById(R.id.fabLocation);
 
+        // CheckInternet
+        if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
+            // your get/post related code..like HttpPost = new HttpPost(url);
+            callBackItemDepartments();
+
+        } else {
+            // No Internet
+            Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
+        }
         setListenerAllView();
 
     }

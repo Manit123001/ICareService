@@ -21,10 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mcnewz.icareservice.R;
+import com.example.mcnewz.icareservice.activity.AlertActivity;
+import com.example.mcnewz.icareservice.activity.SendDataActivity;
 import com.example.mcnewz.icareservice.dao.NeaRegencyListItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.NearRegencyListItemDao;
 import com.example.mcnewz.icareservice.dao.RegencyInfoItemDao;
 import com.example.mcnewz.icareservice.dao.SendDataList;
+import com.example.mcnewz.icareservice.jamelogin.manager.CheckNetwork;
 import com.example.mcnewz.icareservice.manager.HttpManager;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
@@ -181,7 +184,15 @@ public class RegencyListFragment extends Fragment {
         ibCall3 = (ImageButton) rootView.findViewById(R.id.ibCall3);
         ibCall4 = (ImageButton) rootView.findViewById(R.id.ibCall4);
 
-        callBackItemDepartments();
+        if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
+            // your get/post related code..like HttpPost = new HttpPost(url);
+            callBackItemDepartments();
+
+        } else {
+            // No Internet
+            Toast.makeText(Contextor.getInstance().getContext(), "Please Connect Internet", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     String idList1;
