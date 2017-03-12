@@ -243,7 +243,9 @@ public class RegencyInfomationFragment extends Fragment {
             @Override
             public void onFailure(Call<RegencyInfoItemDao> call, Throwable t) {
                 hidepDialog();
-                Log.d("onFailure", t.toString());
+                Toast.makeText(Contextor.getInstance().getContext(), "Not Complete", Toast.LENGTH_SHORT).show();
+
+                //Log.d("onFailure", t.toString());
             }
         });
 
