@@ -22,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mcnewz.icareservice.R;
 import com.example.mcnewz.icareservice.activity.MainActivity;
+import com.example.mcnewz.icareservice.jamelogin.manager.CheckNetwork;
 import com.example.mcnewz.icareservice.jamelogin.manager.config;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -43,6 +44,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -122,7 +124,14 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
         btnSignupRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                verify();
+                // CheckInternet
+                if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
+                    verify();
+
+                } else {
+                    // No Internet
+                    Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         //-------------------------------------------------------------------------------------------------------------------------------------
@@ -139,12 +148,18 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
         btnFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginButton.performClick();
-                loginButton.setPressed(true);
-                loginButton.invalidate();
-                loginButton.registerCallback(mCallbackManager, mCallBack);
-                loginButton.setPressed(false);
-                loginButton.invalidate();
+                if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
+                    loginButton.performClick();
+                    loginButton.setPressed(true);
+                    loginButton.invalidate();
+                    loginButton.registerCallback(mCallbackManager, mCallBack);
+                    loginButton.setPressed(false);
+                    loginButton.invalidate();
+                } else {
+                    // No Internet
+                    Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -177,7 +192,13 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
         btnGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signIn();
+                if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
+                    signIn();
+
+                } else {
+                    // No Internet
+                    Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

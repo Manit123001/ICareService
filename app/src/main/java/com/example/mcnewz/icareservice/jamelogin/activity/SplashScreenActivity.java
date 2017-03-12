@@ -95,14 +95,15 @@ public class SplashScreenActivity extends AppCompatActivity {
                     if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
                         // your get/post related code..like HttpPost = new HttpPost(url);
                         updatetoken();
+                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else {
                         // No Internet
                         Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
                     }
 
-                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                    startActivity(intent);
-                    finish();
+
                 }else {
 
                     Intent intent = new Intent(getApplicationContext(),MainLoginActivity.class);

@@ -54,6 +54,7 @@ import com.example.mcnewz.icareservice.dao.WarningItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.WarningItemDao;
 import com.example.mcnewz.icareservice.jamelogin.activity.MainLoginActivity;
 import com.example.mcnewz.icareservice.jamelogin.manager.CheckNetwork;
+import com.example.mcnewz.icareservice.jamelogin.manager.Session;
 import com.example.mcnewz.icareservice.jamelogin.manager.config;
 import com.example.mcnewz.icareservice.manager.NewsAcidentsListManager;
 import com.example.mcnewz.icareservice.manager.HttpManager;
@@ -179,6 +180,10 @@ public class MainFragment extends Fragment implements
     private String idUser;
 
 
+    private com.google.firebase.auth.FirebaseAuth.AuthStateListener mAuthListener;
+    private com.google.firebase.auth.FirebaseAuth mAuth;
+
+
     /************
      * Functions
      *************/
@@ -227,41 +232,12 @@ public class MainFragment extends Fragment implements
 
     // Button All Find Here
     private void initInstances(final View rootView) {
-        // Login Page
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        SharedPreferences sp = getActivity().getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        user_id = sp.getString(config.USERNAME_SHARED_PREF,"");
-        //Initializing textview
-        if(config.status == 1){
-            user_id = sp.getString(config.USERNAME_SHARED_PREF,"");
-        }else {
-            if (user != null) {
-                user_id = user.getUid();
-            }
-        }
 
-        // CheckInternet
-        if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
-            // your get/post related code..like HttpPost = new HttpPost(url);
-            getData();
-
-        } else {
-            // No Internet
-             Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
-        }
-
-
-        // init instance with rootView.findViewById here
         navigationView = (NavigationView) rootView.findViewById(R.id.navigation);
-        headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
-        tvName = (TextView) headerLayout.findViewById(R.id.tvName);
-        tvMail = (TextView) headerLayout.findViewById(R.id.tvMail);
-
-        // TODO Login UserName Email
 
         mSearchView = (FloatingSearchView)rootView.findViewById(R.id.floating_search_view);
 
-        fabLocation = (FloatingActionButton)  rootView.findViewById(R.id.fabLocation);
+        fabLocation = (FloatingActionButton) rootView.findViewById(R.id.fabLocation);
         fabBtnSendLocation = (FloatingActionButton) rootView.findViewById(R.id.fabBtn);
 
         btnShowMark1 = (ImageButton) rootView.findViewById(R.id.btnShowMark1);
@@ -289,19 +265,23 @@ public class MainFragment extends Fragment implements
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
         setListenerAllView();
+        navigationViewLeftMenu();
+
+
 
         // CheckInternet
         if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
-            // your get/post related code..like HttpPost = new HttpPost(url);
+            LoginMenu();
+
             callBackItem(); // call back data
             //callWarningBackItem();
         } else {
+            LoginMenu();
             // No Internet
             Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
         }
 
     }
-
 
 
     private void setListenerAllView() {
@@ -318,74 +298,9 @@ public class MainFragment extends Fragment implements
         btnShowMark4.setOnClickListener(showMarker4Listener);
 
         behavior.setBottomSheetCallback(bottomSheetBehaviorNewsAcidents);
-        navigationView();
     }
 
-    private void navigationView() {
-        //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
-            // This method will trigger on item Click of navigation menu
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-                //Check to see which item was being clicked and perform appropriate action
-                switch (menuItem.getItemId()){
-                    case R.id.navItem1:
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        startActivity(intent);
-                        Toast.makeText(getContext(),"Send Selected",Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.navItem2:
-                        Intent intent2 = new Intent(getActivity(), MainActivity.class);
-                        startActivity(intent2);
-                        Toast.makeText(getContext(),"Send Selected",Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.navItem3:
-                        Toast.makeText(getContext(),"Drafts Selected",Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.navItem4:
-                        Toast.makeText(getContext(),"All Mail Selected",Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.navItem5:
-                        Toast.makeText(getContext(),"Logout",Toast.LENGTH_SHORT).show();
-                        logout();
-                        return true;
-
-                    default:
-                        Toast.makeText(getContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
-                        return true;
-                }
-            }
-        });
-    }
-    private void logout() {
-//
-        if(config.status == 1){
-            //Getting out sharedpreferences
-            SharedPreferences preferences = getActivity().getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-
-            //Getting editor
-            SharedPreferences.Editor editor = preferences.edit();
-            //Puting the value false for loggedin
-            editor.putBoolean(config.LOGGEDIN_SHARED_PREF, false);
-            //Putting blank value to email
-            editor.putString(config.USERNAME_SHARED_PREF, "");
-            //Saving the sharedpreferences
-            editor.apply();
-            //Starting login activity
-
-        }else {
-            FirebaseAuth.getInstance().signOut();
-            LoginManager.getInstance().logOut();
-
-        }
-        config.status = 1;
-        Intent intent = new Intent(getContext(), MainLoginActivity.class);
-        getActivity().finish();
-        startActivity(intent);
-
-    }
 
 
 
@@ -778,39 +693,46 @@ public class MainFragment extends Fragment implements
         }
     }
 
-
+    // Facebook Code Login Jame
     @Override
     public void onStart() {
         super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
-
     @Override
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mMapView.onPause();
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
+
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+
     }
 
 
@@ -906,12 +828,61 @@ public class MainFragment extends Fragment implements
         }
     }
 
+    // login of jame
+    private void LoginMenu() {
+
+        mAuth  = com.google.firebase.auth.FirebaseAuth.getInstance();
+        mAuthListener = new com.google.firebase.auth.FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull com.google.firebase.auth.FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    config.status = 2;
+                }
+            }
+        };
+
+        // Login Page
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        SharedPreferences sp = getActivity().getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        user_id = sp.getString(config.USERNAME_SHARED_PREF,"");
+        //Initializing textview
+        if(config.status == 1){
+            user_id = sp.getString(config.USERNAME_SHARED_PREF,"");
+        }else {
+            if (user != null) {
+                user_id = user.getUid();
+            }
+        }
+
+        // CheckInternet
+        if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
+            // your get/post related code..like HttpPost = new HttpPost(url);
+
+                getData();
+
+        } else {
+            // No Internet
+            Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
+        }
+
+
+        // init instance with rootView.findViewById here
+        headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
+        tvName = (TextView) headerLayout.findViewById(R.id.tvName);
+        tvMail = (TextView) headerLayout.findViewById(R.id.tvMail);
+
+    }
+
+
     private void getData() {
-        loading = ProgressDialog.show(getActivity(),"Please wait...","Fetching...",false,false);
+
+        //loading = ProgressDialog.show(getActivity(),"Please wait...","Fetching...",false,false);
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST,config.URL_DATA, new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                loading.dismiss();
+                //loading.dismiss();
                 showJSON(response);
             }
         }, new com.android.volley.Response.ErrorListener() {
@@ -930,6 +901,7 @@ public class MainFragment extends Fragment implements
         };
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         requestQueue.add(stringRequest);
+
     }
     private void showJSON(String response){
         try {
@@ -952,6 +924,73 @@ public class MainFragment extends Fragment implements
         tvMail.setText(email);
 
     }
+
+    private void navigationViewLeftMenu() {
+        //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
+            // This method will trigger on item Click of navigation menu
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                //Check to see which item was being clicked and perform appropriate action
+                switch (menuItem.getItemId()){
+                    case R.id.navItem1:
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(getContext(),"Send Selected",Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.navItem2:
+                        Intent intent2 = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent2);
+                        Toast.makeText(getContext(),"Send Selected",Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.navItem3:
+                        Toast.makeText(getContext(),"Drafts Selected",Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.navItem4:
+                        Toast.makeText(getContext(),"All Mail Selected",Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.navItem5:
+                        Toast.makeText(getContext(),"Logout",Toast.LENGTH_SHORT).show();
+                        logout();
+                        return true;
+
+                    default:
+                        Toast.makeText(getContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
+                        return true;
+                }
+            }
+        });
+    }
+    private void logout() {
+
+        if(config.status == 1){
+            //Getting out sharedpreferences
+            SharedPreferences preferences = getActivity().getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
+            //Getting editor
+            SharedPreferences.Editor editor = preferences.edit();
+            //Puting the value false for loggedin
+            editor.putBoolean(config.LOGGEDIN_SHARED_PREF, false);
+            //Putting blank value to email
+            editor.putString(config.USERNAME_SHARED_PREF, "");
+            //Saving the sharedpreferences
+            editor.apply();
+            //Starting login activity
+
+        }else {
+            FirebaseAuth.getInstance().signOut();
+            LoginManager.getInstance().logOut();
+
+        }
+        config.status = 1;
+        Intent intent = new Intent(getContext(), MainLoginActivity.class);
+        getActivity().finish();
+        startActivity(intent);
+
+    }
+
 
     /*******************
      * Listenner Zone
@@ -987,8 +1026,17 @@ public class MainFragment extends Fragment implements
             }
 
             if(MODELOADSLIDENEWS == 1){
-                setNewsAcidentsShow();
-                MODELOADSLIDENEWS = 0;
+                // Check internet
+                if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
+
+                    setNewsAcidentsShow();
+                    MODELOADSLIDENEWS = 0;
+                } else {
+                    // No Internet
+                    Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         }
 

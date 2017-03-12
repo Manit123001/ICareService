@@ -258,7 +258,7 @@ public class RegencyInfomationFragment extends Fragment {
         itemInfo.setDetail(editDetail.getText().toString());
         itemInfo.setLat(lat);
         itemInfo.setLng(lng);
-        itemInfo.setMembers(Integer.parseInt(idUser ));
+        itemInfo.setMembers(Integer.parseInt(idUser));
         itemInfo.setType(Integer.parseInt(typeAc));
         itemInfo.setImageName(String.valueOf(millis));
         itemInfo.setSumDepartmentSelect(checkValue);

@@ -1,5 +1,6 @@
 package com.example.mcnewz.icareservice.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -75,7 +76,7 @@ public class AlertActivity extends AppCompatActivity implements
 
     }
 
-
+    int resultCodeAcident = 123;
     //alert Send ***
     @Override
     public void onSendClickAlertFrament(String tab, String lat, String lng, String typeAc, String typeName) {
@@ -92,6 +93,8 @@ public class AlertActivity extends AppCompatActivity implements
                 intent.putExtra("typeAc", typeAc);
                 intent.putExtra("typeName", typeName);
                 startActivity(intent);
+//                startActivityForResult(intent, resultCodeAcident);
+
             } else {
                 // No Internet
                 Toast.makeText(Contextor.getInstance().getContext(), "Please Connect Internet", Toast.LENGTH_SHORT).show();
@@ -100,6 +103,22 @@ public class AlertActivity extends AppCompatActivity implements
 
         }
     }
+
+    // Activity Result
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//
+//        if (requestCode == resultCodeAcident) {
+//            if(resultCode == Activity.RESULT_OK){
+//                finish();
+//            }
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                //Write your code if there's no result
+//                Toast.makeText(getApplicationContext(), " cancel", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
+
 
     //warning Send ***
     @Override

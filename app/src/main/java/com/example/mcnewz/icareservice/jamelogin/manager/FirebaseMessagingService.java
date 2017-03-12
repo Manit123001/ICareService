@@ -11,11 +11,13 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.widget.Toast;
 
 import com.example.mcnewz.icareservice.R;
 import com.example.mcnewz.icareservice.activity.MainActivity;
 import com.example.mcnewz.icareservice.jamelogin.activity.ShowCodeActivity;
 import com.google.firebase.messaging.RemoteMessage;
+import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,12 +38,18 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         Map<String, String> data = remoteMessage.getData();
 
-        if(send.equals("code")){
-            sendNotification(notification, data);
-        }else {
-            sendNotification2(notification, data);
-        }
+        if (send != null){
+            if(send.equals("code")){
+                sendNotification(notification, data);
 
+            }else {
+                sendNotification2(notification, data);
+            }
+
+        } else {
+            Toast.makeText(getApplicationContext(), "not Send Back", Toast.LENGTH_SHORT).show();
+        }
+    
     }
 
     private void sendNotification(RemoteMessage.Notification notification, Map<String, String> data) {

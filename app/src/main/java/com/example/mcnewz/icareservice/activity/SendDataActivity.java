@@ -1,5 +1,6 @@
 package com.example.mcnewz.icareservice.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -99,6 +100,12 @@ public class SendDataActivity extends AppCompatActivity implements
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
+
+        // finish Activity sendDataActivity
+//        Intent intent = new Intent();
+//        intent.putExtra("result",123456);
+//        setResult(Activity.RESULT_OK,intent);
+//        finish();
 
     }
 
