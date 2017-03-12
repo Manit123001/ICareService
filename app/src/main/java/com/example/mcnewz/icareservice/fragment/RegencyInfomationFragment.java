@@ -175,7 +175,7 @@ public class RegencyInfomationFragment extends Fragment {
     private void initInstances(View rootView) {
         // init instance with rootView.findViewById here
         pDialog = new ProgressDialog(getContext());
-        pDialog.setMessage("Please wait...555");
+        pDialog.setMessage("Please wait...");
         pDialog.setCancelable(false);
 
         cameraPhoto = new CameraPhoto(Contextor.getInstance().getContext());
@@ -237,6 +237,7 @@ public class RegencyInfomationFragment extends Fragment {
         call.enqueue(new Callback<RegencyInfoItemDao>() {
             @Override
             public void onResponse(Call<RegencyInfoItemDao> call, Response<RegencyInfoItemDao> response) {
+
                 Toast.makeText(Contextor.getInstance().getContext(), "Complete", Toast.LENGTH_SHORT).show();
                 hidepDialog();
             }
@@ -244,7 +245,7 @@ public class RegencyInfomationFragment extends Fragment {
             @Override
             public void onFailure(Call<RegencyInfoItemDao> call, Throwable t) {
                 hidepDialog();
-                Toast.makeText(Contextor.getInstance().getContext(), "Not Complete "+ t.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Contextor.getInstance().getContext(), "Not Complete "+ t.toString(), Toast.LENGTH_SHORT).show();
 
                 Log.d("onFailureInfo", t.toString());
             }
@@ -331,6 +332,7 @@ public class RegencyInfomationFragment extends Fragment {
                 public void processFinish(String s) {
                     if (s.contains("uploaded_success")){
                         Toast.makeText(Contextor.getInstance().getContext(), "Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
+
                         RegencyInfomationFragment.FragmentListener listener = (FragmentListener) getActivity();
                         listener.onSendClickRegencyInfo(finishSendData, "test");
 

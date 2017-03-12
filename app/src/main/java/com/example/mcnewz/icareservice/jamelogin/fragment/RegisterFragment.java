@@ -293,6 +293,7 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
                             //ถ้าเคยSignแล้ว
                             updatetoken();
                             Intent intent = new Intent(getContext(), MainActivity.class);
+                            getActivity().finish();
                             startActivity(intent);
                         }else{
                             //ถ้ายังไม่เคยSign
