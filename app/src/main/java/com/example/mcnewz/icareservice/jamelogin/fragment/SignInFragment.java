@@ -178,6 +178,7 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
 //                signIn();
 //            }
 //        });
+
         btnGoogle = (Button)rootView.findViewById(R.id.btnGoogle);
         btnGoogle.setOnClickListener(new View.OnClickListener() {
             @Override

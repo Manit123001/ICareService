@@ -1,8 +1,8 @@
 package com.example.mcnewz.icareservice.dao;
 
-import com.google.gson.annotations.SerializedName;
+        import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
+        import java.util.List;
 
 /**
  * Created by MCNEWZ on 24-Jan-17.
