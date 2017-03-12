@@ -100,6 +100,7 @@ public class AlertActivity extends AppCompatActivity implements
     @Override
     public void onSendClickWarningFrament(String tab, String lat, String lng, String typeAc, String typeName) {
         if(tab == "w"){
+
             // CheckInternet
             if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
                 // your get/post related code..like HttpPost = new HttpPost(url);
