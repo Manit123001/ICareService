@@ -1,6 +1,7 @@
 package com.example.mcnewz.icareservice.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -174,7 +175,7 @@ public class RegencyInfomationFragment extends Fragment {
     private void initInstances(View rootView) {
         // init instance with rootView.findViewById here
         pDialog = new ProgressDialog(getContext());
-        pDialog.setMessage("Please wait...");
+        pDialog.setMessage("Please wait...555");
         pDialog.setCancelable(false);
 
         cameraPhoto = new CameraPhoto(Contextor.getInstance().getContext());
@@ -201,8 +202,8 @@ public class RegencyInfomationFragment extends Fragment {
 
     private void setTimeSubmit() {
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
-        SimpleDateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
 
         timeSubmit = df.format(c.getTime());
 
@@ -243,9 +244,9 @@ public class RegencyInfomationFragment extends Fragment {
             @Override
             public void onFailure(Call<RegencyInfoItemDao> call, Throwable t) {
                 hidepDialog();
-                Toast.makeText(Contextor.getInstance().getContext(), "Not Complete ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Contextor.getInstance().getContext(), "Not Complete "+ t.toString(), Toast.LENGTH_SHORT).show();
 
-                //Log.d("onFailure", t.toString());
+                Log.d("onFailureInfo", t.toString());
             }
         });
 
