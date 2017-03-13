@@ -18,7 +18,8 @@ import com.example.mcnewz.icareservice.fragment.WarningInfomationFragment;
 
 public class SendDataActivity extends AppCompatActivity implements
         RegencyListFragment.FragmentListener,
-        RegencyInfomationFragment.FragmentListener{
+        RegencyInfomationFragment.FragmentListener,
+        WarningInfomationFragment.FragmentListener{
 
     RegencyInfomationFragment infomationFragment;
 
@@ -57,7 +58,7 @@ public class SendDataActivity extends AppCompatActivity implements
             }else{
                 // WarningInfomationFragment to open
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.contentContainerSendData, WarningInfomationFragment.newInstance())
+                        .add(R.id.contentContainerSendData, WarningInfomationFragment.newInstance(idUser, lat, lng))
                         .commit();
             }
 
@@ -92,10 +93,13 @@ public class SendDataActivity extends AppCompatActivity implements
 
     }
 
-    // to MainFragment
+    // regencyInfomation to MainFragment
     @Override
-    public void onSendClickRegencyInfo(String finishSendData, String checkValue) {
+    public void onSendClickRegencyInfo(String finishSendData, String tab) {
 
+//        if(tab == "a"){
+//
+//        }
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
@@ -123,4 +127,6 @@ public class SendDataActivity extends AppCompatActivity implements
                     .commit();
         }
     }
+
+
 }

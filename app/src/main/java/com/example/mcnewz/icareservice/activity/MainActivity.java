@@ -1,57 +1,30 @@
 package com.example.mcnewz.icareservice.activity;
 
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 
-import android.graphics.Color;
-import android.os.Build;
 import android.os.PersistableBundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import android.support.design.widget.NavigationView;
-import android.support.transition.Transition;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.mcnewz.icareservice.R;
+import com.example.mcnewz.icareservice.fragment.HistorySendAlertFragment;
 import com.example.mcnewz.icareservice.fragment.MainFragment;
-import com.example.mcnewz.icareservice.jamelogin.activity.MainLoginActivity;
-import com.example.mcnewz.icareservice.jamelogin.manager.config;
-import com.facebook.login.LoginManager;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.example.mcnewz.icareservice.fragment.NotificationBackFragment;
 
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity implements MainFragment.FragmentListener {
 
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
@@ -66,6 +39,8 @@ public class MainActivity extends AppCompatActivity  {
 
     private ProgressDialog loading;
     String user_id = "";
+    private NotificationBackFragment notificationBackFragment;
+    private HistorySendAlertFragment historySendAlertFragment;
 
 
     @Override
@@ -78,6 +53,21 @@ public class MainActivity extends AppCompatActivity  {
             //initInstances();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.contentContainer, MainFragment.newInstance())
+                    .commit();
+
+            // test one two
+            notificationBackFragment = NotificationBackFragment.newInstance();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.contentContainer, notificationBackFragment,
+                            "RegencyInfomationFragment")
+                    .detach(notificationBackFragment)
+                    .commit();
+
+            historySendAlertFragment = HistorySendAlertFragment.newInstance();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.contentContainer, historySendAlertFragment,
+                            "RegencyInfomationFragment")
+                    .detach(historySendAlertFragment)
                     .commit();
         }
         initToolbar();
@@ -145,10 +135,47 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return actionBarDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+//        return actionBarDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
+
 
     }
 
 
+    @Override
+    public void onDrawableMenuClickList(String tabClick, String idUser) {
+        Fragment fragment = getSupportFragmentManager()
+                .findFragmentById(R.id.contentContainer);
 
+        if(tabClick == "m"){
+            if(!(fragment instanceof MainFragment)){
+                getSupportFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .replace(R.id.contentContainer,  MainFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        }
+        else if (tabClick == "h"){
+
+            if(!(fragment instanceof HistorySendAlertFragment)){
+
+                getSupportFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .replace(R.id.contentContainer,  HistorySendAlertFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        }else{
+            if(!(fragment instanceof NotificationBackFragment)){
+
+                getSupportFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .replace(R.id.contentContainer,  NotificationBackFragment.newInstance(idUser, "load"))
+                        .addToBackStack(null)
+                        .commit();
+            }
+        }
+
+    }
 }

@@ -75,6 +75,8 @@ public class RegencyListFragment extends Fragment {
     private ImageButton ibCall2;
     private ImageButton ibCall1;
 
+    SendDataList itemInfo;
+
     public RegencyListFragment() {
         super();
     }
@@ -109,7 +111,7 @@ public class RegencyListFragment extends Fragment {
 
     }
 
-    SendDataList itemInfo;
+
 
 
     private void setRegencyInfo() {

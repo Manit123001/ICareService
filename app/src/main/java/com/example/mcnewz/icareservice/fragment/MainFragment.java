@@ -10,8 +10,6 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -46,7 +44,6 @@ import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.example.mcnewz.icareservice.R;
 import com.example.mcnewz.icareservice.activity.AlertActivity;
-import com.example.mcnewz.icareservice.activity.MainActivity;
 import com.example.mcnewz.icareservice.adapter.NewsAcidentsAdapter;
 import com.example.mcnewz.icareservice.dao.ItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.ItemDao;
@@ -54,7 +51,6 @@ import com.example.mcnewz.icareservice.dao.WarningItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.WarningItemDao;
 import com.example.mcnewz.icareservice.jamelogin.activity.MainLoginActivity;
 import com.example.mcnewz.icareservice.jamelogin.manager.CheckNetwork;
-import com.example.mcnewz.icareservice.jamelogin.manager.Session;
 import com.example.mcnewz.icareservice.jamelogin.manager.config;
 import com.example.mcnewz.icareservice.manager.NewsAcidentsListManager;
 import com.example.mcnewz.icareservice.manager.HttpManager;
@@ -182,6 +178,7 @@ public class MainFragment extends Fragment implements
 
     private com.google.firebase.auth.FirebaseAuth.AuthStateListener mAuthListener;
     private com.google.firebase.auth.FirebaseAuth mAuth;
+    private FragmentListener listener;
 
 
     /************
@@ -903,6 +900,11 @@ public class MainFragment extends Fragment implements
         requestQueue.add(stringRequest);
 
     }
+
+    public interface FragmentListener{
+        void onDrawableMenuClickList(String tabClick, String idUser);
+    }
+
     private void showJSON(String response){
         try {
             JSONObject jsonObject = new JSONObject(response);
@@ -934,24 +936,26 @@ public class MainFragment extends Fragment implements
             // This method will trigger on item Click of navigation menu
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                listener =  (FragmentListener) getActivity();
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()){
                     case R.id.navItem1:
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        startActivity(intent);
-                        Toast.makeText(getContext(),"Send Selected",Toast.LENGTH_SHORT).show();
+                        drawerLayout.closeDrawers();
+                        listener.onDrawableMenuClickList("m", idUser);
                         return true;
                     case R.id.navItem2:
-                        Intent intent2 = new Intent(getActivity(), MainActivity.class);
-                        startActivity(intent2);
-                        Toast.makeText(getContext(),"Send Selected",Toast.LENGTH_SHORT).show();
+                        drawerLayout.closeDrawers();
+
+                        listener.onDrawableMenuClickList("h", idUser);
                         return true;
                     case R.id.navItem3:
-                        Toast.makeText(getContext(),"Drafts Selected",Toast.LENGTH_SHORT).show();
+                        drawerLayout.closeDrawers();
+                        listener.onDrawableMenuClickList("n", idUser);
                         return true;
                     case R.id.navItem4:
-                        Toast.makeText(getContext(),"All Mail Selected",Toast.LENGTH_SHORT).show();
+                        drawerLayout.closeDrawers();
+                        listener.onDrawableMenuClickList("s", idUser);
                         return true;
                     case R.id.navItem5:
                         Toast.makeText(getContext(),"Logout",Toast.LENGTH_SHORT).show();
@@ -965,6 +969,7 @@ public class MainFragment extends Fragment implements
             }
         });
     }
+
     private void logout() {
 
         if(config.status == 1){

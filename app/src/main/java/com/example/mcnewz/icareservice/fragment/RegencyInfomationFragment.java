@@ -127,6 +127,7 @@ public class RegencyInfomationFragment extends Fragment {
 
         RegencyInfomationFragment fragment = new RegencyInfomationFragment();
         Bundle args = new Bundle();
+
         args.putString("idUser",idUser);
         args.putString("lat", lat);
         args.putString("lng", lng);
@@ -168,9 +169,6 @@ public class RegencyInfomationFragment extends Fragment {
         requestPermissionForExternalStorage();
         return rootView;
     }
-
-
-
 
     private void initInstances(View rootView) {
         // init instance with rootView.findViewById here
@@ -334,7 +332,7 @@ public class RegencyInfomationFragment extends Fragment {
                         Toast.makeText(Contextor.getInstance().getContext(), "Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
 
                         RegencyInfomationFragment.FragmentListener listener = (FragmentListener) getActivity();
-                        listener.onSendClickRegencyInfo(finishSendData, "test");
+                        listener.onSendClickRegencyInfo(finishSendData, "a");
 
                     }else {
                         Toast.makeText(Contextor.getInstance().getContext(), "Image Uploaded Fail", Toast.LENGTH_SHORT).show();
@@ -451,7 +449,7 @@ public class RegencyInfomationFragment extends Fragment {
 
                 if(selectedPhoto == null || selectedPhoto.equals("")){
                     RegencyInfomationFragment.FragmentListener listener = (FragmentListener) getActivity();
-                    listener.onSendClickRegencyInfo(finishSendData, "test");
+                    listener.onSendClickRegencyInfo(finishSendData, "a");
                 }
 
                 break;

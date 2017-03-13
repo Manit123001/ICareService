@@ -5,9 +5,12 @@ import com.example.mcnewz.icareservice.dao.DepartmentsItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.ItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.NeaRegencyListItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.NearRegencyListItemDao;
+import com.example.mcnewz.icareservice.dao.NotificationBackItemCollectionDao;
+import com.example.mcnewz.icareservice.dao.NotificationBackItemDao;
 import com.example.mcnewz.icareservice.dao.RegencyInfoItemDao;
 import com.example.mcnewz.icareservice.dao.SendDataList;
 import com.example.mcnewz.icareservice.dao.TypeAcidentsAlertListItemCollectionDao;
+import com.example.mcnewz.icareservice.dao.WarningInfoItemDao;
 import com.example.mcnewz.icareservice.dao.WarningItemCollectionDao;
 
 import java.util.Date;
@@ -63,12 +66,25 @@ public interface ApiService {
             @Field("ac_create_date") Date createDate
     );
 
+    // Insert Data Warning
+    @FormUrlEncoded
+    @POST("icareservice/insertWarningInfo.php")
+    Call<WarningInfoItemDao> setWarningInfoList(
+            @Field("warn_detail") String warnDetail,
+            @Field("warn_latitude") String warnLatitude,
+            @Field("warn_longtitude") String warnLongtitude,
+            @Field("members_member_id") int membersMemberId,
+            @Field("warn_photo") String warnPhoto,
+            @Field("warn_subject_type") String warnSubjectType,
+            @Field("warn_time_submit") String warnTimeSubmit,
+            @Field("warn_create_date") Date warnCreateDate
+    );
 
 
-    //$distance_lat = '13.7469780';
-    //$distance_lng = '100.5045980';
-
-
+    // Insert Data Acidents
+    @POST("icareservice/jsonNotificationBack.php")
+    Call<NotificationBackItemCollectionDao> setNotificationBack(
+    );
 
 
 }

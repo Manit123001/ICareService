@@ -279,8 +279,6 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
 
     }
 
-
-
     //-----------------------------------------------------------------------------------------
     private void checkFacebook(){
         //Creating a string request

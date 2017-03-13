@@ -77,6 +77,23 @@ public class AlertActivity extends AppCompatActivity implements
     }
 
     int resultCodeAcident = 123;
+
+    // Activity Result
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//
+//        if (requestCode == resultCodeAcident) {
+//            if(resultCode == Activity.RESULT_OK){
+//                finish();
+//            }
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                //Write your code if there's no result
+//                Toast.makeText(getApplicationContext(), " cancel", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
+
+
     //alert Send ***
     @Override
     public void onSendClickAlertFrament(String tab, String lat, String lng, String typeAc, String typeName) {
@@ -104,21 +121,6 @@ public class AlertActivity extends AppCompatActivity implements
         }
     }
 
-    // Activity Result
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//
-//        if (requestCode == resultCodeAcident) {
-//            if(resultCode == Activity.RESULT_OK){
-//                finish();
-//            }
-//            if (resultCode == Activity.RESULT_CANCELED) {
-//                //Write your code if there's no result
-//                Toast.makeText(getApplicationContext(), " cancel", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
-
 
     //warning Send ***
     @Override
@@ -127,9 +129,9 @@ public class AlertActivity extends AppCompatActivity implements
 
             // CheckInternet
             if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
-                // your get/post related code..like HttpPost = new HttpPost(url);
 
                 Intent intent = new Intent(AlertActivity.this, SendDataActivity.class);
+                intent.putExtra("idUser", idUser);
                 intent.putExtra("tab", tab);
                 intent.putExtra("lat", lat);
                 intent.putExtra("lng", lng);
@@ -140,8 +142,8 @@ public class AlertActivity extends AppCompatActivity implements
                 // No Internet
                 Toast.makeText(Contextor.getInstance().getContext(), "Please Connect Internet", Toast.LENGTH_SHORT).show();
             }
-
-
         }
     }
+
+
 }
