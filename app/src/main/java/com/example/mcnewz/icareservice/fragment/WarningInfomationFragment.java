@@ -25,6 +25,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -103,9 +105,12 @@ public class WarningInfomationFragment extends Fragment {
     private String currentDateand;
 
     String selectedPhoto="";
-
-
-
+    private RadioGroup rdoGroup;
+    private RadioButton rdo1;
+    private RadioButton rdo2;
+    private RadioButton rdo3;
+    private RadioButton rdo4;
+    private String typeWarning;
 
 
     public WarningInfomationFragment() {
@@ -175,8 +180,10 @@ public class WarningInfomationFragment extends Fragment {
         ivShowImg = (ImageView) rootView.findViewById(R.id.ivShowImg);
         btnImg = (ImageButton) rootView.findViewById(R.id.btnImg);
 
+        rdoGroup = (RadioGroup) rootView.findViewById(R.id.rdoGroup);
 
-        setOnClicke();
+
+        setOnClicke( rootView);
         setTextShow();
     }
 
@@ -191,14 +198,63 @@ public class WarningInfomationFragment extends Fragment {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
 
         timeSubmit = df.format(c.getTime());
-
         currentDateand = dfDate.format(new Date());
 
     }
 
-    private void setOnClicke() {
+    private void setOnClicke(View rootView) {
         btnImg.setOnClickListener(ChooseImageDialogListener);
+//        int selectedId = rdoGroup.getCheckedRadioButtonId();
+//        rdo1 = (RadioButton) rootView.findViewById(R.id.rdo1);
+//        rdo2 = (RadioButton) rootView.findViewById(R.id.rdo2);
+//        rdo3 = (RadioButton) rootView.findViewById(R.id.rdo3);
+//
+//        if (rdo1.isChecked()) {
+//            Toast.makeText(getContext(), "1", Toast.LENGTH_SHORT).show();
+//            rdoSetFalse();
+//
+//        }else if (rdo2.isChecked()){
+//            Toast.makeText(getContext(), "2", Toast.LENGTH_SHORT).show();
+//            rdoSetFalse();
+//
+//        }else if (rdo3.isChecked()){
+//            Toast.makeText(getContext(), "3", Toast.LENGTH_SHORT).show();
+//            rdoSetFalse();
+//
+//        }
+
+//        //Check Operator
+        switch (rdoGroup.getCheckedRadioButtonId()){
+            case R.id.rdo1:
+                Toast.makeText(getContext(), "rdo1", Toast.LENGTH_SHORT).show();
+                typeWarning = "ไฟฟ้าขัดข้อง";
+                rdoSetFalse();
+                break;
+            case R.id.rdo2:
+                Toast.makeText(getContext(), "rdo2", Toast.LENGTH_SHORT).show();
+                typeWarning = "ท่อปะปาชำรุด";
+
+                rdoSetFalse();
+                break;
+            case R.id.rdo3:
+                Toast.makeText(getContext(), "rdo23", Toast.LENGTH_SHORT).show();
+                typeWarning = "จุดเสี่ยง";
+
+                rdoSetFalse();
+                break;
+        }
+
+
     }
+
+    private void rdoSetFalse() {
+//        rdo1.setChecked(false);
+//        rdo2.setChecked(false);
+//        rdo3.setChecked(false);
+//        rdo4.setChecked(false);
+
+    }
+
 
     private void setRegencyInfo() {
         showpDialog();
@@ -241,7 +297,7 @@ public class WarningInfomationFragment extends Fragment {
     private void setItemInfoInsertToDatabase() {
 
         // TODO: HERE SetInfo
-        itemInfo.setSubject("ไฟฟ้าเสีย");
+        itemInfo.setSubject(typeWarning);
         itemInfo.setDetail(editDetail.getText().toString());
         itemInfo.setLat(lat);
         itemInfo.setLng(lng);

@@ -57,7 +57,7 @@ public class NotificationBackAdapter extends BaseAdapter {
 
         NotificationBackItemDao dao = (NotificationBackItemDao) getItem(position);
 
-        item.setTvName(dao.getSubject());
+        item.setTvName(dao.getDepartmentName());
         item.setTvDescription(dao.getDetail());
         item.setImageUrl(dao.getPhoto());
         item.setTime(String.valueOf(dao.getTime_submit()));

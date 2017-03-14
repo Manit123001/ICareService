@@ -22,6 +22,15 @@ public class NotificationBackItemDao {
     @SerializedName("time_incident") private String time_incident;
     @SerializedName("members") private int members;
     @SerializedName("type") private int type;
+    @SerializedName("department_name") private String departmentName;
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
 
     public int getId() {
         return id;
