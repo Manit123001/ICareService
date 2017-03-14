@@ -33,7 +33,6 @@ public class NotificationBackAdapter extends BaseAdapter {
             return 0;
 
         return dao.getData().size() ;
-//        return 10 ;
     }
 
     @Override

@@ -22,6 +22,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -110,7 +111,10 @@ public class WarningInfomationFragment extends Fragment {
     private RadioButton rdo2;
     private RadioButton rdo3;
     private RadioButton rdo4;
+    private RadioButton rdo5;
+    private RadioButton rdo6;
     private String typeWarning;
+    private EditText edtRdo;
 
 
     public WarningInfomationFragment() {
@@ -180,7 +184,7 @@ public class WarningInfomationFragment extends Fragment {
         ivShowImg = (ImageView) rootView.findViewById(R.id.ivShowImg);
         btnImg = (ImageButton) rootView.findViewById(R.id.btnImg);
 
-        rdoGroup = (RadioGroup) rootView.findViewById(R.id.rdoGroup);
+        //rdoGroup = (RadioGroup) rootView.findViewById(R.id.rdoGroup);
 
 
         setOnClicke( rootView);
@@ -204,54 +208,78 @@ public class WarningInfomationFragment extends Fragment {
 
     private void setOnClicke(View rootView) {
         btnImg.setOnClickListener(ChooseImageDialogListener);
-//        int selectedId = rdoGroup.getCheckedRadioButtonId();
-//        rdo1 = (RadioButton) rootView.findViewById(R.id.rdo1);
-//        rdo2 = (RadioButton) rootView.findViewById(R.id.rdo2);
-//        rdo3 = (RadioButton) rootView.findViewById(R.id.rdo3);
-//
-//        if (rdo1.isChecked()) {
-//            Toast.makeText(getContext(), "1", Toast.LENGTH_SHORT).show();
-//            rdoSetFalse();
-//
-//        }else if (rdo2.isChecked()){
-//            Toast.makeText(getContext(), "2", Toast.LENGTH_SHORT).show();
-//            rdoSetFalse();
-//
-//        }else if (rdo3.isChecked()){
-//            Toast.makeText(getContext(), "3", Toast.LENGTH_SHORT).show();
-//            rdoSetFalse();
-//
-//        }
 
-//        //Check Operator
-        switch (rdoGroup.getCheckedRadioButtonId()){
-            case R.id.rdo1:
-                Toast.makeText(getContext(), "rdo1", Toast.LENGTH_SHORT).show();
+        //int selectedId = rdoGroup.getCheckedRadioButtonId();
+        rdo1 = (RadioButton) rootView.findViewById(R.id.rdo1);
+        rdo2 = (RadioButton) rootView.findViewById(R.id.rdo2);
+        rdo3 = (RadioButton) rootView.findViewById(R.id.rdo3);
+        rdo4 = (RadioButton) rootView.findViewById(R.id.rdo4);
+        rdo5 = (RadioButton) rootView.findViewById(R.id.rdo5);
+        edtRdo = (EditText) rootView.findViewById(R.id.edtRdo);
+
+
+        rdo1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rdoSetFalse();
                 typeWarning = "ไฟฟ้าขัดข้อง";
-                rdoSetFalse();
-                break;
-            case R.id.rdo2:
-                Toast.makeText(getContext(), "rdo2", Toast.LENGTH_SHORT).show();
-                typeWarning = "ท่อปะปาชำรุด";
+                rdo1.setChecked(true);
+            }
+        });
+
+        rdo2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
                 rdoSetFalse();
-                break;
-            case R.id.rdo3:
-                Toast.makeText(getContext(), "rdo23", Toast.LENGTH_SHORT).show();
+                typeWarning = "ท่อน้ำชำรุด";
+                rdo2.setChecked(true);
+
+            }
+        });
+
+
+
+        rdo3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rdoSetFalse();
                 typeWarning = "จุดเสี่ยง";
+                rdo3.setChecked(true);
 
+            }
+        });
+
+        rdo4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 rdoSetFalse();
-                break;
-        }
+                typeWarning = "ถนนชำรุด";
+                rdo4.setChecked(true);
+
+            }
+        });
+
+        rdo5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rdoSetFalse();
+                edtRdo.setEnabled(true);
+                typeWarning = String.valueOf(edtRdo.getText());
+                rdo5.setChecked(true);
+            }
+        });
 
 
     }
 
     private void rdoSetFalse() {
-//        rdo1.setChecked(false);
-//        rdo2.setChecked(false);
-//        rdo3.setChecked(false);
-//        rdo4.setChecked(false);
+        rdo1.setChecked(false);
+        rdo2.setChecked(false);
+        rdo3.setChecked(false);
+        rdo4.setChecked(false);
+        rdo5.setChecked(false);
+        edtRdo.setEnabled(false);
 
     }
 

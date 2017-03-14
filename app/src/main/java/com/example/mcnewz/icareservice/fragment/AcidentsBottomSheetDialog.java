@@ -39,6 +39,8 @@ public class AcidentsBottomSheetDialog extends BottomSheetDialogFragment {
     private ImageView ivImg;
     private TextView dateShow;
     private TextView timeAcident;
+    private TextView tvTime;
+    private TextView tvDate;
 
     public static AcidentsBottomSheetDialog newInstance(int click, int position) {
         clickCount = click;
@@ -62,8 +64,9 @@ public class AcidentsBottomSheetDialog extends BottomSheetDialogFragment {
         tvTitle = (TextView) rootView.findViewById(R.id.tvTitle);
         tvDetail = (TextView) rootView.findViewById(R.id.tvDetail);
         ivImg = (ImageView) rootView.findViewById(R.id.ivImg);
-        dateShow = (TextView) rootView.findViewById(R.id.dateShow);
-        timeAcident = (TextView) rootView.findViewById(R.id.timeAcident);
+
+        tvTime = (TextView) rootView.findViewById(R.id.tvTime);
+        tvDate = (TextView) rootView.findViewById(R.id.tvDate);
 
     }
 
@@ -88,6 +91,8 @@ public class AcidentsBottomSheetDialog extends BottomSheetDialogFragment {
                     String lngDao = dao.getLng();
                     String detail = dao.getDetail();
                     String photo = dao.getPhoto();
+                    String time = dao.getTime_submit();
+                    Date date = dao.getCreate_date();
 
                     if(clickCount == id){
 //                        long date = System.currentTimeMillis();
@@ -99,7 +104,8 @@ public class AcidentsBottomSheetDialog extends BottomSheetDialogFragment {
                         tvTitle.setText(subject);
                         tvDetail.setText(detail);
 
-                        dateShow.setText(dateString);
+                        tvDate.setText(dateString);
+                        tvTime.setText(time);
                         setImageUrl(photo);
 
                     } else {

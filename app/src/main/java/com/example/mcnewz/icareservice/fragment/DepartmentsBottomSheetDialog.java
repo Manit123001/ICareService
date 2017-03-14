@@ -64,8 +64,7 @@ public class DepartmentsBottomSheetDialog extends BottomSheetDialogFragment {
         tvDetail = (TextView) rootView.findViewById(R.id.tvDetail);
         tvTel = (TextView) rootView.findViewById(R.id.tvTelDetail);
         ivImg = (ImageView) rootView.findViewById(R.id.ivImg);
-        dateShow = (TextView) rootView.findViewById(R.id.dateShow);
-        timeAcident = (TextView) rootView.findViewById(R.id.timeAcident);
+
         ic_image  = (ImageView)rootView.findViewById(R.id.ic_image);
     }
 

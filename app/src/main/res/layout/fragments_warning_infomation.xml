@@ -15,72 +15,135 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <!--<RadioGroup-->
-                <!--android:padding="10dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="vertical">-->
-                <!--<TextView-->
-                    <!--android:text="ประเภทเหตุ"-->
-                    <!--android:layout_marginBottom="10dp"-->
-                    <!--android:textSize="16dp"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content" />-->
-
-
             <RadioGroup
-                android:id="@+id/rdoGroup"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:text="ประเภทเหตุ"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            <LinearLayout
                 android:orientation="horizontal"
-                android:checkedButton="@+id/rdo1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <RadioButton
                     android:id="@+id/rdo1"
                     android:text="ไฟฟ้าขัดข้อง"
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content" />
                 <RadioButton
                     android:id="@+id/rdo2"
                     android:text="ท่อน้ำชำรุด"
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content" />
                 <RadioButton
                     android:id="@+id/rdo3"
                     android:text="จุดเสี่ยง"
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content" />
 
-            </RadioGroup>
+            </LinearLayout>
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:layout_height="wrap_content"
+                    android:text="ถนนชำรุด"
+                    android:textSize="13sp"
+                    android:id="@+id/rdo4"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"/>
+
+                <RadioButton
+                    android:layout_height="wrap_content"
+                    android:text="อื่นๆ ระบุ"
+                    android:textSize="13sp"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:id="@+id/rdo5" />
+
+                <EditText
+
+                    android:hint="other"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edtRdo"
+                    android:enabled="false"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"  />
+            </LinearLayout>
+        </RadioGroup>
             <!--<RadioGroup-->
-                <!--android:id="@+id/rdoGroup2"-->
-                <!--android:orientation="horizontal"-->
+                <!--android:id="@+id/rdoGroup"-->
+                <!--android:orientation="vertical"-->
+                <!--android:checkedButton="@+id/rdo1"-->
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="wrap_content">-->
-                <!--<RadioButton-->
-                    <!--android:layout_width="fill_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="ถนนชำรุด"-->
-                    <!--android:textSize="13sp"-->
-                    <!--android:id="@+id/rdo4"-->
-                    <!--android:layout_weight="1" />-->
+                <!--<LinearLayout-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
+                    <!--<RadioButton-->
+                        <!--android:id="@+id/rdo1"-->
+                        <!--android:text="ไฟฟ้าขัดข้อง"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content" />-->
+                    <!--<RadioButton-->
+                        <!--android:id="@+id/rdo2"-->
+                        <!--android:text="ท่อน้ำชำรุด"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content" />-->
+                    <!--<RadioButton-->
+                        <!--android:id="@+id/rdo3"-->
+                        <!--android:text="จุดเสี่ยง"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content" />-->
 
-                <!--<RadioButton-->
-                    <!--android:layout_width="fill_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="อื่นๆ ระบุ"-->
-                    <!--android:textSize="13sp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:id="@+id/rdo5" />-->
+                <!--</LinearLayout>-->
+                <!---->
+                <!--<LinearLayout-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
+                    <!--<RadioButton-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="ถนนชำรุด"-->
+                        <!--android:textSize="13sp"-->
+                        <!--android:id="@+id/rdo4"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:layout_width="0dp"/>-->
 
-                <!--<EditText-->
-                    <!--android:layout_width="fill_parent"-->
-                    <!--android:hint="other"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:id="@+id/edtRdo"-->
-                    <!--android:layout_weight="1" />-->
+                    <!--<RadioButton-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="อื่นๆ ระบุ"-->
+                        <!--android:textSize="13sp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:id="@+id/rdo5" />-->
 
+                    <!--<EditText-->
+
+                        <!--android:hint="other"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:id="@+id/edtRdo"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:layout_width="0dp"  />-->
+                <!--</LinearLayout>-->
+                <!---->
             <!--</RadioGroup>-->
+
+
 
             <LinearLayout
                 android:orientation="vertical"
