@@ -31,6 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <RadioButton
+                    android:checked="true"
                     android:id="@+id/rdo1"
                     android:text="ไฟฟ้าขัดข้อง"
                     android:layout_weight="1"

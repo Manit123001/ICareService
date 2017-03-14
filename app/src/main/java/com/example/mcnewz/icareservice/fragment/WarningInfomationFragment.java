@@ -113,7 +113,7 @@ public class WarningInfomationFragment extends Fragment {
     private RadioButton rdo4;
     private RadioButton rdo5;
     private RadioButton rdo6;
-    private String typeWarning;
+    private String typeWarning = "ไฟฟ้าขัดข้อง";
     private EditText edtRdo;
 
 

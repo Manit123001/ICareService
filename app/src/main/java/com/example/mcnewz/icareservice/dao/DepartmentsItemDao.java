@@ -21,7 +21,6 @@ public class DepartmentsItemDao {
     @SerializedName("created_date") private Date createDate;
     @SerializedName("type_id") private int typeId;
 
-
     public int getId() {
         return id;
     }
