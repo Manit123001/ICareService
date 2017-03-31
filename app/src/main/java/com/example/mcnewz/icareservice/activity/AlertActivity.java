@@ -1,11 +1,8 @@
 package com.example.mcnewz.icareservice.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,10 +12,8 @@ import android.widget.Toast;
 import com.example.mcnewz.icareservice.R;
 import com.example.mcnewz.icareservice.fragment.AlertFragment;
 import com.example.mcnewz.icareservice.fragment.AlertTabFragment;
-import com.example.mcnewz.icareservice.fragment.OneFragment;
-import com.example.mcnewz.icareservice.fragment.TwoFragment;
 import com.example.mcnewz.icareservice.fragment.WarningFragment;
-import com.example.mcnewz.icareservice.jamelogin.manager.CheckNetwork;
+import com.example.mcnewz.icareservice.manager.CheckNetwork;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 
 

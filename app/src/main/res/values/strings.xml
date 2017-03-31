@@ -40,5 +40,9 @@
     <string name="list_name"> Name</string>
     <string name="list_detail"> Detail</string>
 
+    <string name="gps_network_not_enabled">Pleas Enable Location, Check Internet</string>
+    <string name="open_location_settings">Enable </string>
+    <string name="Cancel">Cancel</string>
+
 
 </resources>

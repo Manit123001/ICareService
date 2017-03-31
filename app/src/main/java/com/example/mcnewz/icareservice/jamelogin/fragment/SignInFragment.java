@@ -24,7 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mcnewz.icareservice.R;
 import com.example.mcnewz.icareservice.activity.MainActivity;
-import com.example.mcnewz.icareservice.jamelogin.manager.CheckNetwork;
+import com.example.mcnewz.icareservice.manager.CheckNetwork;
 import com.example.mcnewz.icareservice.jamelogin.manager.config;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;

@@ -4,14 +4,17 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
@@ -22,6 +25,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -50,7 +54,7 @@ import com.example.mcnewz.icareservice.dao.ItemDao;
 import com.example.mcnewz.icareservice.dao.WarningItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.WarningItemDao;
 import com.example.mcnewz.icareservice.jamelogin.activity.MainLoginActivity;
-import com.example.mcnewz.icareservice.jamelogin.manager.CheckNetwork;
+import com.example.mcnewz.icareservice.manager.CheckNetwork;
 import com.example.mcnewz.icareservice.jamelogin.manager.config;
 import com.example.mcnewz.icareservice.manager.NewsAcidentsListManager;
 import com.example.mcnewz.icareservice.manager.HttpManager;
@@ -263,8 +267,7 @@ public class MainFragment extends Fragment implements
 
         setListenerAllView();
         navigationViewLeftMenu();
-
-
+        checkLocaationEnable();
 
         // CheckInternet
         if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
@@ -278,6 +281,44 @@ public class MainFragment extends Fragment implements
             Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void checkLocaationEnable() {
+        LocationManager lm = (LocationManager)getContext().getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch(Exception ex) {}
+
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch(Exception ex) {}
+
+        if(!gps_enabled && !network_enabled) {
+            // notify user
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+            dialog.setMessage(getContext().getResources().getString(R.string.gps_network_not_enabled));
+            dialog.setPositiveButton(getContext().getResources().getString(R.string.open_location_settings), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+                    Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    getContext().startActivity(myIntent);
+                    //get gps
+                }
+            });
+            dialog.setNegativeButton(getContext().getString(R.string.Cancel), new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+
+                }
+            });
+            dialog.show();
+        }
     }
 
 
@@ -356,12 +397,6 @@ public class MainFragment extends Fragment implements
                         // show marker
                     }
 
-//                    marker1 = mMap.addMarker(new MarkerOptions()
-//                            .position(BRISBANE)
-//                            .title("Brisbane")
-//                            .snippet("Marker Description")
-//                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher)));
-//                    marker1.setTag(100);
                 } else {
                     try {
                         Toast.makeText(Contextor.getInstance().getContext(),
@@ -460,6 +495,7 @@ public class MainFragment extends Fragment implements
             }
         });
     }
+
     private void setNewsAcidentsShow(){
         listAdapter = new NewsAcidentsAdapter();
         listView.setAdapter(listAdapter);
@@ -481,6 +517,7 @@ public class MainFragment extends Fragment implements
             public void onResponse(Call<ItemCollectionDao> call, Response<ItemCollectionDao> response) {
                 if ( response.isSuccessful()){
                     ItemCollectionDao dao = response.body();
+
                     //Toast.makeText(Contextor.getInstance().getContext(), "Complete"+dao.getData().get(0).getId(), Toast.LENGTH_SHORT).show();
                     listAdapter.setDao(dao);
                     listAdapter.notifyDataSetChanged();
@@ -488,7 +525,7 @@ public class MainFragment extends Fragment implements
                     newsAcidentsListManager.setDao(dao);
                 }else{
                     try {
-                        Toast.makeText(getContext(), response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), response.errorBody().string()+ "success fail", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -551,30 +588,14 @@ public class MainFragment extends Fragment implements
     public boolean onMarkerClick(Marker marker) {
         // Retrieve the data from the marker.
         Integer clickCount = (Integer) marker.getTag();
-        String snippet = marker.getSnippet();
+
         int sizeInArray = localClick.size();
 
         // Check if a click count was set, then display the click count.
         if (clickCount != null) {
-            if(clickCount == 100){
-                double lat = 13.7325558;
-                double lng = 100.2159912;
-                Toast.makeText(Contextor.getInstance().getContext(),
-                        marker1.getTitle() + getAddress(lat, lng) +
-                                "ตำแหน่งที่ 3",
-                        Toast.LENGTH_SHORT).show();
-
-            }else if(snippet.equals("Support")){
-
-                int indexArray = localClickDepartment.indexOf(clickCount);
-                showDepartmentBottomSheetDialog(clickCount , indexArray);
-                Toast.makeText(Contextor.getInstance().getContext(), "Departments", Toast.LENGTH_SHORT).show();
-            }else{
-
-                int indexArray = localClick.indexOf(clickCount);
-                showBottomSheetDialog(clickCount , indexArray);
-                //showToast("//Click Tag "+ clickCount + "//IndexArray = " + indexArray+ "//size" + sizeInArray+"//position" + marker.getPosition() );
-            }
+            int indexArray = localClick.indexOf(clickCount);
+            showBottomSheetDialog(clickCount , indexArray);
+            //showToast("//Click Tag "+ clickCount + "//IndexArray = " + indexArray+ "//size" + sizeInArray+"//position" + marker.getPosition() );
         } else {
             Toast.makeText(Contextor.getInstance().getContext(), "Not found Tag", Toast.LENGTH_SHORT).show();
         }
@@ -586,40 +607,10 @@ public class MainFragment extends Fragment implements
         bottomSheetDialog.show(getFragmentManager(), "bottomsheet");
     }
 
-    public void showDepartmentBottomSheetDialog(int clickCount ,int indexArray) {
-        departmentsBottomSheetDialog = DepartmentsBottomSheetDialog.newInstance(clickCount, indexArray);
-        departmentsBottomSheetDialog.show(getFragmentManager(), "bottomsheetDepartments");
-    }
-
-
-    public String getAddress(double lat, double lng) {
-        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
-            Address obj = addresses.get(0);
-
-            String add = obj.getAddressLine(0);
-            add = add + "\n" + obj.getCountryName();
-            add = add + "\n" + obj.getCountryCode();
-            add = add + "\n" + obj.getAdminArea();
-            add = add + "\n" + obj.getPostalCode();
-            add = add + "\n" + obj.getSubAdminArea();
-            add = add + "\n" + obj.getLocality();
-            add = add + "\n" + obj.getSubThoroughfare();
-            return add;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            return null;
-        }
-    }
-
     // Change Type map
     public void changeType() {
         if (mMap.getMapType() == GoogleMap.MAP_TYPE_NORMAL) {
             mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-
         } else
             mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
@@ -634,6 +625,13 @@ public class MainFragment extends Fragment implements
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         updateLocation();
     }
+
+    private void updateLocation() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        }
+    }
+
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -675,20 +673,14 @@ public class MainFragment extends Fragment implements
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
 
-        //stop location updates
+        // Stop location updates
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
 
     }
 
-    private void updateLocation() {
-        if (ContextCompat.checkSelfPermission(getContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-        }
-    }
 
     // Facebook Code Login Jame
     @Override
@@ -704,38 +696,36 @@ public class MainFragment extends Fragment implements
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
+    // End Facebook
+
     @Override
     public void onResume() {
         super.onResume();
         mMapView.onResume();
-
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mMapView.onPause();
-
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
-
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
-
     }
 
 
     /*
- * Save Instance State Here
- */
+     * Save Instance State Here
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -752,13 +742,14 @@ public class MainFragment extends Fragment implements
             // Restore Instance State here
         }
     }
+
     private void showToast(String text){
         Toast.makeText(Contextor.getInstance().getContext(),
                 text,
                 Toast.LENGTH_SHORT).show();
     }
 
-
+    // Check Permission
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     public boolean checkLocationPermission(){
         if (ContextCompat.checkSelfPermission(getContext(),
@@ -825,7 +816,7 @@ public class MainFragment extends Fragment implements
         }
     }
 
-    // login of jame
+    // Start login of jame And Navigation View
     private void LoginMenu() {
 
         mAuth  = com.google.firebase.auth.FirebaseAuth.getInstance();
@@ -863,14 +854,12 @@ public class MainFragment extends Fragment implements
             Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
         }
 
-
         // init instance with rootView.findViewById here
         headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
         tvName = (TextView) headerLayout.findViewById(R.id.tvName);
         tvMail = (TextView) headerLayout.findViewById(R.id.tvMail);
 
     }
-
 
     private void getData() {
 
@@ -901,9 +890,6 @@ public class MainFragment extends Fragment implements
 
     }
 
-    public interface FragmentListener{
-        void onDrawableMenuClickList(String tabClick, String idUser);
-    }
 
     private void showJSON(String response){
         try {
@@ -927,6 +913,10 @@ public class MainFragment extends Fragment implements
         tvName.setText(firstname+" "+lastname);
         tvMail.setText(email);
 
+    }
+
+    public interface FragmentListener{
+        void onDrawableMenuClickList(String tabClick, String idUser);
     }
 
     private void navigationViewLeftMenu() {
@@ -997,6 +987,7 @@ public class MainFragment extends Fragment implements
         startActivity(intent);
 
     }
+    // End Login For Jame
 
 
     /*******************
@@ -1006,6 +997,7 @@ public class MainFragment extends Fragment implements
         @Override
         public void onClick(View v) {
             //Toast.makeText(getContext(), "HelloFloatMap", Toast.LENGTH_SHORT).show();
+
             Intent intent = new Intent(getContext(), AlertActivity.class);
             intent.putExtra("idUser", idUser);
             startActivity(intent);
@@ -1014,11 +1006,13 @@ public class MainFragment extends Fragment implements
 
     View.OnClickListener fabLocationListener = new View.OnClickListener() {
         public void onClick(View v) {
+            checkLocaationEnable();
             updateLocation();
             Toast.makeText(Contextor.getInstance().getContext(), "" + latLng, Toast.LENGTH_SHORT).show();
 
         }
     };
+
     int MODELOADSLIDENEWS = 1;
     BottomSheetBehavior.BottomSheetCallback bottomSheetBehaviorNewsAcidents = new BottomSheetBehavior.BottomSheetCallback() {
         @Override

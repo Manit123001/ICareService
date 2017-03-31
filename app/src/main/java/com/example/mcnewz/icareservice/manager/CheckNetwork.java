@@ -1,4 +1,4 @@
-package com.example.mcnewz.icareservice.jamelogin.manager;
+package com.example.mcnewz.icareservice.manager;
 
 /**
  * Created by MCNEWZ on 11-Mar-17.
