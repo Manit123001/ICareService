@@ -461,7 +461,9 @@ public class RegencyInfomationFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
     }
-
+    TextView tvCamera;
+    TextView tvGallery;
+    TextView tvcancel;
     View.OnClickListener ChooseImageDialogListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -472,9 +474,9 @@ public class RegencyInfomationFragment extends Fragment {
             dialog.setTitle("Title...");
 
 
-            TextView tvCamera = (TextView) dialog.findViewById(R.id.tvCamera);
-            TextView tvGallery = (TextView) dialog.findViewById(R.id.tvGallery);
-            TextView tvcancel = (TextView) dialog.findViewById(R.id.tvCancel);
+             tvCamera = (TextView) dialog.findViewById(R.id.tvCamera);
+             tvGallery = (TextView) dialog.findViewById(R.id.tvGallery);
+             tvcancel = (TextView) dialog.findViewById(R.id.tvCancel);
             tvcancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -485,6 +487,7 @@ public class RegencyInfomationFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     try {
+
                         startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
                     } catch (IOException e) {
                         Toast.makeText(getContext(), "Something wrong while taking photos ", Toast.LENGTH_SHORT).show();

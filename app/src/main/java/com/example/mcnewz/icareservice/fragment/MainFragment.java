@@ -111,8 +111,8 @@ public class MainFragment extends Fragment implements
 
     // Location
     private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
     private LocationRequest mLocationRequest;
+    private Location mLastLocation;
     LatLng latLng;
 
     // Marker
@@ -205,7 +205,10 @@ public class MainFragment extends Fragment implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (mGoogleApiClient == null){
+            buildGoogleApiClient();
 
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
@@ -270,7 +273,7 @@ public class MainFragment extends Fragment implements
         checkLocaationEnable();
 
         // CheckInternet
-        if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
+        if (new CheckNetwork(getContext()).isNetworkAvailable()) {
             LoginMenu();
 
             callBackItem(); // call back data
@@ -337,10 +340,6 @@ public class MainFragment extends Fragment implements
 
         behavior.setBottomSheetCallback(bottomSheetBehaviorNewsAcidents);
     }
-
-
-
-
 
     private void callBackItem() {
         Call<ItemCollectionDao> call = HttpManager.getInstance().getService().loadItemList();
@@ -559,30 +558,28 @@ public class MainFragment extends Fragment implements
         mMap.getUiSettings().setZoomControlsEnabled(false);
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.getUiSettings().setCompassEnabled(false);
+        if (mGoogleApiClient == null) {
+            buildGoogleApiClient();
+        }
 
         //Initialize Google Play Services
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(getContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                buildGoogleApiClient();
+
                 mMap.setMyLocationEnabled(true);
             }
-        }
-        else {
-            buildGoogleApiClient();
+        } else {
+            if (mGoogleApiClient == null) {
+                buildGoogleApiClient();
+            }
+            mMap.setMyLocationEnabled(true);
+
         }
         // Marker Click Here
         mMap.setOnMarkerClickListener(this);
     }
 
-    private synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        mGoogleApiClient.connect();
-    }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
@@ -607,12 +604,14 @@ public class MainFragment extends Fragment implements
         bottomSheetDialog.show(getFragmentManager(), "bottomsheet");
     }
 
-    // Change Type map
-    public void changeType() {
-        if (mMap.getMapType() == GoogleMap.MAP_TYPE_NORMAL) {
-            mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        } else
-            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+    private synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
     }
 
     // LocationListener Here
@@ -627,9 +626,14 @@ public class MainFragment extends Fragment implements
     }
 
     private void updateLocation() {
+        if (mGoogleApiClient == null){
+            buildGoogleApiClient();
+        }
+
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
+
     }
 
 
@@ -679,8 +683,6 @@ public class MainFragment extends Fragment implements
         }
 
     }
-
-
 
     // Facebook Code Login Jame
     @Override
@@ -743,6 +745,14 @@ public class MainFragment extends Fragment implements
         }
     }
 
+    // Change Type map
+    public void changeType() {
+        if (mMap.getMapType() == GoogleMap.MAP_TYPE_NORMAL) {
+            mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        } else
+            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+    }
+
     private void showToast(String text){
         Toast.makeText(Contextor.getInstance().getContext(),
                 text,
@@ -801,6 +811,8 @@ public class MainFragment extends Fragment implements
                             buildGoogleApiClient();
                         }
                         mMap.setMyLocationEnabled(true);
+                        updateLocation();
+
                     }
 
                 } else {
@@ -1006,6 +1018,9 @@ public class MainFragment extends Fragment implements
 
     View.OnClickListener fabLocationListener = new View.OnClickListener() {
         public void onClick(View v) {
+            if (mGoogleApiClient == null) {
+                buildGoogleApiClient();
+            }
             checkLocaationEnable();
             updateLocation();
             Toast.makeText(Contextor.getInstance().getContext(), "" + latLng, Toast.LENGTH_SHORT).show();

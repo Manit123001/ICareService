@@ -51,6 +51,7 @@ android:padding="5dp">
                         android:layout_weight="0.5"
                         android:drawableLeft="@drawable/camera"
                         android:drawablePadding="10dp"
+                        android:clickable="true"
                         android:gravity="left|center_vertical"
                         android:text="@string/camera" />
 
@@ -60,6 +61,7 @@ android:padding="5dp">
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="0.5"
+                        android:clickable="true"
                         android:drawableLeft="@drawable/gallery"
                         android:drawablePadding="10dp"
                         android:gravity="left|center_vertical"
