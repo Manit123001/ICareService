@@ -238,12 +238,9 @@ public class MainFragment extends Fragment implements
     private void initInstances(final View rootView) {
 
         navigationView = (NavigationView) rootView.findViewById(R.id.navigation);
-
         mSearchView = (FloatingSearchView)rootView.findViewById(R.id.floating_search_view);
-
         fabLocation = (FloatingActionButton) rootView.findViewById(R.id.fabLocation);
         fabBtnSendLocation = (FloatingActionButton) rootView.findViewById(R.id.fabBtn);
-
         btnShowMark1 = (ImageButton) rootView.findViewById(R.id.btnShowMark1);
         btnShowMark2 = (ImageButton) rootView.findViewById(R.id.btnShowMark2);
         btnShowMark3 = (ImageButton) rootView.findViewById(R.id.btnShowMark3);
@@ -272,6 +269,8 @@ public class MainFragment extends Fragment implements
         navigationViewLeftMenu();
         checkLocaationEnable();
 
+
+
         // CheckInternet
         if (new CheckNetwork(getContext()).isNetworkAvailable()) {
             LoginMenu();
@@ -281,7 +280,7 @@ public class MainFragment extends Fragment implements
         } else {
             LoginMenu();
             // No Internet
-            Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Contextor.getInstance().getContext(), "Please Connect Internet.", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -397,19 +396,22 @@ public class MainFragment extends Fragment implements
                     }
 
                 } else {
-                    try {
-                        Toast.makeText(Contextor.getInstance().getContext(),
-                                response.errorBody().string(), Toast.LENGTH_LONG).show();
+//                    try {
+//                        Toast.makeText(Contextor.getInstance().getContext(),
+//                                response.errorBody().string(), Toast.LENGTH_LONG).show();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    Toast.makeText(Contextor.getInstance().getContext(),
+                            "ตรวจสอบอินเตอร์เน็ต", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ItemCollectionDao> call, Throwable t) {
-                Toast.makeText(Contextor.getInstance().getContext(), t.toString()+"error 555", Toast.LENGTH_LONG).show();
+//                Toast.makeText(Contextor.getInstance().getContext(), t.toString()+"error", Toast.LENGTH_LONG).show();
+                Toast.makeText(Contextor.getInstance().getContext(), "ตรวจสอบอินเตอร์เน็ต", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -494,6 +496,8 @@ public class MainFragment extends Fragment implements
             }
         });
     }
+
+
 
     private void setNewsAcidentsShow(){
         listAdapter = new NewsAcidentsAdapter();
@@ -594,7 +598,7 @@ public class MainFragment extends Fragment implements
             showBottomSheetDialog(clickCount , indexArray);
             //showToast("//Click Tag "+ clickCount + "//IndexArray = " + indexArray+ "//size" + sizeInArray+"//position" + marker.getPosition() );
         } else {
-            Toast.makeText(Contextor.getInstance().getContext(), "Not found Tag", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Contextor.getInstance().getContext(), "I'm Here!", Toast.LENGTH_SHORT).show();
         }
         return false;
     }
@@ -902,7 +906,6 @@ public class MainFragment extends Fragment implements
 
     }
 
-
     private void showJSON(String response){
         try {
             JSONObject jsonObject = new JSONObject(response);
@@ -1023,7 +1026,6 @@ public class MainFragment extends Fragment implements
             }
             checkLocaationEnable();
             updateLocation();
-            Toast.makeText(Contextor.getInstance().getContext(), "" + latLng, Toast.LENGTH_SHORT).show();
 
         }
     };

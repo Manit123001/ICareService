@@ -7,17 +7,20 @@
     android:fitsSystemWindows="true">
 
     <LinearLayout
+        android:background="#EEEEEE"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/ic_image"
+
+            android:id="@+id/ivIconType"
             android:layout_gravity="center"
             android:src="@mipmap/ic_launcher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
+            android:layout_marginLeft="12dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp" />
 
@@ -29,7 +32,7 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hello bottom sheet"
+                android:hint="Title"
                 android:textSize="18sp"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -40,14 +43,14 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/tvDate"
-                    android:text="3/02/2017"
+                    android:text=""
                     android:textSize="14dp"
                     android:layout_marginRight="16dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/tvTime"
-                    android:text="15.30 น"
+                    android:text=""
                     android:textSize="14dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -73,24 +76,95 @@
                 android:scaleType="centerCrop"
                 android:background="#ffaaaa"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="250dp" />
 
-            <TextView
-                android:id="@+id/tvDetail"
 
+            <TextView
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_lorem_ipsum"
+                android:text="เหตุที่แจ้ง"
+                android:textStyle="bold"
                 android:lineSpacingExtra="4dp"
                 android:layout_marginBottom="8dp"/>
 
-            <Button
-                android:text="SHARE !!"
+            <TextView
+                android:id="@+id/tvDetail"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="รายละเอียด"
+                android:lineSpacingExtra="4dp"
+                android:layout_marginBottom="8dp"/>
+            <View
+                android:layout_marginTop="8dp"
+                android:background="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"/>
+
+
+            <TextView
+                android:paddingLeft="16dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ตำแหน่งเกิดเหตุ"
+                android:textStyle="bold"
+                android:lineSpacingExtra="4dp"
+                android:layout_marginBottom="8dp"/>
+            <TextView
+                android:id="@+id/tvAddress"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="ตำแหน่งที่อยู่"
+                android:lineSpacingExtra="4dp"
+                android:layout_marginBottom="8dp"/>
+
+            <View
+                android:layout_marginTop="8dp"
+                android:background="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"/>
+
+
+            <TextView
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="Share to"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+            <LinearLayout
+
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:text="Twitter"
+                    android:layout_weight="1"
+                    android:background="@color/bottom_item_type_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:text="FaceBook"
+                    android:layout_weight="1"
+                    android:background="@color/com_facebook_blue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:text="Google+"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimaryDarkTab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
             <View
                 android:layout_marginTop="?attr/actionBarSize"
                 android:layout_width="match_parent"

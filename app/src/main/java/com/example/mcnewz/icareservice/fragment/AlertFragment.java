@@ -233,7 +233,7 @@ public class AlertFragment extends Fragment implements
             callTypeAcidentsAlert();
         } else {
             // No Internet
-            Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Contextor.getInstance().getContext(), "Please Connect Internet", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -316,11 +316,22 @@ public class AlertFragment extends Fragment implements
                     e.printStackTrace();
                 }
                 //3.11 add End drag
-                if(list != null){
-                    Address add = list.get(0);
-                    marker.setTitle(add.getLocality());
-                    marker.showInfoWindow();
+                try {
+                    if(list == null){
+                        return;
+
+                    } else if(list.get(0) == null){
+                        return;
+
+                    } else {
+                        Address add = list.get(0);
+                        marker.setTitle(add.getLocality());
+                        marker.showInfoWindow();
+                    }
+                }catch (Exception e){
+                    Toast.makeText(getContext(), "เลือกใหม่", Toast.LENGTH_SHORT).show();
                 }
+
 
                 lt = lat;
                 lg = lng;

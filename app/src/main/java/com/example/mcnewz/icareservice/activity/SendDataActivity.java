@@ -83,7 +83,7 @@ public class SendDataActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Toast.makeText(this, "End Send Activity", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Finish Send Activity", Toast.LENGTH_SHORT).show();
                 finish();
                 break;
             default:

@@ -91,7 +91,7 @@ public class RegencyInfomationFragment extends Fragment {
     Dialog dialog;
 
     // setNameImage
-    String millis ="";
+    String millis = "";
 
     // parametorALl Receive
     String idUser;
@@ -172,9 +172,6 @@ public class RegencyInfomationFragment extends Fragment {
 
     private void initInstances(View rootView) {
         // init instance with rootView.findViewById here
-        pDialog = new ProgressDialog(getContext());
-        pDialog.setMessage("Please wait...");
-        pDialog.setCancelable(false);
 
         cameraPhoto = new CameraPhoto(Contextor.getInstance().getContext());
         galleryPhoto = new GalleryPhoto(Contextor.getInstance().getContext());
@@ -214,10 +211,14 @@ public class RegencyInfomationFragment extends Fragment {
     }
 
     private void setRegencyInfo() {
+
         showpDialog();
         itemInfo = new RegencyInfoItemDao();
 
-        setItemInfoInsertToDatabase();
+        if(selectedPhoto != ""){
+            millis = String.valueOf(Calendar.getInstance().getTimeInMillis());
+        }
+        setItemInfoInsertToDatabase(millis);
 
         Call<RegencyInfoItemDao> call = HttpManager.getInstance().getService().setRegencyInfoList(
                 itemInfo.getDetail(),
@@ -249,11 +250,11 @@ public class RegencyInfomationFragment extends Fragment {
             }
         });
 
-        uploadImage();
+        uploadImage(millis);
 
     }
 
-    private void setItemInfoInsertToDatabase() {
+    private void setItemInfoInsertToDatabase(String millis) {
 
         // TODO: HERE SetInfo
         itemInfo.setSubject(editSubject.getText().toString());
@@ -262,7 +263,7 @@ public class RegencyInfomationFragment extends Fragment {
         itemInfo.setLng(lng);
         itemInfo.setMembers(Integer.parseInt(idUser));
         itemInfo.setType(Integer.parseInt(typeAc));
-        itemInfo.setImageName(String.valueOf(millis));
+        itemInfo.setImageName(millis);
         itemInfo.setSumDepartmentSelect(checkValue);
         itemInfo.setTime_submit(editTime.getText().toString());
         itemInfo.setCreate_date(java.sql.Date.valueOf(currentDateand));
@@ -275,13 +276,15 @@ public class RegencyInfomationFragment extends Fragment {
         if(resultCode == Activity.RESULT_OK){
             if(requestCode == CAMERA_REQUEST){
                 String photoPath = cameraPhoto.getPhotoPath();
+
+
                 selectedPhoto = photoPath;
                 selectImage = 1;
 
                 try {
                     Bitmap bitmap = ImageLoader.init().from(photoPath).requestSize(512, 512).getBitmap();
-                    //ivShowImg.setImageBitmap(getRotateBitmap(bitmap, 90));
-                    ivShowImg.setImageBitmap(bitmap);
+                    ivShowImg.setImageBitmap(getRotateBitmap(bitmap, 90));
+//                    ivShowImg.setImageBitmap(bitmap);
                     ivShowImg.setVisibility(View.VISIBLE);
 
                 } catch (FileNotFoundException e) {
@@ -292,8 +295,9 @@ public class RegencyInfomationFragment extends Fragment {
                 Uri uri = data.getData();
                 galleryPhoto.setPhotoUri(uri);
                 String photoPath =  galleryPhoto.getPath();
-                selectedPhoto = photoPath;
 
+
+                selectedPhoto = photoPath;
                 selectImage = 1;
 
                 try {
@@ -309,7 +313,7 @@ public class RegencyInfomationFragment extends Fragment {
         }//end if resultCode
     }
 
-    private void uploadImage() {
+    private void uploadImage(String nameImage) {
 
        if(selectedPhoto == null || selectedPhoto.equals("")){
            Toast.makeText(Contextor.getInstance().getContext(), "No Image Selected.", Toast.LENGTH_SHORT).show();
@@ -329,10 +333,16 @@ public class RegencyInfomationFragment extends Fragment {
                 @Override
                 public void processFinish(String s) {
                     if (s.contains("uploaded_success")){
+
+
                         Toast.makeText(Contextor.getInstance().getContext(), "Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
 
                         RegencyInfomationFragment.FragmentListener listener = (FragmentListener) getActivity();
                         listener.onSendClickRegencyInfo(finishSendData, "a");
+
+
+
+
 
                     }else {
                         Toast.makeText(Contextor.getInstance().getContext(), "Image Uploaded Fail", Toast.LENGTH_SHORT).show();
@@ -342,7 +352,7 @@ public class RegencyInfomationFragment extends Fragment {
 
             // todo : get Web
 //            task.execute("http://icareuserver.comscisau.com/icare/icareservice/upload.php");
-            task.execute("http://icareuserver.comscisau.com/icare/icareservice/insertRegencyInfo.php?name="+millis);
+            task.execute("http://icareuserver.comscisau.com/icare/icareservice/insertRegencyInfo.php?name="+nameImage);
             task.setEachExceptionsHandler(new EachExceptionsHandler() {
                 @Override
                 public void handleIOException(IOException e) {
@@ -378,6 +388,7 @@ public class RegencyInfomationFragment extends Fragment {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
         Bitmap bitmap1 = Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+
         return bitmap1;
 
     }
@@ -385,6 +396,11 @@ public class RegencyInfomationFragment extends Fragment {
 
 
     private void showpDialog() {
+        pDialog = new ProgressDialog(getContext());
+        pDialog.setMessage("Please wait...");
+        pDialog.setCancelable(false);
+
+
         if (!pDialog.isShowing())
             pDialog.show();
     }
@@ -392,11 +408,10 @@ public class RegencyInfomationFragment extends Fragment {
     private void hidepDialog() {
         if (pDialog.isShowing()){
             pDialog.dismiss();
-
-
         }
-
     }
+
+
 
     @Override
     public void onStart() {
@@ -443,7 +458,11 @@ public class RegencyInfomationFragment extends Fragment {
         switch(item.getItemId())
         {
             case R.id.action_send:
-                millis = String.valueOf(Calendar.getInstance().getTimeInMillis());
+
+//                if(selectedPhoto != null || !selectedPhoto.equals("")){
+//                }
+
+
                 setRegencyInfo();
 
 
