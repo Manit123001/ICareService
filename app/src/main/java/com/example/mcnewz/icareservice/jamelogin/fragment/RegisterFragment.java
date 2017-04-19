@@ -130,7 +130,6 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
 
                 } else {
                     // No Internet
-                    Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -197,7 +196,6 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
 
                 } else {
                     // No Internet
-                    Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

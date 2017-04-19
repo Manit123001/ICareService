@@ -34,14 +34,13 @@
     <string name="facebook_app_id">1078745985567973</string>
 
 
-
     <!--regencylist-->
     <string name="list_tel"> Tel</string>
     <string name="list_name"> Name</string>
     <string name="list_detail"> Detail</string>
 
-    <string name="gps_network_not_enabled">Pleas Enable Location, Check Internet</string>
-    <string name="open_location_settings">Enable </string>
+    <string name="gps_network_not_enabled">กรุณาเปิด Location และ Internet</string>
+    <string name="open_location_settings">Turn On</string>
     <string name="Cancel">Cancel</string>
 
 

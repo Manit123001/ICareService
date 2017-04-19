@@ -212,6 +212,8 @@ public class MainFragment extends Fragment implements
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
+
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -280,7 +282,7 @@ public class MainFragment extends Fragment implements
         } else {
             LoginMenu();
             // No Internet
-            Toast.makeText(Contextor.getInstance().getContext(), "Please Connect Internet.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Contextor.getInstance().getContext(), "Please Connect Internet", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -537,8 +539,8 @@ public class MainFragment extends Fragment implements
 
             @Override
             public void onFailure(Call<ItemCollectionDao> call, Throwable t) {
-                Toast.makeText(Contextor.getInstance().getContext(), t.toString(), Toast.LENGTH_SHORT).show();
-
+//                Toast.makeText(Contextor.getInstance().getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Please Connect Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -562,6 +564,7 @@ public class MainFragment extends Fragment implements
         mMap.getUiSettings().setZoomControlsEnabled(false);
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.getUiSettings().setCompassEnabled(false);
+
         if (mGoogleApiClient == null) {
             buildGoogleApiClient();
         }
@@ -763,6 +766,10 @@ public class MainFragment extends Fragment implements
                 Toast.LENGTH_SHORT).show();
     }
 
+
+
+
+
     // Check Permission
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     public boolean checkLocationPermission(){
@@ -863,17 +870,25 @@ public class MainFragment extends Fragment implements
         if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
             // your get/post related code..like HttpPost = new HttpPost(url);
 
-                getData();
+            getData();
 
         } else {
             // No Internet
-            Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Contextor.getInstance().getContext(), "Please Connect Internet", Toast.LENGTH_SHORT).show();
         }
+
+
+
+
 
         // init instance with rootView.findViewById here
         headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
         tvName = (TextView) headerLayout.findViewById(R.id.tvName);
         tvMail = (TextView) headerLayout.findViewById(R.id.tvMail);
+
+
+
+
 
     }
 
@@ -906,11 +921,14 @@ public class MainFragment extends Fragment implements
 
     }
 
+
     private void showJSON(String response){
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray result = jsonObject.getJSONArray(config.JSON_ARRAY);
             JSONObject collegeData = result.getJSONObject(0);
+
+
 
             idUser = collegeData.getString("member_id");
 
@@ -918,17 +936,34 @@ public class MainFragment extends Fragment implements
             lastname = collegeData.getString(config.READ_LASTNAME);
             email   = collegeData.getString(config.READ_EMAIL);
 
+
+            SharedPreferences sp = getActivity().getSharedPreferences("Main_Fragment", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+
+            editor.putString("idUser", idUser);
+            editor.putString("firstname", firstname);
+            editor.putString("lastname", lastname);
+            editor.putString("email", email);
+            editor.apply();
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        //     tvName.setText(firstname +" "+ lastname);
-//        tvMail.setText(email);
 
-        tvName.setText(firstname+" "+lastname);
-        tvMail.setText(email);
+        SharedPreferences sp = getActivity().getSharedPreferences("Main_Fragment", Context.MODE_PRIVATE);
+
+        String spFirstname = sp.getString("firstname", "First Name");
+        String spLastname = sp.getString("lastname", "Last Name");
+        String spEmail = sp.getString("email", "Email");
+
+        tvName.setText(spFirstname+" "+spLastname);
+        tvMail.setText(spEmail);
 
     }
+
+
 
     public interface FragmentListener{
         void onDrawableMenuClickList(String tabClick, String idUser);
@@ -949,26 +984,34 @@ public class MainFragment extends Fragment implements
                         drawerLayout.closeDrawers();
                         listener.onDrawableMenuClickList("m", idUser);
                         return true;
+
+
                     case R.id.navItem2:
                         drawerLayout.closeDrawers();
 
                         listener.onDrawableMenuClickList("h", idUser);
                         return true;
+
+
                     case R.id.navItem3:
                         drawerLayout.closeDrawers();
                         listener.onDrawableMenuClickList("n", idUser);
                         return true;
+
+
                     case R.id.navItem4:
                         drawerLayout.closeDrawers();
                         listener.onDrawableMenuClickList("s", idUser);
                         return true;
+
+
                     case R.id.navItem5:
                         Toast.makeText(getContext(),"Logout",Toast.LENGTH_SHORT).show();
                         logout();
                         return true;
 
                     default:
-                        Toast.makeText(getContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),"Somethings Wrong It's not choice",Toast.LENGTH_SHORT).show();
                         return true;
                 }
             }
@@ -1003,7 +1046,6 @@ public class MainFragment extends Fragment implements
 
     }
     // End Login For Jame
-
 
     /*******************
      * Listenner Zone
@@ -1051,7 +1093,7 @@ public class MainFragment extends Fragment implements
                     MODELOADSLIDENEWS = 0;
                 } else {
                     // No Internet
-                    Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Contextor.getInstance().getContext(), "Please Connect Internet", Toast.LENGTH_SHORT).show();
                 }
 
 

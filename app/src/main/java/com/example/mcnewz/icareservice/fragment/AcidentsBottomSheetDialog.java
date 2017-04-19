@@ -131,6 +131,7 @@ public class AcidentsBottomSheetDialog extends BottomSheetDialogFragment {
                         if(type == 4){
                             ivIconType.setImageResource(R.drawable.a4);
                         }
+
                         tvTitle.setText(subject);
                         tvDetail.setText(detail);
 
@@ -149,7 +150,9 @@ public class AcidentsBottomSheetDialog extends BottomSheetDialogFragment {
                                 String  country =  address.get(0).getCountryName();
                                 String  postalCode =  address.get(0).getPostalCode();
                                 String  knowName =  address.get(0).getFeatureName();
-                                tvAddress.setText(adressme + city + state + country+ postalCode + knowName);
+
+                                
+                                tvAddress.setText(adressme +" "+ city +" "+ state +" "+ country+" "+ postalCode +" "+ knowName);
                             }else{
                                 tvAddress.setText("จุดเกิดเหตุ");
                             }
@@ -164,14 +167,16 @@ public class AcidentsBottomSheetDialog extends BottomSheetDialogFragment {
                     }
 
                 } else {
-                    try {
-                        hidepDialog();
-                        Toast.makeText(Contextor.getInstance().getContext(),
-                                response.errorBody().string(), Toast.LENGTH_LONG).show();
+//                    try {
+//                        hidepDialog();
+//                        Toast.makeText(Contextor.getInstance().getContext(),
+//                                response.errorBody().string(), Toast.LENGTH_LONG).show();
+//
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    Toast.makeText(getContext(), "Please Connect Internet", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -179,7 +184,9 @@ public class AcidentsBottomSheetDialog extends BottomSheetDialogFragment {
 
             public void onFailure(Call<ItemCollectionDao> call, Throwable t) {
                 hidepDialog();
-                Toast.makeText(Contextor.getInstance().getContext(), t.toString()+"error ", Toast.LENGTH_LONG).show();
+//                Toast.makeText(Contextor.getInstance().getContext(), t.toString()+"error ", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Please Connect Internet", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -210,12 +217,10 @@ public class AcidentsBottomSheetDialog extends BottomSheetDialogFragment {
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(ivImg);
             ivImg.setVisibility(View.VISIBLE);
-            Toast.makeText(getContext(), "VISIBLE", Toast.LENGTH_SHORT).show();
 
 
         }else {
             ivImg.setVisibility(View.GONE);
-            Toast.makeText(getContext(), "gone", Toast.LENGTH_SHORT).show();
         }
 
 

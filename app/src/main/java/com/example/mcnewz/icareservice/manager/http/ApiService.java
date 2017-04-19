@@ -82,8 +82,10 @@ public interface ApiService {
 
 
     // Insert Data Acidents
+    @FormUrlEncoded
     @POST("icareservice/jsonNotificationBack.php")
     Call<NotificationBackItemCollectionDao> setNotificationBack(
+            @Field("upIdUser") String upIdUser
     );
 
 

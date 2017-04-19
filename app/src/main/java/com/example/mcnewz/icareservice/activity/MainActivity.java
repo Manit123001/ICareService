@@ -2,6 +2,7 @@ package com.example.mcnewz.icareservice.activity;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Configuration;
 
 import android.os.PersistableBundle;
@@ -70,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
                     .detach(historySendAlertFragment)
                     .commit();
         }
+
+
         initToolbar();
 //        initInstances();
 
@@ -166,14 +169,17 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
                         .addToBackStack(null)
                         .commit();
             }
-        }else{
+        }else if (tabClick == "n"){
             if(!(fragment instanceof NotificationBackFragment)){
 
-                getSupportFragmentManager().beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .replace(R.id.contentContainer,  NotificationBackFragment.newInstance(idUser, "load"))
-                        .addToBackStack(null)
-                        .commit();
+//                getSupportFragmentManager().beginTransaction()
+//                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+//                        .replace(R.id.contentContainer,  NotificationBackFragment.newInstance(idUser, "load"))
+//                        .addToBackStack(null)
+//                        .commit();
+                Intent intent = new Intent(MainActivity.this, UtilityHistoryNotificationSettingActivity.class);
+                intent.putExtra("idUser", idUser);
+                startActivity(intent);
             }
         }
 

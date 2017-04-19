@@ -1,7 +1,9 @@
 package com.example.mcnewz.icareservice.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -66,7 +68,7 @@ public class NotificationBackFragment extends Fragment {
     private SendIDUser  itemInfo;
     private ProgressDialog pDialog;
     private String load ="";
-
+    private String userId;
 
     public NotificationBackFragment() {
         super();
@@ -79,36 +81,44 @@ public class NotificationBackFragment extends Fragment {
         return fragment;
     }
 
-    public static NotificationBackFragment newInstance(String idUser ,String load) {
+    public static NotificationBackFragment newInstance(String load) {
         NotificationBackFragment fragment = new NotificationBackFragment();
         Bundle args = new Bundle();
-        args.putString("idUser",idUser);
+
         args.putString("load",load);
+
         fragment.setArguments(args);
+
+
         return fragment;
+
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        pDialog = new ProgressDialog(getContext());
-        pDialog.setMessage("Please wait...");
-        pDialog.setCancelable(false);
 
-        idUser = getArguments().getString("idUser");
         load = getArguments().getString("load");
 
-        setRegencyInfo();
+        SharedPreferences sp = getActivity().getSharedPreferences("Main_Fragment", Context.MODE_PRIVATE);
+        userId = sp.getString("idUser", "0");
+
+        setNotificationInfo(load);
     }
 
-    private void setRegencyInfo() {
-
-
+    private void setNotificationInfo(String load) {
+        if(load != null){
+            showpDialog();
+        }
         itemInfo = new SendIDUser();
-        itemInfo.setId_user(idUser);
+        setItemInfo();
 
     }
 
+    private void setItemInfo() {
+        itemInfo.setUpIdUser(userId);
+
+    }
 
 
     @Override
@@ -127,11 +137,8 @@ public class NotificationBackFragment extends Fragment {
     }
 
     private void initInstances(View rootView) {
-        showpDialog();
+
         listView = (ListView) rootView.findViewById(R.id.lvNotification);
-        Toast.makeText(getContext(), ""+ idUser, Toast.LENGTH_SHORT).show();
-
-
 
         setNewsAcidentsShow();
     }
@@ -152,13 +159,15 @@ public class NotificationBackFragment extends Fragment {
         });
 
         Call<NotificationBackItemCollectionDao> call = HttpManager.getInstance().getService().setNotificationBack(
+                itemInfo.getUpIdUser()
         );
 
         call.enqueue(new Callback<NotificationBackItemCollectionDao>() {
             @Override
             public void onResponse(Call<NotificationBackItemCollectionDao> call, Response<NotificationBackItemCollectionDao> response) {
+                hidepDialog();
+
                 if ( response.isSuccessful()){
-                    hidepDialog();
                     NotificationBackItemCollectionDao dao = response.body();
                     //Toast.makeText(Contextor.getInstance().getContext(), "Complete"+dao.getData().get(0).getId(), Toast.LENGTH_SHORT).show();
                     listAdapter.setDao(dao);
@@ -166,7 +175,7 @@ public class NotificationBackFragment extends Fragment {
 
                     notificationBackListManager.setDao(dao);
                 }else{
-                    //hidepDialog();
+                    hidepDialog();
                     try {
                         Toast.makeText(getContext(), response.errorBody().string(), Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
@@ -182,7 +191,13 @@ public class NotificationBackFragment extends Fragment {
             }
         });
     }
+
+
     private void showpDialog() {
+        pDialog = new ProgressDialog(getContext());
+        pDialog.setMessage("Please wait...");
+        pDialog.setCancelable(true);
+
         if (!pDialog.isShowing())
             pDialog.show();
     }
@@ -236,7 +251,9 @@ public class NotificationBackFragment extends Fragment {
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                getFragmentManager().popBackStack();
+//                getFragmentManager().popBackStack();
+                getActivity().onBackPressed();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -211,7 +211,7 @@ public class WarningFragment extends Fragment implements
 
         } else {
             // No Internet
-            Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Contextor.getInstance().getContext(), "Please Connect Internet", Toast.LENGTH_SHORT).show();
         }
         setListenerAllView();
 

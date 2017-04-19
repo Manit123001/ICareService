@@ -5,7 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +27,7 @@ public class NewsAcidentsItem extends BaseCustomViewGroup {
     private TextView tvTitle, tvName, tvDescription, tvDate ;
     private ImageView ivProfile, ivImg;
     private TextView tvTime;
+    private LinearLayout llBackground;
 
 
     public NewsAcidentsItem(Context context) {
@@ -68,6 +71,7 @@ public class NewsAcidentsItem extends BaseCustomViewGroup {
         tvTime = (TextView) findViewById(R.id.tvTime);
         ivImg = (ImageView) findViewById(R.id.ivImg);
         ivProfile = (ImageView) findViewById(R.id.ivProfile);
+        llBackground = (LinearLayout) findViewById(R.id.llBackground);
 
     }
 
@@ -124,17 +128,14 @@ public class NewsAcidentsItem extends BaseCustomViewGroup {
     }
 
     public void  setTitle(String text){
-
         tvTitle.setText(text);
     }
 
     public void  setName(String text){
-
         tvName.setText(text);
     }
 
     public void  setDescription(String text){
-
         tvDescription.setText(text);
     }
 
@@ -143,19 +144,41 @@ public class NewsAcidentsItem extends BaseCustomViewGroup {
         String dateString = sdf.format(createDate);
         tvDate.setText(dateString);
     }
- public void  setTime(String text){
 
+    public void  setTime(String text){
      tvTime.setText(text);
+    }
+
+    public void setProfile(int type){
+        if(type == 1){
+            ivProfile.setImageResource(R.drawable.a1);
+        }
+        if(type == 2){
+            ivProfile.setImageResource(R.drawable.a2);
+        }
+
+        if(type == 3){
+            ivProfile.setImageResource(R.drawable.a3);
+        }
+
+        if(type == 4){
+            ivProfile.setImageResource(R.drawable.a4);
+        }
     }
 
 
     // setImage load Image
     public void setImageUrl (String url){
-        Glide.with(getContext())
-                .load(url)
+        if(!url.equals("not")){
+            Glide.with(getContext())
+                    .load(url)
+                    .placeholder(R.drawable.loading)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(ivImg);
+            ivImg.setVisibility(View.VISIBLE);
 
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(ivImg);
-
+        }else {
+            ivImg.setVisibility(View.GONE);
+        }
     }
 }

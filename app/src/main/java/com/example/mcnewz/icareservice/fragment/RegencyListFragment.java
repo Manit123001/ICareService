@@ -94,9 +94,7 @@ public class RegencyListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        pDialog = new ProgressDialog(getContext());
-        pDialog.setMessage("Please wait...");
-        pDialog.setCancelable(false);
+
 //
         lat = getArguments().getString("lat");
         lng = getArguments().getString("lng");
@@ -126,6 +124,10 @@ public class RegencyListFragment extends Fragment {
 
 
     private void showpDialog() {
+        pDialog = new ProgressDialog(getContext());
+        pDialog.setMessage("Please wait...");
+        pDialog.setCancelable(false);
+
         if (!pDialog.isShowing())
             pDialog.show();
     }
@@ -206,6 +208,7 @@ public class RegencyListFragment extends Fragment {
         call.enqueue(new Callback<NeaRegencyListItemCollectionDao>() {
             @Override
             public void onResponse(Call<NeaRegencyListItemCollectionDao> call, Response<NeaRegencyListItemCollectionDao> response) {
+
                 hidepDialog();
                 NearRegencyListItemDao dao ;
                 NeaRegencyListItemCollectionDao collectionDao = response.body();

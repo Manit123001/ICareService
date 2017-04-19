@@ -8,13 +8,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class SendIDUser {
 
-    @SerializedName("id_user") private String id_user;
+    @SerializedName("upIdUser") private String upIdUser;
 
-    public String getId_user() {
-        return id_user;
+    public String getUpIdUser() {
+        return upIdUser;
     }
 
-    public void setId_user(String id_user) {
-        this.id_user = id_user;
+    public void setUpIdUser(String upIdUser) {
+        this.upIdUser = upIdUser;
     }
 }

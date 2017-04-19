@@ -55,6 +55,7 @@ public class NewsAcidentsAdapter extends BaseAdapter {
 
         ItemDao dao = (ItemDao) getItem(position);
 
+        item.setProfile(dao.getType());
         item.setTitle(dao.getSubject()+"( "+dao.getLat()+dao.getLng()+ " )");
         item.setName(dao.getSubject());
         item.setDescription(dao.getDetail());

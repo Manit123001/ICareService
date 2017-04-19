@@ -153,7 +153,6 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
                     loginButton.invalidate();
                 } else {
                     // No Internet
-                    Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -188,7 +187,6 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
 
                 } else {
                     // No Internet
-                    Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
                 }
 
             }
