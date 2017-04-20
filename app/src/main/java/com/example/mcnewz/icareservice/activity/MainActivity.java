@@ -23,6 +23,7 @@ import com.example.mcnewz.icareservice.R;
 import com.example.mcnewz.icareservice.fragment.HistorySendAlertFragment;
 import com.example.mcnewz.icareservice.fragment.MainFragment;
 import com.example.mcnewz.icareservice.fragment.NotificationBackFragment;
+import com.example.mcnewz.icareservice.fragment.ProfileFragment;
 
 
 public class MainActivity extends AppCompatActivity implements MainFragment.FragmentListener {
@@ -158,8 +159,17 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
                         .addToBackStack(null)
                         .commit();
             }
-        }
-        else if (tabClick == "h"){
+        }else if (tabClick == "profile"){
+
+            if(!(fragment instanceof ProfileFragment)){
+
+                getSupportFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .replace(R.id.contentContainer,  ProfileFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        } else if (tabClick == "h"){
 
             if(!(fragment instanceof HistorySendAlertFragment)){
 

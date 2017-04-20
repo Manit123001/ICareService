@@ -38,45 +38,52 @@ public class MainLoginActivity extends AppCompatActivity {
         final String token = FirebaseInstanceId.getInstance().getToken();
         //Log.d("token555", token);
         config.token = token;
-//        mAuth  = com.google.firebase.auth.FirebaseAuth.getInstance();
-//        mAuthListener = new com.google.firebase.auth.FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull com.google.firebase.auth.FirebaseAuth firebaseAuth) {
-//                FirebaseUser user = firebaseAuth.getCurrentUser();
-//                if (user != null) {
-//                    config.status = 2;
-//                    userid = user.getUid();
-//                    updatetoken();
-//                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                    startActivity(intent);
-//                    finish();
-//                }
-//            }
-//        };
+        mAuth  = com.google.firebase.auth.FirebaseAuth.getInstance();
+        mAuthListener = new com.google.firebase.auth.FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull com.google.firebase.auth.FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    config.status = 2;
+                    userid = user.getUid();
+                    updatetoken();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
 
-        if(savedInstanceState == null){
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.contentContainer, new MainFragment(),"MainFragment")
+                            .commit();
 
-            //First Created
-            //Place Fragment here
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.contentContainer, new MainFragment(),"MainFragment")
-                    .commit();
 
+                }
+            }
+        };
+//
+//        if(savedInstanceState == null){
+//
+//            //First Created
+//            //Place Fragment here
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.contentContainer, new MainFragment(),"MainFragment")
+//                    .commit();
+//
+//        }
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        mAuth.addAuthStateListener(mAuthListener);
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        if (mAuthListener != null) {
-//            mAuth.removeAuthStateListener(mAuthListener);
-//        }
-//    }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {

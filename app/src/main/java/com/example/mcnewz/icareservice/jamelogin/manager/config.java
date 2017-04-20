@@ -25,9 +25,14 @@ public class config {
 
         //This would be used to store the email of current logged in user
         public static final String USERNAME_SHARED_PREF = "username";
+        public static final String FiresName_SHARED_PREF = "firstname";
+        public static final String LastName_SHARED_PREF = "lastname";
+        public static final String Email_SHARED_PREF = "email";
+        public static final String Photo_SHARED_PREF = "photo";
 
         //We will use this to store the boolean in sharedpreference to track user is loggedin or not
         public static final String LOGGEDIN_SHARED_PREF = "loggedin";
+
         //----------------------Register-------------------------------------------------
         //URL to our register.php file
         public static final String REGIS_FACEBOOK = "http://icareuserver.comscisau.com/icare/androidTest/insertFacebook.php";
@@ -55,9 +60,13 @@ public class config {
         public static final String TOKEN_URL = "http://icareuserver.comscisau.com/icare/androidTest/updateToken.php";
 
         public static String token = "tokrn";
+        public static final String URL_UPdatemember = "http://icareuserver.comscisau.com/icare/androidTest/UpdateMember.php";
         public static int status = 1;
         public static int status_verify = 1;
         public static int id = 1;
         public static String idcode = "7777";
+
+        public static String idUserUpdate = "id";
+        public static String PhotoUserUpdate = "photo";
 
 }

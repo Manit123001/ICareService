@@ -52,30 +52,30 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         config.token = token;
 
-
-        mAuth  = com.google.firebase.auth.FirebaseAuth.getInstance();
-        mAuthListener = new com.google.firebase.auth.FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull com.google.firebase.auth.FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    config.status = 2;
-                    user_id = user.getUid();
-                    if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
-                        // your get/post related code..like HttpPost = new HttpPost(url);
-                        updatetoken();
-
-                    } else {
-                        // No Internet
-                    }
-
-
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        };
+//        mAuth  = com.google.firebase.auth.FirebaseAuth.getInstance();
+//        mAuthListener = new com.google.firebase.auth.FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull com.google.firebase.auth.FirebaseAuth firebaseAuth) {
+//                FirebaseUser user = firebaseAuth.getCurrentUser();
+//                if (user != null) {
+//                    config.status = 2;
+//                    user_id = user.getUid();
+//                    if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
+//                        // your get/post related code..like HttpPost = new HttpPost(url);
+//                        updatetoken();
+//
+//                    } else {
+//                        // No Internet
+//                        Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//
+//                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                    startActivity(intent);
+//                    finish();
+//                }
+//            }
+//        };
 
         handler = new Handler();
         runnable = new Runnable() {
@@ -87,8 +87,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                     SharedPreferences sp = getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
                     user_id = sp.getString(config.USERNAME_SHARED_PREF,"");
 
-
-
                     // CheckInternet
                     if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
                         // your get/post related code..like HttpPost = new HttpPost(url);
@@ -98,13 +96,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                         finish();
                     } else {
                         // No Internet
-                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                        Toast.makeText(Contextor.getInstance().getContext(), "no internet!", Toast.LENGTH_SHORT).show();
                     }
-
-
-
 
                 }else {
 
@@ -120,19 +113,21 @@ public class SplashScreenActivity extends AppCompatActivity {
         };
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        mAuth.addAuthStateListener(mAuthListener);
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        if (mAuthListener != null) {
+//            mAuth.removeAuthStateListener(mAuthListener);
+//        }
+//    }
+
 
     private void  updatetoken(){
 

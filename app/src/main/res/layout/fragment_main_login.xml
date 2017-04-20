@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#d5d8d8"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageView
-        android:src="@drawable/logre"
-        android:scaleType="centerCrop"
+
+        android:src="@drawable/bg_login_new"
+        android:scaleType="fitXY"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ImageView
-            android:layout_weight="1"
-            android:id="@+id/imglogo"
-            android:layout_width="120dp"
-            android:layout_gravity="center"
-            android:layout_height="0dp"
-            android:src="@mipmap/ic_launcher" />
-
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +27,7 @@
                 style="@style/ButtonText"
                 android:layout_width="155dp"
                 android:layout_height="50dp"
-                android:background="@drawable/select_login_btn_orenge"
+                android:background="@drawable/btnstyle_blue"
                 android:text="LOGIN"
                 android:textSize="20sp" />
 
@@ -44,7 +37,7 @@
                 android:layout_width="155dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="20dp"
-                android:background="@drawable/select_register_btn_green"
+                android:background="@drawable/btnstyle_red"
                 android:text="REGISTER"
                 android:textSize="20sp" />
 

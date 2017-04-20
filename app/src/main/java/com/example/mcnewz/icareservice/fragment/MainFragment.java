@@ -8,10 +8,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -34,6 +37,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,6 +86,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -185,6 +191,9 @@ public class MainFragment extends Fragment implements
     private FragmentListener listener;
 
 
+    private ImageView ivPro;
+
+
     /************
      * Functions
      *************/
@@ -212,8 +221,6 @@ public class MainFragment extends Fragment implements
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
-
-
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -849,9 +856,15 @@ public class MainFragment extends Fragment implements
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     config.status = 2;
+
+                    config.PhotoUserUpdate = user.getPhotoUrl().toString();
+                    new DownloadImageTask().execute(user.getPhotoUrl().toString());
+
                 }
             }
         };
+
+
 
         // Login Page
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -885,12 +898,36 @@ public class MainFragment extends Fragment implements
         headerLayout = navigationView.inflateHeaderView(R.layout.nav_header);
         tvName = (TextView) headerLayout.findViewById(R.id.tvName);
         tvMail = (TextView) headerLayout.findViewById(R.id.tvMail);
+        ivPro = (ImageView) headerLayout.findViewById(R.id.ivPro);
 
 
 
 
 
     }
+
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        @Override
+        protected Bitmap doInBackground(String... urls) {
+            Bitmap mIcon = null;
+            try {
+                InputStream in = new URL(urls[0]).openStream();
+                mIcon = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return mIcon;
+        }
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            if (result != null) {
+                ivPro.getLayoutParams().width = (getResources().getDisplayMetrics().widthPixels / 100) * 24;
+                ivPro.setImageBitmap(result);
+            }
+        }
+    }
+
 
     private void getData() {
 
@@ -960,7 +997,7 @@ public class MainFragment extends Fragment implements
 
         tvName.setText(spFirstname+" "+spLastname);
         tvMail.setText(spEmail);
-
+        config.idUserUpdate = user_id;
     }
 
 
@@ -985,6 +1022,12 @@ public class MainFragment extends Fragment implements
                         listener.onDrawableMenuClickList("m", idUser);
                         return true;
 
+
+                    case R.id.navProfile:
+                        drawerLayout.closeDrawers();
+
+                        listener.onDrawableMenuClickList("profile", idUser);
+                        return true;
 
                     case R.id.navItem2:
                         drawerLayout.closeDrawers();
@@ -1017,6 +1060,8 @@ public class MainFragment extends Fragment implements
             }
         });
     }
+
+
 
     private void logout() {
 
