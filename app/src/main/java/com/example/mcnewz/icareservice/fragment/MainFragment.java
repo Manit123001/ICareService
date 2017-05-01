@@ -192,6 +192,10 @@ public class MainFragment extends Fragment implements
 
 
     private ImageView ivPro;
+    private String fname;
+    private String lname;
+    private String address;
+    private String temail;
 
 
     /************
@@ -236,7 +240,11 @@ public class MainFragment extends Fragment implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
         mMapView.getMapAsync(this);
+
+
 
         initInstances(rootView); // init here
 
@@ -279,15 +287,16 @@ public class MainFragment extends Fragment implements
         checkLocaationEnable();
 
 
-
         // CheckInternet
         if (new CheckNetwork(getContext()).isNetworkAvailable()) {
+
+            LoginMenu();
+            callBackItem(); // call back data Marker show
+
+        } else {
+
             LoginMenu();
 
-            callBackItem(); // call back data
-            //callWarningBackItem();
-        } else {
-            LoginMenu();
             // No Internet
             Toast.makeText(Contextor.getInstance().getContext(), "Please Connect Internet", Toast.LENGTH_SHORT).show();
         }
@@ -350,6 +359,7 @@ public class MainFragment extends Fragment implements
     }
 
     private void callBackItem() {
+
         Call<ItemCollectionDao> call = HttpManager.getInstance().getService().loadItemList();
         call.enqueue(new Callback<ItemCollectionDao>() {
             @Override
@@ -413,17 +423,19 @@ public class MainFragment extends Fragment implements
 //                    }
 
                     Toast.makeText(Contextor.getInstance().getContext(),
-                            "ตรวจสอบอินเตอร์เน็ต", Toast.LENGTH_LONG).show();
+                            "Please Connect Internet", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ItemCollectionDao> call, Throwable t) {
 //                Toast.makeText(Contextor.getInstance().getContext(), t.toString()+"error", Toast.LENGTH_LONG).show();
-                Toast.makeText(Contextor.getInstance().getContext(), "ตรวจสอบอินเตอร์เน็ต", Toast.LENGTH_LONG).show();
+                Toast.makeText(Contextor.getInstance().getContext(), "Please Connect Internet", Toast.LENGTH_LONG).show();
             }
         });
     }
+
+
 
 
     // TODO Warnning Feed
@@ -518,7 +530,7 @@ public class MainFragment extends Fragment implements
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ItemDao dao = newsAcidentsListManager.getDao().getData().get(position);
                 //FragmentListener listener =  (FragmentListener) getActivity();
-                Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
                 //listener.onPhotoItemClicked(dao);
             }
         });
@@ -551,6 +563,8 @@ public class MainFragment extends Fragment implements
             }
         });
     }
+
+
 
     private Marker getMarker(String snippet, String title, int typeAc, LatLng latLng) {
         return mMap.addMarker(new MarkerOptions()
@@ -625,8 +639,10 @@ public class MainFragment extends Fragment implements
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+
         mGoogleApiClient.connect();
     }
+
 
     // LocationListener Here
     @TargetApi(Build.VERSION_CODES.M)
@@ -647,7 +663,6 @@ public class MainFragment extends Fragment implements
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
-
     }
 
 
@@ -664,6 +679,7 @@ public class MainFragment extends Fragment implements
         Log.i(LOG, "Coinnect failed"+ result.getErrorCode());
     }
 
+
     @Override
     public void onLocationChanged(Location location) {
         Log.i(LOG, location.toString());
@@ -674,6 +690,7 @@ public class MainFragment extends Fragment implements
         }
 
         //Toast.makeText(Contextor.getInstance().getContext(), ""+String.valueOf(mLastLocation.getLatitude())+String.valueOf(mLastLocation.getLongitude()), Toast.LENGTH_LONG).show();
+
 
         //Place current location marker
         latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
@@ -693,10 +710,11 @@ public class MainFragment extends Fragment implements
 
         // Stop location updates
         if (mGoogleApiClient != null) {
+
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
-
     }
+
 
     // Facebook Code Login Jame
     @Override
@@ -718,6 +736,10 @@ public class MainFragment extends Fragment implements
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+
+        if (new CheckNetwork(getContext()).isNetworkAvailable()) {
+            callBackItem(); // call back data Marker show
+        }
     }
 
     @Override
@@ -737,7 +759,6 @@ public class MainFragment extends Fragment implements
         super.onLowMemory();
         mMapView.onLowMemory();
     }
-
 
     /*
      * Save Instance State Here
@@ -759,6 +780,8 @@ public class MainFragment extends Fragment implements
         }
     }
 
+
+
     // Change Type map
     public void changeType() {
         if (mMap.getMapType() == GoogleMap.MAP_TYPE_NORMAL) {
@@ -775,10 +798,9 @@ public class MainFragment extends Fragment implements
 
 
 
-
-
     // Check Permission
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
     public boolean checkLocationPermission(){
         if (ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -787,10 +809,7 @@ public class MainFragment extends Fragment implements
             // Asking user if explanation is needed
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                // Show an explanation to the user *1hronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+                
 
                 //Prompt the user once explanation has been shown
                 ActivityCompat.requestPermissions(getActivity(),
@@ -840,11 +859,9 @@ public class MainFragment extends Fragment implements
                 }
                 return;
             }
-
-            // other 'case' lines to check for other permissions this app might request.
-            // You can add here other case statements according to your requirement.
         }
     }
+
 
     // Start login of jame And Navigation View
     private void LoginMenu() {
@@ -865,33 +882,15 @@ public class MainFragment extends Fragment implements
         };
 
 
-
-        // Login Page
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         SharedPreferences sp = getActivity().getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        user_id = sp.getString(config.USERNAME_SHARED_PREF,"");
-        //Initializing textview
-        if(config.status == 1){
-            user_id = sp.getString(config.USERNAME_SHARED_PREF,"");
-        }else {
-            if (user != null) {
-                user_id = user.getUid();
-            }
-        }
 
-        // CheckInternet
-        if (new CheckNetwork(Contextor.getInstance().getContext()).isNetworkAvailable()) {
-            // your get/post related code..like HttpPost = new HttpPost(url);
+        user_id = sp.getString(config.USERNAME_SHARED_PREF,"null");
 
-            getData();
-
-        } else {
-            // No Internet
-            Toast.makeText(Contextor.getInstance().getContext(), "Please Connect Internet", Toast.LENGTH_SHORT).show();
-        }
-
-
-
+        fname = sp.getString("firstname","null");
+        lname = sp.getString("lastname","null");
+        address = sp.getString("address","null");
+        temail = sp.getString("email","null");
+        idUser = sp.getString("idUser","null");
 
 
         // init instance with rootView.findViewById here
@@ -900,8 +899,8 @@ public class MainFragment extends Fragment implements
         tvMail = (TextView) headerLayout.findViewById(R.id.tvMail);
         ivPro = (ImageView) headerLayout.findViewById(R.id.ivPro);
 
-
-
+        tvName.setText(fname +" "+ lname);
+        tvMail.setText(temail);
 
 
     }
@@ -928,77 +927,6 @@ public class MainFragment extends Fragment implements
         }
     }
 
-
-    private void getData() {
-
-        //loading = ProgressDialog.show(getActivity(),"Please wait...","Fetching...",false,false);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,config.URL_DATA, new com.android.volley.Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //loading.dismiss();
-                showJSON(response);
-            }
-        }, new com.android.volley.Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }){
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put(config.USERNAME_SHARED, user_id);
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        requestQueue.add(stringRequest);
-
-    }
-
-
-    private void showJSON(String response){
-        try {
-            JSONObject jsonObject = new JSONObject(response);
-            JSONArray result = jsonObject.getJSONArray(config.JSON_ARRAY);
-            JSONObject collegeData = result.getJSONObject(0);
-
-
-
-            idUser = collegeData.getString("member_id");
-
-            firstname = collegeData.getString(config.READ_FIRSTNAME);
-            lastname = collegeData.getString(config.READ_LASTNAME);
-            email   = collegeData.getString(config.READ_EMAIL);
-
-
-            SharedPreferences sp = getActivity().getSharedPreferences("Main_Fragment", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-
-            editor.putString("idUser", idUser);
-            editor.putString("firstname", firstname);
-            editor.putString("lastname", lastname);
-            editor.putString("email", email);
-            editor.apply();
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        SharedPreferences sp = getActivity().getSharedPreferences("Main_Fragment", Context.MODE_PRIVATE);
-
-        String spFirstname = sp.getString("firstname", "First Name");
-        String spLastname = sp.getString("lastname", "Last Name");
-        String spEmail = sp.getString("email", "Email");
-
-        tvName.setText(spFirstname+" "+spLastname);
-        tvMail.setText(spEmail);
-        config.idUserUpdate = user_id;
-    }
 
 
 
@@ -1071,17 +999,47 @@ public class MainFragment extends Fragment implements
 
             //Getting editor
             SharedPreferences.Editor editor = preferences.edit();
+
             //Puting the value false for loggedin
             editor.putBoolean(config.LOGGEDIN_SHARED_PREF, false);
+
             //Putting blank value to email
             editor.putString(config.USERNAME_SHARED_PREF, "");
+
             //Saving the sharedpreferences
+            editor.putString("idUser", "");
+            editor.putString("tel","");
+            editor.putString("address","");
+            editor.putString("firstname", "");
+            editor.putString("lastname", "");
+            editor.putString("email", "");
             editor.apply();
             //Starting login activity
 
         }else {
             FirebaseAuth.getInstance().signOut();
             LoginManager.getInstance().logOut();
+
+            SharedPreferences preferences = getActivity().getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
+            //Getting editor
+            SharedPreferences.Editor editor = preferences.edit();
+
+            //Puting the value false for loggedin
+            editor.putBoolean(config.LOGGEDIN_SHARED_PREF, false);
+
+            //Putting blank value to email
+            editor.putString(config.USERNAME_SHARED_PREF, "");
+
+
+            //Saving the sharedpreferences
+            editor.putString("idUser", "");
+            editor.putString("tel","");
+            editor.putString("address","");
+            editor.putString("firstname", "");
+            editor.putString("lastname", "");
+            editor.putString("email", "");
+            editor.apply();
 
         }
         config.status = 1;
@@ -1092,9 +1050,18 @@ public class MainFragment extends Fragment implements
     }
     // End Login For Jame
 
+
+
+
+
+
+
+
     /*******************
      * Listenner Zone
      *******************/
+    
+    
     View.OnClickListener fabBtnSendLocationListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

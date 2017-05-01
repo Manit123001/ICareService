@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.example.mcnewz.icareservice.R;
 import com.example.mcnewz.icareservice.jamelogin.manager.ImageAdapter;
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 /**
@@ -105,7 +107,8 @@ public class MainFragment extends Fragment {
         });
 
 
-
+        FirebaseAuth.getInstance().signOut();
+        LoginManager.getInstance().logOut();
     }
 
     @Override

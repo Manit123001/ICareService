@@ -56,7 +56,7 @@ public class config {
         public static final String READ_TEL = "tel";
         public static final String JSON_ARRAY = "result";
         //-------------------------------CodeVerify-------------------------------------------------------
-        public static final String URL_CODEVERIFY = "http://icareuserver.comscisau.com/icare/androidTest/insrtCodeVerify.php";
+        public static final String URL_CODEVERIFY = "http://icareuserver.comscisau.com/icare/androidTest/fcmtest.php";
         public static final String TOKEN_URL = "http://icareuserver.comscisau.com/icare/androidTest/updateToken.php";
 
         public static String token = "tokrn";

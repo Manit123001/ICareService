@@ -35,6 +35,7 @@ import com.example.mcnewz.icareservice.dao.NotificationBackItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.NotificationBackItemDao;
 import com.example.mcnewz.icareservice.dao.SendDataList;
 import com.example.mcnewz.icareservice.dao.SendIDUser;
+import com.example.mcnewz.icareservice.jamelogin.manager.config;
 import com.example.mcnewz.icareservice.manager.HttpManager;
 import com.example.mcnewz.icareservice.manager.NewsAcidentsListManager;
 import com.example.mcnewz.icareservice.manager.NotificationBackListManager;
@@ -100,8 +101,9 @@ public class NotificationBackFragment extends Fragment {
 
         load = getArguments().getString("load");
 
-        SharedPreferences sp = getActivity().getSharedPreferences("Main_Fragment", Context.MODE_PRIVATE);
-        userId = sp.getString("idUser", "0");
+        SharedPreferences sp = getActivity().getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
+        userId = sp.getString(config.USERNAME_SHARED_PREF,"0");
 
         setNotificationInfo(load);
     }

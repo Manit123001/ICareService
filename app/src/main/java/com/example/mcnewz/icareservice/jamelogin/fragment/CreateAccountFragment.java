@@ -91,6 +91,7 @@ public class CreateAccountFragment extends Fragment {
 
     }
 
+
     private  void  verify(){
         if(edtFirstNameCreate.getText().toString().trim().isEmpty()){
             edtFirstNameCreate.setError("Invalid Firstname");
@@ -134,7 +135,7 @@ public class CreateAccountFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "เกิดข้อผิดพลาดโปรดลองอีกครั้ง", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "เกิดข้อผิดพลาด   หัวร้อน" + error, Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -172,6 +173,7 @@ public class CreateAccountFragment extends Fragment {
     /*
      * Restore Instance State Here
      */
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

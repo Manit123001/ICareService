@@ -285,7 +285,7 @@ public class WarningInfomationFragment extends Fragment {
 
 
     private void setRegencyInfo() {
-        showpDialog();
+        //showpDialog();
         itemInfo = new WarningInfoItemDao();
 
         setItemInfoInsertToDatabase();
@@ -306,12 +306,12 @@ public class WarningInfomationFragment extends Fragment {
             public void onResponse(Call<WarningInfoItemDao> call, Response<WarningInfoItemDao> response) {
 
                 Toast.makeText(Contextor.getInstance().getContext(), "Complete", Toast.LENGTH_SHORT).show();
-                hidepDialog();
+                //hidepDialog();
             }
 
             @Override
             public void onFailure(Call<WarningInfoItemDao> call, Throwable t) {
-                hidepDialog();
+                //hidepDialog();
                 //Toast.makeText(Contextor.getInstance().getContext(), "Not Complete "+ t.toString(), Toast.LENGTH_SHORT).show();
 
                 Log.d("onFailureInfo", t.toString());

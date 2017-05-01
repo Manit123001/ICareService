@@ -30,6 +30,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -44,9 +45,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,6 +89,14 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
 //-----------------------------------------------------------------------------------------------
 
     private ProgressDialog mProgressDialog;
+    private String idUser;
+    private String firstname;
+    private String lastname;
+    private String temail;
+    private String phone;
+    private String address;
+    private String email;
+
     public void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(getActivity());
@@ -117,7 +131,8 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
         return rootView;
     }
     private void initInstances(View rootView) {
-
+        FirebaseAuth.getInstance().signOut();
+        LoginManager.getInstance().logOut();
         // init instance with rootView.findViewById here
         //setRetainInstance(true);
         edtEmailLogin = (EditText) rootView.findViewById(R.id.edtEmailLogin);
@@ -286,7 +301,7 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
                         //If we are getting success from server
                         if(response.trim().toString().equalsIgnoreCase(config.LOGIN_SUCCESS)){
                             updatetoken();
-
+                            getData();
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             getActivity().finish();
                             startActivity(intent);
@@ -418,14 +433,14 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
                             editor.putString(config.USERNAME_SHARED_PREF, username);
                             //Saving values to editor
                             editor.commit();
-                            edtEmailLogin.setText("");
-                            edtPasswordLogin.setText("");
                             uID = username;
                             updatetoken();
                             //Starting profile activity
+                            getData();
 
-                            Intent intent = new Intent(getContext(), MainActivity.class);
-                            startActivity(intent);
+
+                            edtEmailLogin.setText("");
+                            edtPasswordLogin.setText("");
                         }else{
                             //If the server response is not success
                             //Displaying an error message on toast
@@ -497,4 +512,84 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(stringRequest);
     }
+
+//TODO Edit GetData
+    private void getData() {
+
+        //loading = ProgressDialog.show(getActivity(),"Please wait...","Fetching...",false,false);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,config.URL_DATA, new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //loading.dismiss();
+                showJSON(response);
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }){
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put(config.USERNAME_SHARED, uID);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue.add(stringRequest);
+
+    }
+
+
+    private void showJSON(String response){
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray result = jsonObject.getJSONArray(config.JSON_ARRAY);
+            JSONObject collegeData = result.getJSONObject(0);
+
+
+            idUser = collegeData.getString("member_id");
+//            phone = collegeData.getString("tel");
+//            address = collegeData.getString("address");
+            firstname = collegeData.getString(config.READ_FIRSTNAME);
+            lastname = collegeData.getString(config.READ_LASTNAME);
+            email   = collegeData.getString(config.READ_EMAIL);
+
+
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+        //Creating editor to store values to shared preferences
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(config.LOGGEDIN_SHARED_PREF, true);
+        editor.putString(config.USERNAME_SHARED_PREF, idUser);
+        editor.putString("idUser", idUser);
+//        editor.putString("tel",phone);
+//        editor.putString("address",address);
+        editor.putString("firstname", firstname);
+        editor.putString("lastname", lastname);
+        editor.putString("email", email);
+        editor.apply();
+
+
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        startActivity(intent);
+
+        config.idUserUpdate = uID;
+    }
+
+
+
+
+
+
 }

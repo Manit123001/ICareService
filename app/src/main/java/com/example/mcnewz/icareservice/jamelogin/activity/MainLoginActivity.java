@@ -36,52 +36,17 @@ public class MainLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_login);
         FirebaseMessaging.getInstance().subscribeToTopic("news");
         final String token = FirebaseInstanceId.getInstance().getToken();
-        //Log.d("token555", token);
+        Log.d("token555", token);
         config.token = token;
-        mAuth  = com.google.firebase.auth.FirebaseAuth.getInstance();
-        mAuthListener = new com.google.firebase.auth.FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull com.google.firebase.auth.FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    config.status = 2;
-                    userid = user.getUid();
-                    updatetoken();
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }else {
 
-                    getSupportFragmentManager().beginTransaction()
-                            .add(R.id.contentContainer, new MainFragment(),"MainFragment")
-                            .commit();
+        if(savedInstanceState == null){
 
+            //First Created
+            //Place Fragment here
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.contentContainer, new MainFragment(),"MainFragment")
+                    .commit();
 
-                }
-            }
-        };
-//
-//        if(savedInstanceState == null){
-//
-//            //First Created
-//            //Place Fragment here
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.contentContainer, new MainFragment(),"MainFragment")
-//                    .commit();
-//
-//        }
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
         }
     }
 
@@ -96,30 +61,4 @@ public class MainLoginActivity extends AppCompatActivity {
         }
     }
 
-    private void  updatetoken(){
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, config.TOKEN_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("member_id", userid);
-                params.put("member_token", config.token);
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(stringRequest);
-    }
 }

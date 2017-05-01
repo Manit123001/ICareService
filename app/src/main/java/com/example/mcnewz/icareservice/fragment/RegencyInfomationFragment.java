@@ -212,7 +212,7 @@ public class RegencyInfomationFragment extends Fragment {
 
     private void setRegencyInfo() {
 
-        showpDialog();
+        //showpDialog();
         itemInfo = new RegencyInfoItemDao();
 
         if(selectedPhoto != ""){
@@ -238,12 +238,12 @@ public class RegencyInfomationFragment extends Fragment {
             public void onResponse(Call<RegencyInfoItemDao> call, Response<RegencyInfoItemDao> response) {
 
                 Toast.makeText(Contextor.getInstance().getContext(), "Complete", Toast.LENGTH_SHORT).show();
-                hidepDialog();
+                //hidepDialog();
             }
 
             @Override
             public void onFailure(Call<RegencyInfoItemDao> call, Throwable t) {
-                hidepDialog();
+                //hidepDialog();
                 //Toast.makeText(Contextor.getInstance().getContext(), "Not Complete "+ t.toString(), Toast.LENGTH_SHORT).show();
 
                 Log.d("onFailureInfo", t.toString());
@@ -285,6 +285,7 @@ public class RegencyInfomationFragment extends Fragment {
                     Bitmap bitmap = ImageLoader.init().from(photoPath).requestSize(512, 512).getBitmap();
                     ivShowImg.setImageBitmap(getRotateBitmap(bitmap, 90));
 //                    ivShowImg.setImageBitmap(bitmap);
+
                     ivShowImg.setVisibility(View.VISIBLE);
 
                 } catch (FileNotFoundException e) {

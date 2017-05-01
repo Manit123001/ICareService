@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.mcnewz.icareservice.R;
 import com.example.mcnewz.icareservice.activity.MainActivity;
+import com.example.mcnewz.icareservice.activity.UtilityHistoryNotificationSettingActivity;
 import com.example.mcnewz.icareservice.jamelogin.activity.ShowCodeActivity;
 import com.google.firebase.messaging.RemoteMessage;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
@@ -79,7 +80,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     private void sendNotification2(RemoteMessage.Notification notification, Map<String, String> data) {
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        Intent resultIntent = new Intent(this, MainActivity.class);
+        Intent resultIntent = new Intent(this, UtilityHistoryNotificationSettingActivity.class);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(MainActivity.class);

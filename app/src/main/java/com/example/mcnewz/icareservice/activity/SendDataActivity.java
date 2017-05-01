@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.mcnewz.icareservice.R;
-import com.example.mcnewz.icareservice.fragment.OneFragment;
 import com.example.mcnewz.icareservice.fragment.RegencyInfomationFragment;
 import com.example.mcnewz.icareservice.fragment.RegencyListFragment;
 import com.example.mcnewz.icareservice.fragment.WarningInfomationFragment;
