@@ -172,7 +172,9 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
 
     @Override
     public void onNewsBlogItemClicked(ItemDao dao, String tab) {
+
         Intent intent = new Intent(MainActivity.this, ShowDetailListViewActivity.class);
+
         intent.putExtra("dao", dao);
         intent.putExtra("tab", tab);
         startActivity(intent);
@@ -193,32 +195,20 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
             }
         }else if (tabClick == "profile"){
 
-            if(!(fragment instanceof ProfileFragment)){
-
-                Intent intent = new Intent(MainActivity.this, UtilityHistoryNotificationSettingActivity.class);
-                intent.putExtra("tab", "profile");
-                startActivity(intent);
-
-            }
+            Intent intent = new Intent(MainActivity.this, UtilityHistoryNotificationSettingActivity.class);
+            intent.putExtra("tab", "profile");
+            startActivity(intent);
         } else if (tabClick == "h"){
 
-            if(!(fragment instanceof HistorySendAlertFragment)){
+            Intent intent = new Intent(MainActivity.this, UtilityHistoryNotificationSettingActivity.class);
+            intent.putExtra("tab", "history");
+            startActivity(intent);
 
-                Intent intent = new Intent(MainActivity.this, UtilityHistoryNotificationSettingActivity.class);
-                intent.putExtra("tab", "history");
-                startActivity(intent);
-
-            }
         }else if (tabClick == "n"){
 
-            if(!(fragment instanceof NotificationBackFragment)){
-
-
-                Intent intent = new Intent(MainActivity.this, UtilityHistoryNotificationSettingActivity.class);
-                intent.putExtra("tab", "notification");
-                startActivity(intent);
-
-            }
+            Intent intent = new Intent(MainActivity.this, UtilityHistoryNotificationSettingActivity.class);
+            intent.putExtra("tab", "notification");
+            startActivity(intent);
         }
 
     }
