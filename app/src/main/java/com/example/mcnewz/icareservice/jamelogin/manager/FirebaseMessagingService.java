@@ -80,11 +80,17 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     private void sendNotification2(RemoteMessage.Notification notification, Map<String, String> data) {
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+
         Intent resultIntent = new Intent(this, UtilityHistoryNotificationSettingActivity.class);
+        resultIntent.putExtra("tab", "notification");
+
+
+
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(MainActivity.class);
         stackBuilder.addNextIntent(resultIntent);
+
 
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -100,18 +106,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setColor(Color.RED)
                 .setSmallIcon(R.mipmap.ic_launcher);
 
-        try {
-            String image_url = data.get("image_url");
-            if (image_url != null && !"".equals(image_url)) {
-                URL url = new URL(image_url);
-                Bitmap bigPicture = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                notificationBuilder.setStyle(
-                        new NotificationCompat.BigPictureStyle().bigPicture(bigPicture).setSummaryText(notification.getBody())
-                );
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         notificationBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
         notificationBuilder.setLights(Color.YELLOW, 1000, 300);

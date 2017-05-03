@@ -14,36 +14,30 @@ import com.example.mcnewz.icareservice.R;
 import com.inthecheesefactory.thecheeselibrary.view.BaseCustomViewGroup;
 import com.inthecheesefactory.thecheeselibrary.view.state.BundleSavedState;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * Created by nuuneoi on 11/16/2014.
  */
-public class NotificationBackItem extends BaseCustomViewGroup {
+public class HistorySendItem extends BaseCustomViewGroup {
 
     private TextView tvTitle, tvName, tvDescription, tvDate ;
     private ImageView ivProfile, ivRegency;
     private TextView tvTime;
 
 
-    private int typeDe;
-
-
-    public NotificationBackItem(Context context) {
+    public HistorySendItem(Context context) {
         super(context);
         initInflate();
         initInstances();
     }
 
-    public NotificationBackItem(Context context, AttributeSet attrs) {
+    public HistorySendItem(Context context, AttributeSet attrs) {
         super(context, attrs);
         initInflate();
         initInstances();
         initWithAttrs(attrs, 0, 0);
     }
 
-    public NotificationBackItem(Context context, AttributeSet attrs, int defStyleAttr) {
+    public HistorySendItem(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initInflate();
         initInstances();
@@ -51,7 +45,7 @@ public class NotificationBackItem extends BaseCustomViewGroup {
     }
 
     @TargetApi(21)
-    public NotificationBackItem(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public HistorySendItem(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initInflate();
         initInstances();
@@ -59,8 +53,7 @@ public class NotificationBackItem extends BaseCustomViewGroup {
     }
 
     private void initInflate() {
-        inflate(getContext(), R.layout.list_notification_back, this);
-
+        inflate(getContext(), R.layout.list_history_send, this);
     }
 
     private void initInstances() {
@@ -69,7 +62,6 @@ public class NotificationBackItem extends BaseCustomViewGroup {
         tvDescription = (TextView) findViewById(R.id.tvDescript);
         tvTime = (TextView) findViewById(R.id.tvTime);
         ivRegency = (ImageView) findViewById(R.id.ivRegency);
-
     }
 
     private void initWithAttrs(AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -110,43 +102,31 @@ public class NotificationBackItem extends BaseCustomViewGroup {
 
 
 
-    public void  setTvName(String text){
+
+    public void setTvName(String text){
+
         tvName.setText(text);
     }
 
     public void  setTvDescription(String text){
+
         tvDescription.setText(text);
     }
 
 
     public void  setTime(String text){
+
         tvTime.setText(text);
     }
 
 
     // setImage load Image
-    public void setImageUrl (int type){
-//        Glide.with(getContext())
-//                .load(url)
-//                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .into(ivRegency);
-        if(type == 1){
-            typeDe = R.drawable.ic_depart_police;
-
-
-        } else if (type == 2){
-            typeDe = R.drawable.ic_depart_hospital;
-
-
-        }else if (type == 3){
-            typeDe = R.drawable.ic_depart_fire;
-
-
-        }else {
-            typeDe = R.drawable.ic_depart_wor;
-
-        }
-        ivRegency.setImageResource(typeDe);
+    public void setImageUrl (String url){
+        Glide.with(getContext())
+                .load(url)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(ivRegency);
 
     }
+
 }

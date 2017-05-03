@@ -1,18 +1,14 @@
 package com.example.mcnewz.icareservice.dao;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.sql.Date;
-import java.sql.Time;
 
 /**
  * Created by MCNEWZ on 24-Jan-17.
  */
 
-public class ItemDao implements Parcelable {
+public class HistorySendItemDao {
 
     @SerializedName("id") private int id;
     @SerializedName("subject") private String subject;
@@ -26,54 +22,16 @@ public class ItemDao implements Parcelable {
     @SerializedName("time_incident") private String time_incident;
     @SerializedName("members") private int members;
     @SerializedName("type") private int type;
+    @SerializedName("department_name") private String departmentName;
 
-    protected ItemDao(Parcel in) {
-        id = in.readInt();
-        subject = in.readString();
-        detail = in.readString();
-        lat = in.readString();
-        lng = in.readString();
-        photo = in.readString();
-        vedio = in.readString();
-        create_date = Date.valueOf(in.readString());
-        time_submit = in.readString();
-        time_incident = in.readString();
-        members = in.readInt();
-        type = in.readInt();
+
+    public String getDepartmentName() {
+        return departmentName;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(subject);
-        dest.writeString(detail);
-        dest.writeString(lat);
-        dest.writeString(lng);
-        dest.writeString(photo);
-        dest.writeString(vedio);
-        dest.writeString(String.valueOf(create_date));
-        dest.writeString(time_submit);
-        dest.writeString(time_incident);
-        dest.writeInt(members);
-        dest.writeInt(type);
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<ItemDao> CREATOR = new Creator<ItemDao>() {
-        @Override
-        public ItemDao createFromParcel(Parcel in) {
-            return new ItemDao(in);
-        }
-
-        @Override
-        public ItemDao[] newArray(int size) {
-            return new ItemDao[size];
-        }
-    };
 
     public int getId() {
         return id;

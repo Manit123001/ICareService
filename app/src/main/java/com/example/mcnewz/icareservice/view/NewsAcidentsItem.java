@@ -169,16 +169,12 @@ public class NewsAcidentsItem extends BaseCustomViewGroup {
 
     // setImage load Image
     public void setImageUrl (String url){
-        if(!url.equals("not")){
-            Glide.with(getContext())
-                    .load(url)
-                    .placeholder(R.drawable.loading)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(ivImg);
-            ivImg.setVisibility(View.VISIBLE);
-
-        }else {
-            ivImg.setVisibility(View.GONE);
-        }
+        Glide.with(getContext())
+                .load(url)
+                .error(R.drawable.nav_header_bg)
+                .placeholder(R.drawable.loading)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(ivImg);
+        ivImg.setVisibility(View.VISIBLE);
     }
 }

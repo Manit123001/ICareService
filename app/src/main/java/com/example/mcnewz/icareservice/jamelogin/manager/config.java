@@ -65,8 +65,6 @@ public class config {
         public static int status_verify = 1;
         public static int id = 1;
         public static String idcode = "7777";
-
-        public static String idUserUpdate = "id";
         public static String PhotoUserUpdate = "photo";
 
 }

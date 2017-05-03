@@ -126,7 +126,7 @@ public class RegencyListFragment extends Fragment {
     private void showpDialog() {
         pDialog = new ProgressDialog(getContext());
         pDialog.setMessage("Please wait...");
-        pDialog.setCancelable(false);
+        pDialog.setCancelable(true);
 
         if (!pDialog.isShowing())
             pDialog.show();

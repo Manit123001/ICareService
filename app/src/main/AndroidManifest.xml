@@ -55,7 +55,7 @@
         <!-- MainActivity -->
         <activity
             android:name=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <!-- Alert -->
         <activity
             android:name=".activity.AlertActivity"
@@ -77,7 +77,7 @@
 
         <activity
             android:name=".jamelogin.activity.MainLoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".jamelogin.activity.ShowCodeActivity" />
 
         <meta-data
@@ -91,7 +91,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.UtilityHistoryNotificationSettingActivity"></activity>
+        <activity android:name=".activity.UtilityHistoryNotificationSettingActivity"
+            android:parentActivityName=".activity.MainActivity"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
+
+            <intent-filter>
+                <action android:name="OPEN_FROM_NOTIFICATION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+
+
+        <activity android:name=".activity.ShowDetailListViewActivity">
+
+        </activity>
+
+
     </application>
 
 </manifest>

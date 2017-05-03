@@ -137,6 +137,7 @@ public class AcidentsBottomSheetDialog extends BottomSheetDialogFragment {
 
                         tvDate.setText(dateString);
                         tvTime.setText(time);
+
                         setImageUrl(photo);
 
 
@@ -210,9 +211,12 @@ public class AcidentsBottomSheetDialog extends BottomSheetDialogFragment {
 
     // setImage load Image
     public void setImageUrl (String url){
+
         if(!url.equals("not")){
+
             Glide.with(getContext())
                     .load(url)
+                    .error(R.drawable.header)
                     .placeholder(R.drawable.loading)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(ivImg);

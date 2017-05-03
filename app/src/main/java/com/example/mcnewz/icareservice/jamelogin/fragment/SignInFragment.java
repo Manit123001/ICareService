@@ -96,6 +96,7 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
     private String phone;
     private String address;
     private String email;
+    private String username;
 
     public void showProgressDialog() {
         if (mProgressDialog == null) {
@@ -302,9 +303,7 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
                         if(response.trim().toString().equalsIgnoreCase(config.LOGIN_SUCCESS)){
                             updatetoken();
                             getData();
-                            Intent intent = new Intent(getContext(), MainActivity.class);
-                            getActivity().finish();
-                            startActivity(intent);
+
                         }else{
                             getFragmentManager().beginTransaction()
                                     .setCustomAnimations(
@@ -552,8 +551,9 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
 
 
             idUser = collegeData.getString("member_id");
-//            phone = collegeData.getString("tel");
-//            address = collegeData.getString("address");
+            username = collegeData.getString("username");
+            phone = collegeData.getString("tel");
+            address = collegeData.getString("address");
             firstname = collegeData.getString(config.READ_FIRSTNAME);
             lastname = collegeData.getString(config.READ_LASTNAME);
             email   = collegeData.getString(config.READ_EMAIL);
@@ -573,8 +573,9 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
         editor.putBoolean(config.LOGGEDIN_SHARED_PREF, true);
         editor.putString(config.USERNAME_SHARED_PREF, idUser);
         editor.putString("idUser", idUser);
-//        editor.putString("tel",phone);
-//        editor.putString("address",address);
+        editor.putString("Idusername",username);
+        editor.putString("tel",phone);
+        editor.putString("address",address);
         editor.putString("firstname", firstname);
         editor.putString("lastname", lastname);
         editor.putString("email", email);
@@ -582,9 +583,10 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
 
 
         Intent intent = new Intent(getContext(), MainActivity.class);
+        getActivity().finish();
         startActivity(intent);
 
-        config.idUserUpdate = uID;
+
     }
 
 

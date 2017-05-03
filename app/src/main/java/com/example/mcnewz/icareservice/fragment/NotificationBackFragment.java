@@ -78,6 +78,7 @@ public class NotificationBackFragment extends Fragment {
     public static NotificationBackFragment newInstance() {
         NotificationBackFragment fragment = new NotificationBackFragment();
         Bundle args = new Bundle();
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -87,18 +88,14 @@ public class NotificationBackFragment extends Fragment {
         Bundle args = new Bundle();
 
         args.putString("load",load);
-
         fragment.setArguments(args);
-
-
         return fragment;
 
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-
+        //setHasOptionsMenu(true);
         load = getArguments().getString("load");
 
         SharedPreferences sp = getActivity().getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -113,26 +110,19 @@ public class NotificationBackFragment extends Fragment {
             showpDialog();
         }
         itemInfo = new SendIDUser();
-        setItemInfo();
-
-    }
-
-    private void setItemInfo() {
         itemInfo.setUpIdUser(userId);
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notification_back, container, false);
 
-        final Toolbar toolbar = (Toolbar)rootView.findViewById(R.id.toolbar);
-        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
-        appCompatActivity.setSupportActionBar(toolbar);
-
-        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        final Toolbar toolbar = (Toolbar)rootView.findViewById(R.id.toolbar);
+//        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+//        appCompatActivity.setSupportActionBar(toolbar);
+//        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initInstances(rootView);
         return rootView;
@@ -141,13 +131,14 @@ public class NotificationBackFragment extends Fragment {
     private void initInstances(View rootView) {
 
         listView = (ListView) rootView.findViewById(R.id.lvNotification);
-
         setNewsAcidentsShow();
     }
 
     private void setNewsAcidentsShow(){
         listAdapter = new NotificationBackAdapter();
         listView.setAdapter(listAdapter);
+
+
         notificationBackListManager = new NotificationBackListManager();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -233,13 +224,13 @@ public class NotificationBackFragment extends Fragment {
     /*
      * Restore Instance State Here
      */
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            // Restore Instance State here
-        }
-    }
+//    @Override
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        if (savedInstanceState != null) {
+//            // Restore Instance State here
+//        }
+//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -249,16 +240,16 @@ public class NotificationBackFragment extends Fragment {
 
 
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case android.R.id.home:
-//                getFragmentManager().popBackStack();
-                getActivity().onBackPressed();
-
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+////                getFragmentManager().popBackStack();
+//                getActivity().onBackPressed();
+//
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 }

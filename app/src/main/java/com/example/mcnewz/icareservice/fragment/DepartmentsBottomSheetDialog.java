@@ -68,62 +68,6 @@ public class DepartmentsBottomSheetDialog extends BottomSheetDialogFragment {
         ic_image  = (ImageView)rootView.findViewById(R.id.ic_image);
     }
 
-//    private void callBackItem() {
-//        Call<ItemCollectionDao> call = HttpManager.getInstance().getService().loadItemList();
-//        call.enqueue(new Callback<ItemCollectionDao>() {
-//            @Override
-//            public void onResponse(Call<ItemCollectionDao> call, retrofit2.Response<ItemCollectionDao> response) {
-//                if(response.isSuccessful()){
-//                    ItemDao dao;
-//                    ItemCollectionDao CollectionDao = response.body();
-//                    int sizeDao = CollectionDao.getData().size();
-//                    //Toast.makeText(Contextor.getInstance().getContext(), sizeDao+dao.getData().get(0).getLat(), Toast.LENGTH_SHORT).show();
-//
-//                    dao = CollectionDao.getData().get(positionArrays);
-//
-//                    int id = dao.getId();
-//                    String subject = dao.getSubject();
-//                    Date dateCreate = dao.getCreate_date();
-//                    String latDao = dao.getLat();
-//                    String lngDao = dao.getLng();
-//                    String detail = dao.getDetail();
-//                    String photo = dao.getPhoto();
-//
-//                    if(clickCount == id){
-////                        long date = System.currentTimeMillis();
-//
-//                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-//                        String dateString = sdf.format(dateCreate);
-//                        Toast.makeText(getContext(), "clickCount " + clickCount + "  //id Marker " + id+ "//  all data "+sizeDao, Toast.LENGTH_LONG).show();
-//
-//                        tvTitle.setText(subject);
-//                        tvDetail.setText(detail);
-//
-//
-//                        dateShow.setText(dateString);
-//                        setImageUrl(photo);
-//
-//                    } else {
-//                        Toast.makeText(getContext(), "Haven't" + clickCount+"    "+ id, Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                } else {
-//                    try {
-//                        Toast.makeText(Contextor.getInstance().getContext(),
-//                                response.errorBody().string(), Toast.LENGTH_LONG).show();
-//
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ItemCollectionDao> call, Throwable t) {
-//                Toast.makeText(Contextor.getInstance().getContext(), t.toString()+"error 555", Toast.LENGTH_LONG).show();
-//            }
-//        });
-//    }
 
     private void callBackItemDepartments() {
         Call<DepartmentsItemCollectionDao> call = HttpManager.getInstance().getService().loadItemListDepartment();

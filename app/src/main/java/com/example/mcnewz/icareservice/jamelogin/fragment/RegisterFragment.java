@@ -90,6 +90,7 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
     private String firstname;
     private String lastname;
     private String temail;
+    private String username;
 
 
     public RegisterFragment() {
@@ -306,9 +307,7 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
                             updatetoken();
 
                             getData();
-                            Intent intent = new Intent(getContext(), MainActivity.class);
-                            getActivity().finish();
-                            startActivity(intent);
+
                         }else{
                             //ถ้ายังไม่เคยSign
                             getFragmentManager().beginTransaction()
@@ -394,7 +393,7 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
             @Override
             public void onResponse(String response) {
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.contentContainer, VerifyFragment.newInstance(fname,lname,password,email,phone,IdFace))
+                        .replace(R.id.contentContainer, VerifyFragment.newInstance(fname,lname,email,password,phone,IdFace))
                         .commit();
             }
         }, new Response.ErrorListener() {
@@ -452,9 +451,52 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
             edtPhoneRegister.setError("Invalid Phone");
             edtPhoneRegister.requestFocus();
         }else {
-            onButtonRegister();
+            checkEmail();
         }
     }
+
+    private void checkEmail(){
+        //Creating a string request
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, config.CHECKFACEBOOK_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //If we are getting success from server
+                        if(response.trim().toString().equalsIgnoreCase(config.LOGIN_SUCCESS)){
+
+                            onButtonRegister();
+                        }else{
+                            edtEmailRegister.setError("Invalid Email repetitive");
+                            edtEmailRegister.requestFocus();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //You can handle error here if you want
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                //Adding parameters to request
+                params.put(config.KEY_IDFACE, edtEmailRegister.getText().toString().trim());
+                //returning parameter
+                return params;
+            }
+        };
+        //Adding the string request to the queue
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(stringRequest);
+    }
+
+
+
+
+
+
+
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -530,6 +572,7 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
 
 
             idUser = collegeData.getString("member_id");
+            username = collegeData.getString("username");
             phone = collegeData.getString("tel");
             address = collegeData.getString("address");
             firstname = collegeData.getString(config.READ_FIRSTNAME);
@@ -551,6 +594,7 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
         editor.putBoolean(config.LOGGEDIN_SHARED_PREF, true);
         editor.putString(config.USERNAME_SHARED_PREF, idUser);
         editor.putString("idUser", idUser);
+        editor.putString("Idusername",username);
         editor.putString("tel",phone);
         editor.putString("address",address);
         editor.putString("firstname", firstname);
@@ -559,9 +603,10 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
         editor.apply();
 
         Intent intent = new Intent(getContext(), MainActivity.class);
+        getActivity().finish();
         startActivity(intent);
 
-        config.idUserUpdate = uID;
+
     }
 
 

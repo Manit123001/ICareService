@@ -1,10 +1,13 @@
 package com.example.mcnewz.icareservice.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,13 +48,14 @@ public class ProfileFragment extends Fragment {
     private EditText edtLastName;
     private EditText edtAddress;
     private EditText edtPhon;
-    private String idUser;
+
     private String firstname;
     private String lastname;
     private String email;
     private String address;
     private String tel;
     private Button btnUpdate;
+    private String username;
 
     public ProfileFragment() {
         super();
@@ -84,7 +88,17 @@ public class ProfileFragment extends Fragment {
 
         new ProfileFragment.DownloadImageTask().execute(config.PhotoUserUpdate);
 
-        getData();
+
+        SharedPreferences sp = getActivity().getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        txtId.setText(sp.getString("email","null"));
+        edtName.setText(sp.getString("firstname","null"));
+        edtLastName.setText(sp.getString("lastname","null"));
+        edtAddress.setText(sp.getString("address","null"));
+        edtPhon.setText(sp.getString("tel","null"));
+        username = sp.getString("Idusername","null");
+        Log.d("IDUSer",username);
+
+
         btnUpdate = (Button)rootView.findViewById(R.id.btnUpdate);
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +129,7 @@ public class ProfileFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
-                params.put("username", config.idUserUpdate);
+                params.put("username", username);
                 params.put("firstname", edtName.getText().toString());
                 params.put("lastname", edtLastName.getText().toString());
                 params.put("tel", edtPhon.getText().toString());
@@ -147,7 +161,7 @@ public class ProfileFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
-                params.put(config.USERNAME_SHARED, config.idUserUpdate);
+                params.put(config.USERNAME_SHARED, username);
                 return params;
             }
         };
@@ -163,7 +177,6 @@ public class ProfileFragment extends Fragment {
             JSONArray result = jsonObject.getJSONArray(config.JSON_ARRAY);
             JSONObject collegeData = result.getJSONObject(0);
 
-            idUser = collegeData.getString("member_id");
             firstname = collegeData.getString(config.READ_FIRSTNAME);
             lastname = collegeData.getString(config.READ_LASTNAME);
             email   = collegeData.getString(config.READ_EMAIL);
@@ -181,6 +194,15 @@ public class ProfileFragment extends Fragment {
         edtLastName.setText(lastname);
         edtAddress.setText(address);
         edtPhon.setText(tel);
+
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+        //Creating editor to store values to shared preferences
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("tel",tel);
+        editor.putString("address",address);
+        editor.putString("firstname", firstname);
+        editor.putString("lastname", lastname);
+        editor.apply();
 
 
     }

@@ -23,12 +23,12 @@ public class NotificationBackAdapter extends BaseAdapter {
     public void setDao(NotificationBackItemCollectionDao dao) {
         this.dao = dao;
     }
+
     @Override
     public int getCount() {
 
-        if(dao == null){
+        if(dao == null)
             return 0;
-        }
         if (dao.getData() == null)
             return 0;
 
@@ -58,7 +58,9 @@ public class NotificationBackAdapter extends BaseAdapter {
 
         item.setTvName(dao.getDepartmentName());
         item.setTvDescription(dao.getDetail());
-        item.setImageUrl(dao.getPhoto());
+
+        item.setImageUrl(dao.getType());
+
         item.setTime(String.valueOf(dao.getTime_submit()));
 
         return item;

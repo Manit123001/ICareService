@@ -155,6 +155,8 @@ public class MainFragment extends Fragment implements
     private BottomSheetBehavior<View> behavior;
     private ListView listView;
     private NewsAcidentsAdapter listAdapter;
+
+
     NewsAcidentsListManager newsAcidentsListManager;
 
     // Index Location
@@ -201,6 +203,12 @@ public class MainFragment extends Fragment implements
     /************
      * Functions
      *************/
+
+    public interface FragmentListener{
+        void onDrawableMenuClickList(String tabClick, String idUser);
+
+        void onNewsBlogItemClicked(ItemDao dao, String tab);
+    }
 
     public MainFragment() {
         super();
@@ -311,7 +319,6 @@ public class MainFragment extends Fragment implements
         try {
             gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
         } catch(Exception ex) {}
-
         try {
             network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         } catch(Exception ex) {}
@@ -523,15 +530,20 @@ public class MainFragment extends Fragment implements
     private void setNewsAcidentsShow(){
         listAdapter = new NewsAcidentsAdapter();
         listView.setAdapter(listAdapter);
+
+        // 1 Created object
         newsAcidentsListManager = new NewsAcidentsListManager();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                // 3. getData Position
                 ItemDao dao = newsAcidentsListManager.getDao().getData().get(position);
-                //FragmentListener listener =  (FragmentListener) getActivity();
-                //Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
-                //listener.onPhotoItemClicked(dao);
+
+                FragmentListener listener =  (FragmentListener) getActivity();
+                listener.onNewsBlogItemClicked(dao, "NEWS");
+
             }
         });
 
@@ -539,6 +551,7 @@ public class MainFragment extends Fragment implements
         call.enqueue(new Callback<ItemCollectionDao>() {
             @Override
             public void onResponse(Call<ItemCollectionDao> call, Response<ItemCollectionDao> response) {
+
                 if ( response.isSuccessful()){
                     ItemCollectionDao dao = response.body();
 
@@ -546,6 +559,7 @@ public class MainFragment extends Fragment implements
                     listAdapter.setDao(dao);
                     listAdapter.notifyDataSetChanged();
 
+                    // 2. set Data is Dao from ItemCollectionDao
                     newsAcidentsListManager.setDao(dao);
                 }else{
                     try {
@@ -690,7 +704,6 @@ public class MainFragment extends Fragment implements
         }
 
         //Toast.makeText(Contextor.getInstance().getContext(), ""+String.valueOf(mLastLocation.getLatitude())+String.valueOf(mLastLocation.getLongitude()), Toast.LENGTH_LONG).show();
-
 
         //Place current location marker
         latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
@@ -863,10 +876,14 @@ public class MainFragment extends Fragment implements
     }
 
 
+    //------------------------------------------
+    //
     // Start login of jame And Navigation View
     private void LoginMenu() {
 
         mAuth  = com.google.firebase.auth.FirebaseAuth.getInstance();
+
+
         mAuthListener = new com.google.firebase.auth.FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull com.google.firebase.auth.FirebaseAuth firebaseAuth) {
@@ -876,7 +893,6 @@ public class MainFragment extends Fragment implements
 
                     config.PhotoUserUpdate = user.getPhotoUrl().toString();
                     new DownloadImageTask().execute(user.getPhotoUrl().toString());
-
                 }
             }
         };
@@ -918,6 +934,7 @@ public class MainFragment extends Fragment implements
             }
             return mIcon;
         }
+
         @Override
         protected void onPostExecute(Bitmap result) {
             if (result != null) {
@@ -930,9 +947,7 @@ public class MainFragment extends Fragment implements
 
 
 
-    public interface FragmentListener{
-        void onDrawableMenuClickList(String tabClick, String idUser);
-    }
+
 
     private void navigationViewLeftMenu() {
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
@@ -1094,7 +1109,6 @@ public class MainFragment extends Fragment implements
                 tvSlide.setText("Slide Up News" );
             } else{
                 tvSlide.setText("เหตุร้ายรอบตัว");
-
             }
 
             if(MODELOADSLIDENEWS == 1){

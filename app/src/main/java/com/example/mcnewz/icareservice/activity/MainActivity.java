@@ -2,9 +2,11 @@ package com.example.mcnewz.icareservice.activity;
 
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 
@@ -13,13 +15,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mcnewz.icareservice.R;
+import com.example.mcnewz.icareservice.dao.ItemDao;
 import com.example.mcnewz.icareservice.fragment.HistorySendAlertFragment;
 import com.example.mcnewz.icareservice.fragment.MainFragment;
 import com.example.mcnewz.icareservice.fragment.NotificationBackFragment;
@@ -144,7 +149,34 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
 
 
     }
+    boolean doubleBackToExitPressedOnce = false;
 
+    public void onBackPressed() {
+
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
+
+    @Override
+    public void onNewsBlogItemClicked(ItemDao dao, String tab) {
+        Intent intent = new Intent(MainActivity.this, ShowDetailListViewActivity.class);
+        intent.putExtra("dao", dao);
+        intent.putExtra("tab", tab);
+        startActivity(intent);
+    }
 
     @Override
     public void onDrawableMenuClickList(String tabClick, String idUser) {
@@ -163,33 +195,29 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
 
             if(!(fragment instanceof ProfileFragment)){
 
-                getSupportFragmentManager().beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .replace(R.id.contentContainer,  ProfileFragment.newInstance())
-                        .addToBackStack(null)
-                        .commit();
+                Intent intent = new Intent(MainActivity.this, UtilityHistoryNotificationSettingActivity.class);
+                intent.putExtra("tab", "profile");
+                startActivity(intent);
+
             }
         } else if (tabClick == "h"){
 
             if(!(fragment instanceof HistorySendAlertFragment)){
 
-                getSupportFragmentManager().beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .replace(R.id.contentContainer,  HistorySendAlertFragment.newInstance())
-                        .addToBackStack(null)
-                        .commit();
+                Intent intent = new Intent(MainActivity.this, UtilityHistoryNotificationSettingActivity.class);
+                intent.putExtra("tab", "history");
+                startActivity(intent);
+
             }
         }else if (tabClick == "n"){
+
             if(!(fragment instanceof NotificationBackFragment)){
 
-//                getSupportFragmentManager().beginTransaction()
-//                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-//                        .replace(R.id.contentContainer,  NotificationBackFragment.newInstance(idUser, "load"))
-//                        .addToBackStack(null)
-//                        .commit();
+
                 Intent intent = new Intent(MainActivity.this, UtilityHistoryNotificationSettingActivity.class);
-                intent.putExtra("idUser", idUser);
+                intent.putExtra("tab", "notification");
                 startActivity(intent);
+
             }
         }
 

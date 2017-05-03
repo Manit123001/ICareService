@@ -4,20 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+
     card_view:cardCornerRadius="5dp" >
     <LinearLayout
+        android:gravity="center"
+        android:layout_margin="10dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/ivRegency"
+            android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content" />
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_weight="4"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp" >
 
@@ -36,22 +42,25 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvName"
                 android:text="Descript"
+
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/tvTime"
-                android:layout_marginRight="8dp"
-                android:text="time"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                />
-        </RelativeLayout>
 
+        </RelativeLayout>
+        <TextView
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:id="@+id/tvTime"
+            android:layout_marginRight="8dp"
+            android:text="time"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="right"
+            android:layout_centerVertical="true"/>
     </LinearLayout>
 
 

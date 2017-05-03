@@ -2,6 +2,8 @@ package com.example.mcnewz.icareservice.manager.http;
 
 
 import com.example.mcnewz.icareservice.dao.DepartmentsItemCollectionDao;
+import com.example.mcnewz.icareservice.dao.HistorySendItemCollectionDao;
+import com.example.mcnewz.icareservice.dao.HistorySendItemDao;
 import com.example.mcnewz.icareservice.dao.ItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.NeaRegencyListItemCollectionDao;
 import com.example.mcnewz.icareservice.dao.NearRegencyListItemDao;
@@ -81,10 +83,19 @@ public interface ApiService {
     );
 
 
-    // Insert Data Acidents
+    // Notification Back
     @FormUrlEncoded
     @POST("icareservice/jsonNotificationBack.php")
     Call<NotificationBackItemCollectionDao> setNotificationBack(
+            @Field("upIdUser") String upIdUser
+    );
+
+
+
+    // History Send
+    @FormUrlEncoded
+    @POST("icareservice/jsonHistory.php")
+    Call<HistorySendItemCollectionDao> setHistorySend(
             @Field("upIdUser") String upIdUser
     );
 
