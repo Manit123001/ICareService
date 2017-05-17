@@ -442,13 +442,13 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
             edtPasswordRegister.setError("Invalid Password");
             edtPasswordRegister.requestFocus();
         }else if(edtPasswordRegister.getText().toString().trim().length() < 4){
-            edtPasswordRegister.setError("Invalid Password");
+            edtPasswordRegister.setError("Password Least 4");
             edtPasswordRegister.requestFocus();
         }else if(edtPhoneRegister.getText().toString().trim().isEmpty()){
             edtPhoneRegister.setError("Invalid Phone");
             edtPhoneRegister.requestFocus();
         }else if(edtPhoneRegister.getText().toString().trim().length() < 10){
-            edtPhoneRegister.setError("Invalid Phone");
+            edtPhoneRegister.setError("Number Phone Least 10");
             edtPhoneRegister.requestFocus();
         }else {
             checkEmail();
@@ -463,11 +463,11 @@ public class RegisterFragment extends Fragment implements GoogleApiClient.OnConn
                     public void onResponse(String response) {
                         //If we are getting success from server
                         if(response.trim().toString().equalsIgnoreCase(config.LOGIN_SUCCESS)){
-
-                            onButtonRegister();
-                        }else{
                             edtEmailRegister.setError("Invalid Email repetitive");
                             edtEmailRegister.requestFocus();
+
+                        }else{
+                            onButtonRegister();
                         }
                     }
                 },

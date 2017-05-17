@@ -23,10 +23,10 @@
             android:icon="@drawable/ic_d_bell"
             android:title="Notification"/>
 
-        <item
-            android:id="@+id/navItem4"
-            android:icon="@drawable/ic_d_setting"
-            android:title="Settings"/>
+        <!--<item-->
+            <!--android:id="@+id/navItem4"-->
+            <!--android:icon="@drawable/ic_d_setting"-->
+            <!--android:title="Settings"/>-->
         <item
             android:id="@+id/navItem5"
             android:icon="@drawable/ic_d_logoutpng"

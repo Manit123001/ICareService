@@ -315,8 +315,8 @@ public class RegencyListFragment extends Fragment {
 
             @Override
             public void onFailure(Call<NeaRegencyListItemCollectionDao> call, Throwable t) {
-                Toast.makeText(Contextor.getInstance().getContext(), "XXXXX"+t.toString()+"DepartmentsItemCollectionDao Erorr", Toast.LENGTH_LONG).show();
-
+//                Toast.makeText(Contextor.getInstance().getContext(), "XXXXX"+t.toString()+"DepartmentsItemCollectionDao Erorr", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Please Connect Internet", Toast.LENGTH_SHORT).show();
             }
         });
 

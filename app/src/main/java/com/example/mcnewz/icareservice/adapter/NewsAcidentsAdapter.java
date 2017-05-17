@@ -62,6 +62,9 @@ public class NewsAcidentsAdapter extends BaseAdapter {
         item.setImageUrl(dao.getPhoto());
         item.setTime(String.valueOf(dao.getTime_submit()));
         item.setDate(dao.getCreate_date());
+
+
+
         return item;
     }
 }

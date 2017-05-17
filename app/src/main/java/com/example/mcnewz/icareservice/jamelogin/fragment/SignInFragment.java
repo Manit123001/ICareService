@@ -443,7 +443,7 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
                         }else{
                             //If the server response is not success
                             //Displaying an error message on toast
-                            Toast.makeText(getContext(), "Invalid username or password"+response, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Invalid username or password", Toast.LENGTH_LONG).show();
                         }
                     }
                 },

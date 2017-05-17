@@ -4,6 +4,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -22,7 +23,23 @@ public class UtilityHistoryNotificationSettingActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_utility_history_notification_setting);
-        tab = getIntent().getStringExtra("tab");
+
+
+        // Initialize Fragment level's variables
+        if(savedInstanceState != null)
+            onRestoreInstanceState(savedInstanceState);//restore here
+
+
+        if(getIntent().getStringExtra("tab")==null){
+
+            Bundle bundle = getIntent().getExtras();
+            Object value2 = bundle.get("send");
+            tab = value2.toString();
+            Log.d("TTRR",value2.toString());
+        }else {
+            tab = getIntent().getStringExtra("tab");
+        }
+
 
         initInstances();
         initToolbar();

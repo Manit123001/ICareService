@@ -782,6 +782,7 @@ public class MainFragment extends Fragment implements
         // Save Instance State here
     }
 
+
     /*
      * Restore Instance State Here
      */
@@ -790,8 +791,10 @@ public class MainFragment extends Fragment implements
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             // Restore Instance State here
+
         }
     }
+
 
 
 
@@ -982,12 +985,6 @@ public class MainFragment extends Fragment implements
                     case R.id.navItem3:
                         drawerLayout.closeDrawers();
                         listener.onDrawableMenuClickList("n", idUser);
-                        return true;
-
-
-                    case R.id.navItem4:
-                        drawerLayout.closeDrawers();
-                        listener.onDrawableMenuClickList("s", idUser);
                         return true;
 
 

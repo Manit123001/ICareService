@@ -128,8 +128,8 @@ public class NewsShowDetailFragment extends Fragment {
         fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(rootLayout, "Hello. I am Snackbar!", Snackbar.LENGTH_SHORT)
-                        .setAction("Undo", new View.OnClickListener() {
+                Snackbar.make(rootLayout, "Like This Page", Snackbar.LENGTH_SHORT)
+                        .setAction("Thanks", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 getActivity().onBackPressed();
