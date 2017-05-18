@@ -1,2 +1,5 @@
-# ICareService
-V1
+# Application ICare Projects
+
+Student Projects for Computer Science at 
+Develop with
+- 
