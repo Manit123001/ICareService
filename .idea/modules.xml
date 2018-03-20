@@ -3,8 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ICareService.iml" filepath="$PROJECT_DIR$/ICareService.iml" />
+      <module fileurl="file://E:\DevProjs\AndroidProjects\AppProject\ICareService\ICareService.iml" filepath="E:\DevProjs\AndroidProjects\AppProject\ICareService\ICareService.iml" />
       <module fileurl="file://$PROJECT_DIR$/TheCheeseLibrary/TheCheeseLibrary.iml" filepath="$PROJECT_DIR$/TheCheeseLibrary/TheCheeseLibrary.iml" />
+      <module fileurl="file://E:\DevProjs\AndroidProjects\AppProject\ICareService\TheCheeseLibrary\TheCheeseLibrary.iml" filepath="E:\DevProjs\AndroidProjects\AppProject\ICareService\TheCheeseLibrary\TheCheeseLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://E:\DevProjs\AndroidProjects\AppProject\ICareService\app\app.iml" filepath="E:\DevProjs\AndroidProjects\AppProject\ICareService\app\app.iml" />
     </modules>
   </component>
 </project>
